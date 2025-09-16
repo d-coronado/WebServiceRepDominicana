@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: webservice-dgii-rd
+  profiles:
+    active: dev  # Profile por defecto
+
+  licencia:
+    filesystem:
+      basepath:
+        windows: "C:/fe_repdominicana"
+        linux: "/opt/tomcat/configapp/data/"
+        mac: "/Users/dcoronado/"
+
+# Configuración común (logs, etc.)
+logging:
+  level:
+    org.dcoronado.WebServiceDGIIRepublicaDominicana: DEBUG
+    org.springframework: INFO

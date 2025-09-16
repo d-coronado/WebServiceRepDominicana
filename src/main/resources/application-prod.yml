@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  # Base de datos principal para producción
+  datasource:
+    url: jdbc:mysql://${app.database.host}:${app.database.port}/${app.database.nombreBD}
+    username: tu_usuario_prod
+    password: tu_password_prod
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # JPA/Hibernate para producción
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+# Configuración específica de producción
+server:
+  port: 8443
+
+# Configuración Host y puerto y nombre de BD separados para facilitar su uso
+app:
+  database:
+    host: 123.4.5.6
+    port: 1234
+    nombreBD: prod
