@@ -1,0 +1,46 @@
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestructure.Persistence;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
+@Entity(name = "SesionEntity")
+@Table(name = "sesionempresa")
+public class SesionEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sesionempresa_id")
+    private Long id;
+
+    @Column(name = "sesionempresa_rnc")
+    private String rnc;
+
+    @Column(name = "sesionempresa_ambiente")
+    private String ambiente;
+
+    @Column(name = "sesionempresa_token")
+    private String token;
+
+    @Column(name = "sesionempresa_tokenexpedido")
+    private LocalDateTime expedido;
+
+    @Column(name = "sesionempresa_tokenexpira")
+    private LocalDateTime expira;
+
+    @Column(name = "sesionempresa_fecharegistro" , nullable = false)
+    private LocalDateTime fechaRegitro;
+
+    @PrePersist
+    public void prePersist() {
+        fechaRegitro = LocalDateTime.now();
+    }
+}
