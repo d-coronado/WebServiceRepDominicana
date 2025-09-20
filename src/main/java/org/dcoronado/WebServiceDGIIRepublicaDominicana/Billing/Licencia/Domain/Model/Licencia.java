@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 
 import java.util.UUID;
 
@@ -76,6 +78,17 @@ public class Licencia {
         this.rutaCertificado = rutaCertificado;
         this.nombreCertificado = nombreCertificado;
         this.claveCertificado = claveCertificado;
+    }
+
+    public void validarAccesoProduccion(Ambiente ambienteSolicitado) {
+        if (Ambiente.PRODUCCION.equals(ambienteSolicitado) && !Ambiente.PRODUCCION.getCodigo().equalsIgnoreCase(this.ambiente)) {
+            throw new InvalidArgumentException("LICENCIA NO TIENE ACCESO A ENTORNOS PRODUCTIVOS");
+        }
+    }
+
+    public void validarParametrosCertificadoDigital(){
+        notBlank(this.rutaCertificado, "rutaCertificado required");
+        notBlank(this.claveCertificado, "claveCertificado required");
     }
 
 }
