@@ -1,9 +1,9 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Signing;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Infraestructure;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Signing.Domain.KeyAndCertificate;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.CertificateLoaderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertificate;
 import org.springframework.stereotype.Component;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.KeyStore;
@@ -14,11 +14,12 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 @Component
-public class CertificadoFileAdapter implements CertificadoPort {
+public class FileSystemCertificateLoaderAdapter implements CertificateLoaderPort {
+
     @Override
-    public KeyAndCertificate loadCertificado(String filePath, String password) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableEntryException {
+    public KeyAndCertificate loadCertificate(String certificateIdentifier, String password) throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException, UnrecoverableEntryException {
         KeyStore ks = KeyStore.getInstance("PKCS12");
-        try (FileInputStream fis = new FileInputStream(filePath)) {
+        try (FileInputStream fis = new FileInputStream(certificateIdentifier)) {
             ks.load(fis, password.toCharArray());
         }
 

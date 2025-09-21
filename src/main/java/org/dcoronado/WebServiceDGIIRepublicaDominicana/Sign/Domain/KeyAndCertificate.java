@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Signing.Domain;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;

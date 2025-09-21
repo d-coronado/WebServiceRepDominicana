@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Signing.Domain;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign;
 import oracle.xml.parser.v2.DOMParser;
 import oracle.xml.parser.v2.XMLDocument;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
@@ -28,11 +28,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class XmlSigner {
+public class SignerDgiiUtil {
 
     private static final String METODO_FIRMADO = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256";
 
-    public static DOMSignContext signXml(InputStream archivoXML, KeyStore.PrivateKeyEntry keyEntry) throws InfrastructureException {
+    public static DOMSignContext sign(InputStream archivoXML, KeyStore.PrivateKeyEntry keyEntry) throws InfrastructureException {
         try {
             // Creamos un DOM XMLSignatureFactory
             XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
@@ -85,7 +85,7 @@ public class XmlSigner {
     /**
      * Firma un XML pasando la clave privada y el certificado directamente.
      */
-    public static DOMSignContext signXml(InputStream archivoXML, PrivateKey privateKey, X509Certificate certificate) throws InfrastructureException {
+    public static DOMSignContext sign(InputStream archivoXML, PrivateKey privateKey, X509Certificate certificate) throws InfrastructureException {
         try {
             XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 

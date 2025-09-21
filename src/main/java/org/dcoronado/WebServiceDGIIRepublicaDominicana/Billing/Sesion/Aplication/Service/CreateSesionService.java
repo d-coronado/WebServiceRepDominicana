@@ -7,7 +7,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ObtenerSemillaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ValidarSemillaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Signing.SignXmlUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.SignDocumentUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,7 +17,7 @@ public class CreateSesionService implements CrearSesionUseCase {
     private final GetLicenciaUseCase getLicenciaUseCase;
     private final ObtenerSemillaUseCase obtenerSemillaUseCase;
     private final ValidarSemillaUseCase validarSemillaUseCase;
-    private final SignXmlUseCase signXmlUseCase;
+    private final SignDocumentUseCase signDocumentUseCase;
 
     @Override
     public Sesion crearSesion(Sesion sesion) throws Exception {
@@ -28,7 +28,7 @@ public class CreateSesionService implements CrearSesionUseCase {
         licencia.validarParametrosCertificadoDigital();
 
         String semilla = obtenerSemillaUseCase.obtenerSemilla(sesion.getAmbiente());
-        String semillaFirmada = signXmlUseCase.signXml(semilla,licencia.getRutaCertificado(),licencia.getClaveCertificado());
+        String semillaFirmada = signDocumentUseCase.execute(semilla,licencia.getRutaCertificado(),licencia.getClaveCertificado());
         String result = validarSemillaUseCase.validarSemilla(sesion.getAmbiente(),semillaFirmada);
 
         return null;
