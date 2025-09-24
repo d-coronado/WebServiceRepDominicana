@@ -4,12 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 
 import java.util.UUID;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notNull;
 
 @Getter
 @Setter
@@ -32,7 +32,7 @@ public class Licencia {
     private String nombreBd;
     private String usuarioBd;
     private String passwordBd;
-    private String ambiente;
+    private Ambiente ambiente;
     private Boolean isActive;
 
     public void setUrlConexionBD(String hostBd, String puertoBd) {
@@ -50,6 +50,7 @@ public class Licencia {
         notBlank(this.rnc, "RNC required");
         notBlank(this.razonSocial, "Razon social required");
         notBlank(this.direccionFiscal, "Direccion Fiscal required");
+        notNull(this.ambiente,"Ambiente required");
     }
 
     public void validarDatosConexionBD() {
@@ -78,17 +79,6 @@ public class Licencia {
         this.rutaCertificado = rutaCertificado;
         this.nombreCertificado = nombreCertificado;
         this.claveCertificado = claveCertificado;
-    }
-
-    public void validarAccesoProduccion(Ambiente ambienteSolicitado) {
-        if (Ambiente.PRODUCCION.equals(ambienteSolicitado) && !Ambiente.PRODUCCION.getCodigo().equalsIgnoreCase(this.ambiente)) {
-            throw new InvalidArgumentException("LICENCIA NO TIENE ACCESO A ENTORNOS PRODUCTIVOS");
-        }
-    }
-
-    public void validarParametrosCertificadoDigital(){
-        notBlank(this.rutaCertificado, "rutaCertificado required");
-        notBlank(this.claveCertificado, "claveCertificado required");
     }
 
 }

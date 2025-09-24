@@ -34,7 +34,7 @@ public class LicenciaFactory {
         licencia.setAlias(request.alias());
         licencia.setNombreContacto(request.nombreContacto());
         licencia.setTelefonoContacto(request.telefonoContacto());
-        licencia.setAmbiente(request.ambiente().getCodigo());
+        licencia.setAmbiente(request.ambiente());
     }
 
 }

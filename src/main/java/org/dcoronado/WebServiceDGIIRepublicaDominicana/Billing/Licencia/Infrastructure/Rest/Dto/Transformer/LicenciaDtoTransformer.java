@@ -22,7 +22,7 @@ public class LicenciaDtoTransformer extends DtoTransformer<LicenciaResponseDto, 
             licencia.getAlias(),
             licencia.getNombreContacto(),
             licencia.getTelefonoContacto(),
-            licencia.getAmbiente(),
+            licencia.getAmbiente().getCodigo(),
             licencia.getIsActive()
         );
     }
