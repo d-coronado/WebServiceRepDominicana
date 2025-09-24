@@ -2,7 +2,9 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 
+import java.util.Optional;
+
 public interface GetLicenciaUseCase {
-    Licencia findById(Long id);
-    Licencia finByRnc(String rnc);
+    Optional<Licencia> findById(Long id);
+    Optional<Licencia> finByRnc(String rnc);
 }

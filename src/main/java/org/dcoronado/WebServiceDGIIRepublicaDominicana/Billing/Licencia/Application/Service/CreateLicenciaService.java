@@ -32,7 +32,7 @@ public class CreateLicenciaService implements CreateLicenciaUseCase {
         licencia.validarGeneric();
         licencia.validarDatosConexionBD();
         Optional<Licencia> existingLicencia = licenciaRepositoryPort.findByRnc(licencia.getRnc());
-        if(existingLicencia.isPresent()) throw new AlreadyExistsException("Licencia con RNC " + licencia.getRnc() + " ya existe");
+        existingLicencia.orElseThrow(()-> new AlreadyExistsException("Licencia con RNC " + licencia.getRnc() + "ya existe"));
         DirectorioNode directoryTreeLicencia = buildLicenciaTree(licencia.getRnc());
         fileSystemPort.createDirectory(directoryTreeLicencia);
         databaseManagerPort.setupDatabaseForLicense(licencia);

@@ -53,17 +53,23 @@ public class LicenciaController extends AbstractApi {
     @GetMapping("/{id}")
     public ResponseEntity<CustomResponse> getLicenciaById(@PathVariable("id") final Long id)
     {
-        final Licencia licencia = getLicenciaUseCase.findById(id);
-        LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(licencia);
-        return success(responseDto);
+        return getLicenciaUseCase.findById(id)
+                .map(l -> {
+                    LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(l);
+                    return success(responseDto);
+                })
+                .orElseGet(() -> success("Licencia con id: " + id + " no encontrada"));
     }
 
     @GetMapping("/rnc/{rnc}")
     public ResponseEntity<CustomResponse> getLicenciaByRnc(@PathVariable("rnc") final String rnc)
     {
-        final Licencia licencia = getLicenciaUseCase.finByRnc(rnc);
-        LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(licencia);
-        return success(responseDto);
+        return getLicenciaUseCase.finByRnc(rnc)
+                .map(l -> {
+                    LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(l);
+                    return success(responseDto);
+                })
+                .orElseGet(()->success("Licencia con RNC: " + rnc + " no encontrada"));
     }
 
     @PostMapping("/subir_certificado/{rnc}")
