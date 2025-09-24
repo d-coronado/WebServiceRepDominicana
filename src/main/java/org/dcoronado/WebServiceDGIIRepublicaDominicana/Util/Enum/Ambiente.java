@@ -24,6 +24,15 @@ public enum Ambiente {
                 .orElseThrow(() -> new InvalidArgumentException("Código de ambiente inválido: " + codigo));
     }
 
+    // Para cuando Mappee de Entity->Domain y no lance error si es que encuentra null en la entidad.
+    public static Ambiente fromCodigoOrNull(String codigo) {
+        if (codigo == null) return null;
+        return Arrays.stream(values())
+                .filter(a -> a.codigo.equals(codigo))
+                .findFirst()
+                .orElse(null);
+    }
+
     // Cuando se serializa (Java → JSON)
     @JsonValue
     public String getCodigo() {
