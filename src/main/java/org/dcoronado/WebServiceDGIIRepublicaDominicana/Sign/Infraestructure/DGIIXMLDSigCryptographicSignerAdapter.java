@@ -6,7 +6,6 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertifi
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.SignerDgiiUtil;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class DGIIXMLDSigCryptographicSignerAdapter implements CryptographicSignerPort {
 
@@ -15,7 +14,7 @@ public class DGIIXMLDSigCryptographicSignerAdapter implements CryptographicSigne
         try {
 
             var inputStream = SignerDgiiUtil.stringToInputStream(documentContent);
-            var signContext = SignerDgiiUtil.sign(inputStream, keyAndCertificate.privateKey, keyAndCertificate.certificate);
+            var signContext = SignerDgiiUtil.sign(inputStream, keyAndCertificate.privateKey(), keyAndCertificate.certificate());
 
             return SignerDgiiUtil.convertirStringAXML(signContext);
 

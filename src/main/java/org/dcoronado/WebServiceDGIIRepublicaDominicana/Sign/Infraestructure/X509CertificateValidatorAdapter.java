@@ -12,7 +12,7 @@ public class X509CertificateValidatorAdapter implements CertificateValidatorPort
 
     @Override
     public boolean isValidCertificate(KeyAndCertificate keyAndCertificate) throws CertificateNotYetValidException, CertificateExpiredException {
-        var certificate = keyAndCertificate.certificate;
+        var certificate = keyAndCertificate.certificate();
 
         // Verificar que no haya expirado
         certificate.checkValidity();

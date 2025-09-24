@@ -16,7 +16,7 @@ public class GetSesionActivaService implements GetSesionActivaUseCase {
 
     @Override
     public Optional<Sesion> getSesionActiva(Sesion sesion) {
-        sesion.validar();
+        sesion.validarParametrosGenericos();
         return sesionRepositoryPort.findSesionActiveByRnc(sesion);
     }
 

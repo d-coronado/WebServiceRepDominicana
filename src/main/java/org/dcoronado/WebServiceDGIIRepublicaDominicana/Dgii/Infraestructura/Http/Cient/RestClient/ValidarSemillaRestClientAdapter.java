@@ -1,9 +1,9 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.RestClient;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.Cient.RestClient;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.ValidarSemillaPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Config.DgiiEnviroments;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.DgiiEnviroments;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.http.RestClientUtil;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 import org.springframework.http.MediaType;

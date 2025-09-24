@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Config;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 import org.springframework.stereotype.Component;
