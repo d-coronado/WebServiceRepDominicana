@@ -3,12 +3,14 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestr
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public record SesionResponseDto(
+        Long id,
         String rnc,
         Ambiente ambiente,
-        LocalDateTime expedido,
-        LocalDateTime expira,
+        OffsetDateTime expedido,
+        OffsetDateTime expira,
         String token
 ) {
 }

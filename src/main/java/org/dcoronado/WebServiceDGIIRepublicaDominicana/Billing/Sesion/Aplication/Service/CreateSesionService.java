@@ -1,12 +1,10 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Dto.InfoTokenDgiiDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Dto.LicenciaInfoDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.CrearSesionUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.GetSemillaDgiiProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.LicenciaProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.SignDocumentProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.ValidarSemillaDgiiProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,7 @@ public class CreateSesionService implements CrearSesionUseCase {
     private final LicenciaProviderPort licenciaProviderPort;
     private final GetSemillaDgiiProviderPort getSemillaDgiiProviderPort;
     private final ValidarSemillaDgiiProviderPort validarSemillaDgiiProvider;
+    private final SesionRepositoryPort sesionRepositoryPort;
 
     @Override
     public Sesion crearSesion(Sesion sesion) throws Exception {
@@ -27,8 +26,8 @@ public class CreateSesionService implements CrearSesionUseCase {
         sesion.validarLicenciaRequireForSesion(licenciaInfoDto.pathCertificado(),licenciaInfoDto.claveCertificado());
         String semilla = getSemillaDgiiProviderPort.execute(sesion.getAmbiente());
         String semillaFirmada = signDocumentProviderPort.execute(semilla,licenciaInfoDto.pathCertificado(),licenciaInfoDto.claveCertificado());
-        String result = validarSemillaDgiiProvider.execute(sesion.getAmbiente(),semillaFirmada);
-
-        return null;
+        InfoTokenDgiiDto result = validarSemillaDgiiProvider.execute(sesion.getAmbiente(),semillaFirmada);
+        sesion.setDatosSesion(result.token(),result.fechaExpedido(),result.fechaExpira());
+        return sesionRepositoryPort.save(sesion);
     }
 }

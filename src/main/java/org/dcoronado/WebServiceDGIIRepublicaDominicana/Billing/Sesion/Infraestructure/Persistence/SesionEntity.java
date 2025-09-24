@@ -27,12 +27,18 @@ public class SesionEntity {
     @Column(name = "sesionempresa_ambiente")
     private String ambiente;
 
-    @Column(name = "sesionempresa_token")
+    @Column(name = "sesionempresa_token", columnDefinition = "TEXT")
     private String token;
 
+    /**
+     * Guardado siempre en UTC.
+     */
     @Column(name = "sesionempresa_tokenexpedido")
     private LocalDateTime expedido;
 
+    /**
+     * Guardado siempre en UTC.
+     */
     @Column(name = "sesionempresa_tokenexpira")
     private LocalDateTime expira;
 

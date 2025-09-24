@@ -72,4 +72,10 @@ public class FechaUtil {
         DateTimeFormatter formatoNuevo = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return fecha.format(formatoNuevo);
     }
+
+    public static OffsetDateTime parseUtcStringToOffsetDateTime(final String fechaIso) {
+        return OffsetDateTime.parse(fechaIso)
+                .withOffsetSameInstant(ZoneOffset.UTC);
+    }
+
 }

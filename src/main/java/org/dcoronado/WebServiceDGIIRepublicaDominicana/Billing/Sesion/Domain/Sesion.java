@@ -8,20 +8,23 @@ import lombok.Setter;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notNull;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FechaUtil.parseUtcStringToOffsetDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Sesion {
+
+    private Long id;
     private String rnc;
     private Ambiente ambiente;
-    private LocalDateTime expedido;
-    private LocalDateTime expira;
+    private OffsetDateTime expedido; // SIEMPRE EN UTC
+    private OffsetDateTime expira; // SIEMPRE EN UTC
     private String token;
 
     public void validarParametrosGenericos() {
@@ -38,6 +41,19 @@ public class Sesion {
     public void validarLicenciaRequireForSesion(String pathCertificadoDigital, String claveCertificado) {
         notBlank(pathCertificadoDigital, "Path certificado digital required");
         notBlank(claveCertificado, "Clave certificado required");
+    }
+
+    public void validarDatosObtenidosSesion(String token,String fechaExpedido,String fechaExpira) {
+        notBlank(token, "Token required");
+        notBlank(fechaExpedido, "Fecha expedido required");
+        notBlank(fechaExpira, "Fecha expira required");
+    }
+
+    public void setDatosSesion(String token,String fechaExpedido,String fechaExpira){
+        validarDatosObtenidosSesion(token,fechaExpedido,fechaExpira);
+        this.token = token;
+        this.expedido = parseUtcStringToOffsetDateTime(fechaExpedido);
+        this.expira = parseUtcStringToOffsetDateTime(fechaExpira);
     }
 
 

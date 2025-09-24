@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.ValidarSemillaPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.DgiiEnviroments;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Domain.InfoTokenDgii;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.http.RestClientUtil;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 import org.springframework.http.MediaType;
@@ -18,8 +19,8 @@ public class ValidarSemillaRestClientAdapter implements ValidarSemillaPort {
     private final DgiiEnviroments dgiiEnviroments;
 
     @Override
-    public String validarSemilla(Ambiente ambiente, String xmlSemilla) {
+    public InfoTokenDgii validarSemilla(Ambiente ambiente, String xmlSemilla) {
         String url = dgiiEnviroments.getValidarSemillaUrl(ambiente);
-        return restClientUtil.postFile(url,"xml", "semillaFirmada.xml",xmlSemilla,MediaType.TEXT_XML, String.class);
+        return restClientUtil.postFile(url,"xml", "semillaFirmada.xml",xmlSemilla,MediaType.TEXT_XML, InfoTokenDgii.class);
     }
 }

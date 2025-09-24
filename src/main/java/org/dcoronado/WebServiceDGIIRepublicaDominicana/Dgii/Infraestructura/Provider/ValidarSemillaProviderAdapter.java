@@ -1,8 +1,10 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Provider;
 
 import lombok.RequiredArgsConstructor;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Dto.InfoTokenDgiiDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.ValidarSemillaDgiiProviderPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ValidarSemillaUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Domain.InfoTokenDgii;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,12 @@ public class ValidarSemillaProviderAdapter implements ValidarSemillaDgiiProvider
     private final ValidarSemillaUseCase validarSemillaUseCase;
 
     @Override
-    public String execute(Ambiente ambiente, String documentConten) {
-        return validarSemillaUseCase.validarSemilla(ambiente, documentConten);
+    public InfoTokenDgiiDto execute(Ambiente ambiente, String documentConten) {
+        InfoTokenDgii result = validarSemillaUseCase.validarSemilla(ambiente, documentConten);
+        return new InfoTokenDgiiDto(
+                result.token(),
+                result.expedido(),
+                result.expira()
+        );
     }
 }
