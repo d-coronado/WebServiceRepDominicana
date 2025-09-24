@@ -6,6 +6,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Optional;
 
 @Service
@@ -17,7 +19,8 @@ public class GetSesionActivaService implements GetSesionActivaUseCase {
     @Override
     public Optional<Sesion> getSesionActiva(Sesion sesion) {
         sesion.validarParametrosGenericos();
-        return sesionRepositoryPort.findSesionActiveByRnc(sesion);
+        LocalDateTime ahoraUtc = LocalDateTime.now(ZoneOffset.UTC);
+        return sesionRepositoryPort.findSesionActiveByRnc(sesion,ahoraUtc);
     }
 
 }

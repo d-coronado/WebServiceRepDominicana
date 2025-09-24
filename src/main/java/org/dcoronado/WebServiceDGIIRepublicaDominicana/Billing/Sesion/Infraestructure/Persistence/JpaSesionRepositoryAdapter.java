@@ -5,6 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
@@ -22,7 +23,7 @@ public class JpaSesionRepositoryAdapter implements SesionRepositoryPort {
     }
 
     @Override
-    public Optional<Sesion> findSesionActiveByRnc(Sesion sesion) {
-        return springDataSesionRepository.findSesionActivaByRnc(sesion.getRnc(),sesion.getAmbiente().getCodigo()).map(sesionMapper::toDomain);
+    public Optional<Sesion> findSesionActiveByRnc(Sesion sesion, LocalDateTime ahora) {
+        return springDataSesionRepository.findSesionActivaByRnc(sesion.getRnc(),sesion.getAmbiente().getCodigo(),ahora).map(sesionMapper::toDomain);
     }
 }
