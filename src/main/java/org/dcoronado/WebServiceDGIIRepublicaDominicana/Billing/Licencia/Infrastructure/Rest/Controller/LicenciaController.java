@@ -7,6 +7,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.GetLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UpdateLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UploadCertificadoUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.FirmarDocumentUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Factory.LicenciaFactory;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaRequestDto;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 @Slf4j
 @RestController
@@ -32,6 +35,7 @@ public class LicenciaController extends AbstractApi {
     private final UploadCertificadoUseCase uploadCertificadoUseCase;
     private final LicenciaFactory licenciaFactory;
     private final LicenciaDtoTransformer licenciaDtoTransformer;
+    private final FirmarDocumentUseCase firmarDocumentByLicenciaUseCase;
 
     @PostMapping
     public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request)
@@ -78,7 +82,15 @@ public class LicenciaController extends AbstractApi {
             @RequestParam("nombreArchivo") final String nombreArchivo,
             @RequestParam("contrasenia") final String contrasenia
     ) throws IOException {
-        uploadCertificadoUseCase.execute(rnc,archivo.getBytes(),nombreArchivo,contrasenia);
+        uploadCertificadoUseCase.execute(rnc,archivo.getInputStream(),nombreArchivo,contrasenia);
         return success("Certificado cargado correctamente para la licencia con RNC: " + rnc);
+    }
+
+    @PostMapping("firmar_documento/{rnc}")
+    public ResponseEntity<CustomResponse> signDocument(@Valid @PathVariable("rnc") final String rnc,
+                                                       @RequestParam("archivo") final MultipartFile archivo) throws Exception {
+        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc,archivo.getInputStream());
+        String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
+        return success(documentoBase64);
     }
 }

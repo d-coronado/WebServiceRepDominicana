@@ -5,10 +5,12 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.UploadCertificatePort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Validator.UploadCertficadoValidator;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.PathsDirectory.getRelativaCertificadoLicencia;
 
@@ -20,12 +22,12 @@ public class UploadCertificadoLicenciaService implements UploadCertificadoUseCas
     private final UploadCertificatePort uploadCertificatePort;
 
     @Override
-    public void execute(String rnc, byte[] archivo, String nombreArchivo,String password) {
-        Optional<Licencia> existingLicencia = licenciaRepositoryPort.findByRnc(rnc);
-        if(existingLicencia.isEmpty()) throw new NotFoundException("Licencia con rnc " + rnc + " no encontrada");
+    public void execute(String rnc, InputStream archivo, String nombreArchivo, String password) throws IOException {
+        UploadCertficadoValidator.validar(rnc,nombreArchivo,password,archivo);
+        Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
+                .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
         String rutaRelativaCertificado = getRelativaCertificadoLicencia(rnc,nombreArchivo);
-        String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado,archivo);
-        Licencia licencia = existingLicencia.get();
+        String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado,archivo.readAllBytes());
         licencia.actualizarDatosCertificado(rutaAbsolute,nombreArchivo,password);
         licenciaRepositoryPort.save(licencia);
     }

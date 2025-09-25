@@ -6,13 +6,14 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.CrearSesionUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SignProviderPort;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class CreateSesionService implements CrearSesionUseCase {
 
-    private final SignDocumentProviderPort signDocumentProviderPort;
+    private final SignProviderPort signProviderPort;
     private final LicenciaProviderPort licenciaProviderPort;
     private final GetSemillaDgiiProviderPort getSemillaDgiiProviderPort;
     private final ValidarSemillaDgiiProviderPort validarSemillaDgiiProvider;
@@ -25,7 +26,7 @@ public class CreateSesionService implements CrearSesionUseCase {
         sesion.validarAccesLimitAmbienteLicencia(licenciaInfoDto.limitAccessAmbiente());
         sesion.validarLicenciaRequireForSesion(licenciaInfoDto.pathCertificado(),licenciaInfoDto.claveCertificado());
         String semilla = getSemillaDgiiProviderPort.execute(sesion.getAmbiente());
-        String semillaFirmada = signDocumentProviderPort.execute(semilla,licenciaInfoDto.pathCertificado(),licenciaInfoDto.claveCertificado());
+        String semillaFirmada = signProviderPort.execute(semilla,licenciaInfoDto.pathCertificado(),licenciaInfoDto.claveCertificado());
         InfoTokenDgiiDto result = validarSemillaDgiiProvider.execute(sesion.getAmbiente(),semillaFirmada);
         sesion.setDatosSesion(result.token(),result.fechaExpedido(),result.fechaExpira());
         return sesionRepositoryPort.save(sesion);

@@ -61,6 +61,11 @@ public class Licencia {
         notBlank(this.passwordBd, "passwordBd required");
     }
 
+    public void validarDatosParaFirma(){
+        notBlank(this.rutaCertificado, "rutaCertificado required");
+        notBlank(this.claveCertificado, "claveCertificado social required");
+    }
+
     /* Manejo aca el actualizar datos debido a que es parte de logica de negocio solo actualizar campos que no tienen
     * que ver con el conexiones a BD*/
     public void actualizarDatos(Licencia licencia) {

@@ -1,6 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public interface UploadCertificadoUseCase {
 
@@ -11,5 +12,5 @@ public interface UploadCertificadoUseCase {
      * @param archivo  Contenido del certificado.
      * @param password Contraseña para el certificado
      */
-    void execute(String rnc, byte[] archivo, String nombreArchivo, String password) throws IOException;
+    void execute(String rnc, InputStream archivo, String nombreArchivo, String password) throws IOException;
 }
