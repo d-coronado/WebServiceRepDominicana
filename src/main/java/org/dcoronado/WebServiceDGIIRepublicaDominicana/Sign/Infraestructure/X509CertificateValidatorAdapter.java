@@ -1,6 +1,6 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Infraestructure;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.CertificateValidatorPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.Out.CertificateValidatorPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertificate;
 import org.springframework.stereotype.Component;
 

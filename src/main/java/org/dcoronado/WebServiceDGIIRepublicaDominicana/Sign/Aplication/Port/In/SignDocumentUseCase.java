@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.In;
 
 import java.io.IOException;
 import java.security.KeyStoreException;

@@ -1,8 +1,12 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Service;
 
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.In.SignDocumentUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.Out.CertificateLoaderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.Out.CertificateValidatorPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.Out.CryptographicSignerPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertificate;
 import org.springframework.stereotype.Service;
 

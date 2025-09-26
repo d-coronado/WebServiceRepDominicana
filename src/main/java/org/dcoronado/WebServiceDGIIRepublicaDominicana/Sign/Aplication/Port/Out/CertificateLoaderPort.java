@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.Out;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertificate;
 
