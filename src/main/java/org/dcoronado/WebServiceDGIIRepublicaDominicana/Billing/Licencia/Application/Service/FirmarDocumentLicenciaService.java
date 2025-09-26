@@ -6,7 +6,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Validator.ArchivoValidator;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SignProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignPort;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -18,7 +18,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Asse
 public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final SignProviderPort signProviderPort;
+    private final SignPort signProviderPort;
 
     @Override
     public String firmarDocumentByLicencia(String rnc, String nombreDocumento, byte[] archivo) throws Exception{
