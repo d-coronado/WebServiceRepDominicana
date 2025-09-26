@@ -1,0 +1,41 @@
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestructure;
+
+import lombok.RequiredArgsConstructor;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.CrearSesionUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.GetSesionActivaUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.SesionInfoDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SesionProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class SesionProviderAdapter implements SesionProviderPort {
+
+    private final CrearSesionUseCase crearSesionUseCase;
+    private final GetSesionActivaUseCase getSesionActivaUseCase;
+
+    @Override
+    public SesionInfoDto crear(String rnc, Ambiente ambiente) throws Exception {
+        Sesion sesion = new Sesion();
+        sesion.setRnc(rnc);
+        sesion.setAmbiente(ambiente);
+        Sesion sesionCreada = crearSesionUseCase.crearSesion(sesion);
+        return new SesionInfoDto(
+                sesionCreada.getRnc(),
+                sesionCreada.getToken()
+        );
+    }
+
+    @Override
+    public Optional<SesionInfoDto> obtenerSesionActiva(String rnc, Ambiente ambiente) {
+        Sesion sesion = new Sesion();
+        sesion.setRnc(rnc);
+        sesion.setAmbiente(ambiente);
+        Optional<Sesion> sesionActiva = getSesionActivaUseCase.getSesionActiva(sesion);
+        return sesionActiva.map(s -> new SesionInfoDto(s.getRnc(), s.getToken()));
+    }
+}
