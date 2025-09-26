@@ -24,6 +24,7 @@ public class FirmarDocumentService implements FirmarDocumentUseCase {
     public String firmarDocumentByLicencia(String rnc, String nombreDocumento, byte[] archivo) throws Exception{
         notBlank(rnc,"RNC required");
         ArchivoValidator.validate(nombreDocumento,archivo);
+        ArchivoValidator.validateExtensionXml(nombreDocumento);
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
                 .orElseThrow(() -> new NotFoundException("Licencia con rnc: " + rnc + " not found"));
         licencia.validarDatosParaFirma();
