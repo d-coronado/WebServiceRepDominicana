@@ -20,15 +20,4 @@ public class UploadFileDiscAdapter implements UploadCertificatePort {
         store(pathAbsolute, content);
         return pathAbsolute;
     }
-
-    @Override
-    public byte[] load(String path) {
-        String pathAbsolute = fileSystemProperties.getBasePathByCurrentOS() + path;
-       return readBytes(pathAbsolute);
-    }
-
-    @Override
-    public void delete(String path) {
-        deleteFile(path);
-    }
 }

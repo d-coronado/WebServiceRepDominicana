@@ -15,7 +15,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Asse
 
 @Service
 @RequiredArgsConstructor
-public class FirmarDocumentService implements FirmarDocumentUseCase {
+public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
     private final SignProviderPort signProviderPort;
