@@ -47,7 +47,7 @@ public class LicenciaController extends AbstractApi {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @RequestBody LicenciaRequestDto request){
+    public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @Valid @RequestBody LicenciaRequestDto request){
         Licencia licencia = licenciaFactory.fromDtoForUpdate(id,request);
         Licencia result = updateLicenciaUseCase.updateLicencia(licencia);
         LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result);
@@ -78,18 +78,21 @@ public class LicenciaController extends AbstractApi {
 
     @PostMapping("/subir_certificado/{rnc}")
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(
-            @Valid @PathVariable("rnc") final String rnc,@RequestParam("archivo") final MultipartFile archivo,
-            @RequestParam("nombreArchivo") final String nombreArchivo,
+            @PathVariable("rnc") final String rnc,@RequestParam("archivo") final MultipartFile archivo,
             @RequestParam("contrasenia") final String contrasenia
     ) throws IOException {
-        uploadCertificadoUseCase.execute(rnc,archivo.getInputStream(),nombreArchivo,contrasenia);
+        String nombreArchvio = archivo.getOriginalFilename();
+        byte[] contenido = archivo.getBytes();
+        uploadCertificadoUseCase.execute(rnc,nombreArchvio,contenido,contrasenia);
         return success("Certificado cargado correctamente para la licencia con RNC: " + rnc);
     }
 
     @PostMapping("firmar_documento/{rnc}")
-    public ResponseEntity<CustomResponse> signDocument(@Valid @PathVariable("rnc") final String rnc,
+    public ResponseEntity<CustomResponse> signDocument(@PathVariable("rnc") final String rnc,
                                                        @RequestParam("archivo") final MultipartFile archivo) throws Exception {
-        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc,archivo.getInputStream());
+        String nombreArchvio = archivo.getOriginalFilename();
+        byte[] contenido = archivo.getBytes();
+        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc,nombreArchvio,contenido);
         String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
         return success(documentoBase64);
     }

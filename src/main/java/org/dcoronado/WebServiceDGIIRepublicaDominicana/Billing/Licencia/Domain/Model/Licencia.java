@@ -67,7 +67,7 @@ public class Licencia {
     }
 
     /* Manejo aca el actualizar datos debido a que es parte de logica de negocio solo actualizar campos que no tienen
-    * que ver con el conexiones a BD*/
+       que ver con el setupd de BD */
     public void actualizarDatos(Licencia licencia) {
         this.razonSocial = licencia.getRazonSocial();
         this.direccionFiscal = licencia.getDireccionFiscal();

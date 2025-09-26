@@ -6,9 +6,7 @@ public final class DirectorioTreeBuilder {
 
     private DirectorioTreeBuilder() {}
 
-    /**
-     * Crea la estructura de directorios basada en el RNC, bajo la carpeta raíz ROOT
-     */
+    /* Crea la estructura de directorios basada en el RNC, bajo la carpeta raíz ROOT */
     public static DirectorioNode buildLicenciaTree(String rnc) {
         DirectorioNode root = new DirectorioNode(ROOT);
 
