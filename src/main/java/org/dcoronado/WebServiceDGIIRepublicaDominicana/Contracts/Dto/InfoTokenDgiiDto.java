@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Dto;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 

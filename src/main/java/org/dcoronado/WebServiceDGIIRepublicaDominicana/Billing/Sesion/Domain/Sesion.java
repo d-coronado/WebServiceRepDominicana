@@ -33,20 +33,20 @@ public class Sesion {
     }
 
     public void validarAccesLimitAmbienteLicencia(Ambiente ambienteLicencia) {
-        notNull(ambienteLicencia, "Ambiente required");
+        notNull(ambienteLicencia, "Licencia encontrada no cuenta con un ambiente valido");
         if(this.ambiente == Ambiente.PRODUCCION && !ambienteLicencia.equals(Ambiente.PRODUCCION))
-            throw new InvalidArgumentException("Licencia no cuenta acceso a entornos productivos");
+            throw new InvalidArgumentException("Licencia encontrada no cuenta acceso a entornos productivos");
     }
 
     public void validarLicenciaRequireForSesion(String pathCertificadoDigital, String claveCertificado) {
-        notBlank(pathCertificadoDigital, "Path certificado digital required");
-        notBlank(claveCertificado, "Clave certificado required");
+        notBlank(pathCertificadoDigital, "Licencia encontrada no cuenta con una ruta de certificado valida");
+        notBlank(claveCertificado, "Licencia encontrada no cuenta con una clave de certificado valido");
     }
 
     public void validarDatosObtenidosSesion(String token,String fechaExpedido,String fechaExpira) {
-        notBlank(token, "Token required");
-        notBlank(fechaExpedido, "Fecha expedido required");
-        notBlank(fechaExpira, "Fecha expira required");
+        notBlank(token, "Token obtenedio por Dgii no es valido");
+        notBlank(fechaExpedido, "Fecha de expedido obtenido por DGII no es valido");
+        notBlank(fechaExpira, "Fecha de expiracion obtenido por DGII no es valido");
     }
 
     public void setDatosSesion(String token,String fechaExpedido,String fechaExpira){
