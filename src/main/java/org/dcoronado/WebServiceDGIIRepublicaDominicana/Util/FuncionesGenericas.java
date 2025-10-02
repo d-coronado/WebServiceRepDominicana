@@ -1,12 +1,15 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.OS;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 
 public class FuncionesGenericas {
 
@@ -35,6 +38,13 @@ public class FuncionesGenericas {
         } catch (IOException e) {
             throw new InfrastructureException("Ocurrio un error al leer el file",e);
         }
+    }
+
+    public static void validateArchivo(String nombreDocumento, byte[] archivo) {
+        notBlank(nombreDocumento,"Nombre Documento required");
+        if (!nombreDocumento.matches("[a-zA-Z0-9._-]+"))
+            throw new InvalidArgumentException("Nombre de archivo contiene caracteres inválidos");
+        if (archivo.length == 0) throw new InvalidArgumentException ("Archivo no puede estar vacío");
     }
 
 }

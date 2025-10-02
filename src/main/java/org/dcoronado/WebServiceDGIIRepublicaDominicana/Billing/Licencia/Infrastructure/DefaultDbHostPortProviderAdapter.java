@@ -2,7 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.DatabaseHostPortProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseHostInfo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +12,7 @@ public class DefaultDbHostPortProviderAdapter implements DatabaseHostPortProvide
     private final DatabaseProperties databaseProperties;
 
     @Override
-    public void apply(Licencia licencia) {
-        licencia.setUrlConexionBD(databaseProperties.getHost(), databaseProperties.getPort());
+    public DatabaseHostInfo provide() {
+        return new DatabaseHostInfo(databaseProperties.getHost(), databaseProperties.getPort());
     }
 }

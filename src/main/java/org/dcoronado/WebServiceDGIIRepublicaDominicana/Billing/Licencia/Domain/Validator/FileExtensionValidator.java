@@ -4,17 +4,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.I
 
 import java.util.List;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-
-public class ArchivoValidator {
-
-    /* Solo se aceptaran archivos con extension .xml */
-    public static void validate( String nombreDocumento, byte[] archivo) {
-        notBlank(nombreDocumento,"Nombre Documento required");
-        if (!nombreDocumento.matches("[a-zA-Z0-9._-]+"))
-            throw new InvalidArgumentException("Nombre de archivo contiene caracteres inválidos");
-        if (archivo.length == 0) throw new InvalidArgumentException ("Archivo no puede estar vacío");
-    }
+public class FileExtensionValidator {
 
     /* Solo se aceptaran archivos con extension .xml */
     public static void validateExtensionXml(String nombreDocumento) {
@@ -24,5 +14,16 @@ public class ArchivoValidator {
                 : "";
         if (!extensionesPermitidas.contains(extension))
             throw new InvalidArgumentException("Extensión no permitida, se requiere .xml");
+    }
+
+    /* Solo se aceptarán archivos con extensión .xls o .xlsx */
+    public static void validateExtensionExcel(String nombreDocumento) {
+        List<String> extensionesPermitidas = List.of("xls", "xlsx");
+        String extension = nombreDocumento.contains(".")
+                ? nombreDocumento.substring(nombreDocumento.lastIndexOf('.') + 1).toLowerCase()
+                : "";
+        if (!extensionesPermitidas.contains(extension)) {
+            throw new InvalidArgumentException("Extensión no permitida, se requiere .xls o .xlsx");
+        }
     }
 }

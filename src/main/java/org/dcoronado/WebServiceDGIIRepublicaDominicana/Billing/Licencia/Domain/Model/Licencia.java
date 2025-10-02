@@ -35,10 +35,6 @@ public class Licencia {
     private Ambiente ambiente;
     private Boolean isActive;
 
-    public void setUrlConexionBD(String hostBd, String puertoBd) {
-        this.hostBd = hostBd;
-        this.puertoBd = puertoBd;
-    }
 
     public void setDatosBD() {
         this.nombreBd = "fe_rd_V2_" + this.rnc;
@@ -64,6 +60,10 @@ public class Licencia {
     public void validarDatosParaFirma(){
         notBlank(this.rutaCertificado, "rutaCertificado required");
         notBlank(this.claveCertificado, "claveCertificado social required");
+    }
+
+    public void validarUrlConexionBD() {
+        notBlank(this.urlConexionBd, "urlConexionBd required");
     }
 
     /* Manejo aca el actualizar datos debido a que es parte de logica de negocio solo actualizar campos que no tienen

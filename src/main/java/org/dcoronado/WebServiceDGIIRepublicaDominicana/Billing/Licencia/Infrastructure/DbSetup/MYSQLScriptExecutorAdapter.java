@@ -1,8 +1,8 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.DbSetup;
 
 import lombok.RequiredArgsConstructor;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.ScriptExecutionData;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.ScriptDataBaseExecutorPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.DynamicConnectionManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -19,9 +19,8 @@ public class MYSQLScriptExecutorAdapter implements ScriptDataBaseExecutorPort {
     private final DynamicConnectionManager connectionManager;
 
     @Override
-    public void executeScript(Licencia licencia) {
-
-        JdbcTemplate jdbcTemplate = connectionManager.createJdbcTemplate(licencia.getUrlConexionBd(), licencia.getUsuarioBd(), licencia.getPasswordBd());
+    public void executeScript(ScriptExecutionData data) {
+        JdbcTemplate jdbcTemplate = connectionManager.createJdbcTemplate(data.urlConexionBd(), data.usuarioBd(), data.passwordBd());
 
         String scriptSql = readFileFromResources(NAME_SCRIPT_SQL);
 
@@ -32,5 +31,4 @@ public class MYSQLScriptExecutorAdapter implements ScriptDataBaseExecutorPort {
             }
         }
     }
-
 }

@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.ScriptExecutionData;
 
 public interface ScriptDataBaseExecutorPort {
-    void executeScript(Licencia licencia);
+    void executeScript(ScriptExecutionData data);
 }

@@ -10,33 +10,60 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.N
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 import static java.util.Objects.isNull;
 
+
+/**
+ * Servicio de aplicación encargado de actualizar la información
+ * de una licencia previamente registrada en el sistema.
+ * Solo permite modificar datos de la licencia que no afectan
+ * el proceso de configuración inicial del Setup de BD ni
+ * parámetros críticos definidos por el RNC.
+ */
 @Service
 @RequiredArgsConstructor
 public class UpdateLicenciaService implements UpdateLicenciaUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final ScriptDataBaseExecutorPort scriptExecutorPort;
     private final DirectoryPort fileSystemPort;
 
+
+    /**
+     * Actualiza los datos de una licencia existente.
+     * Este proceso excluye cualquier cambio relacionado con:
+     * - El RNC de la licencia
+     * - El nombre de la base de datos
+     * - El usuario de la base de datos
+     * - La estructura inicial de carpetas asociada al RNC
+     *
+     * @param licencia licencia con los datos a actualizar
+     * @return la licencia actualizada
+     * @throws InvalidArgumentException si la licencia es nula
+     * @throws IllegalArgumentException si la licencia no tiene ID o si se intenta cambiar el RNC
+     * @throws NotFoundException si no existe una licencia con el ID indicado
+     */
     @Override
     public Licencia updateLicencia(Licencia licencia) {
         if (isNull(licencia)) throw new InvalidArgumentException("La licencia no puede ser null");
         if (licencia.getId() == null) throw new IllegalArgumentException("La licencia debe tener un ID para actualizarse");
-        Optional<Licencia> existingLicencia = licenciaRepositoryPort.findById(licencia.getId());
-        if(existingLicencia.isEmpty()) throw new NotFoundException("Licencia con ID " + licencia.getId() + " no encontrada");
-        if(!existingLicencia.get().getRnc().equals(licencia.getRnc())) throw new IllegalArgumentException("No puedes cambiar el rnc, porque sobre el se define" +
-                " el nombre de la bd, el nombre del usuario de bd al momento de su creacion y la creacion de carpetas");
+
+        Licencia licenciaPersistida = licenciaRepositoryPort.findById(licencia.getId())
+                .orElseThrow(() -> new NotFoundException("Licencia con ID " + licencia.getId() + " no encontrada"));
+
+        if (!licenciaPersistida.getRnc().equals(licencia.getRnc())) {
+            throw new IllegalArgumentException(
+                    "No puedes cambiar el RNC, ya que sobre él se definen " +
+                            "el nombre de la base de datos, el usuario de BD y la creación de carpetas."
+            );
+        }
+
         licencia.validarGeneric();
-        existingLicencia.get().actualizarDatos(licencia);
-        existingLicencia.get().validarDatosConexionBD();
-        DirectorioNode arbolDirectory = DirectorioTreeBuilder.buildLicenciaTree(existingLicencia.get().getRnc());
+        licenciaPersistida.actualizarDatos(licencia);
+        licenciaPersistida.validarDatosConexionBD();
+
+        DirectorioNode arbolDirectory = DirectorioTreeBuilder.buildLicenciaTree(licenciaPersistida.getRnc());
         fileSystemPort.createDirectory(arbolDirectory);
-        scriptExecutorPort.executeScript(existingLicencia.get());
-        licenciaRepositoryPort.save(existingLicencia.get());
+        licenciaRepositoryPort.save(licenciaPersistida);
         return licencia;
     }
 

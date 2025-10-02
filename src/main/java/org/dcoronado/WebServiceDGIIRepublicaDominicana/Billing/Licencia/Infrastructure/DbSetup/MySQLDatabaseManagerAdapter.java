@@ -3,7 +3,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.DatabaseManagerPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseSetupData;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +20,13 @@ public class MySQLDatabaseManagerAdapter implements DatabaseManagerPort {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void setupDatabaseForLicense(Licencia licencia) {
-        createDatabase(licencia.getNombreBd());
-        licencia.setUrlConexionBd(String.format("jdbc:mysql://%s:%s/%s", licencia.getHostBd(), licencia.getPuertoBd(), licencia.getNombreBd()));
-        createUser(licencia.getUsuarioBd(), licencia.getPasswordBd(), licencia.getHostBd());
-        grantPrivileges(licencia.getNombreBd(), licencia.getUsuarioBd(), licencia.getHostBd());
-        log.info("Setup completado para licencia con RNC: {}", licencia.getRnc());
+    public String execute(DatabaseSetupData data) {
+        createDatabase(data.nombreBd());
+        createUser(data.usuarioBd(), data.passwordBd(), data.host());
+        grantPrivileges(data.nombreBd(), data.usuarioBd(), data.host());
+        String url = String.format("jdbc:mysql://%s:%s/%s", data.host(), data.puerto(), data.nombreBd());
+        log.info("Setup completado para licencia con RNC: {}", data.rnc());
+        return url;
     }
 
     private void createDatabase(String dbName) {
@@ -46,4 +47,6 @@ public class MySQLDatabaseManagerAdapter implements DatabaseManagerPort {
         jdbcTemplate.execute(SQL_FLUSH_PRIVILEGES);
         log.debug("Privilegios otorgados a usuario {} sobre {} para host: {}", username, dbName, host);
     }
+
+
 }
