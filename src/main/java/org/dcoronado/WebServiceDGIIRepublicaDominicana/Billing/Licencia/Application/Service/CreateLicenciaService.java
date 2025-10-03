@@ -5,7 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseHostInfo;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseSetupData;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.ScriptExecutionData;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DbConnectionInfo;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.AlreadyExistsException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
@@ -85,13 +85,13 @@ public class CreateLicenciaService implements CreateLicenciaUseCase {
         /* Validar que la URL de conexión generada sea válida */
         licencia.validarUrlConexionBD();
 
-        /* Ejecutar script de inicialización */
-        ScriptExecutionData scriptData = new ScriptExecutionData(
+        /* Ejecutar script que crea la BD de la licencia */
+        DbConnectionInfo dbConnectionInfo = new DbConnectionInfo(
                 licencia.getUrlConexionBd(),
                 licencia.getUsuarioBd(),
                 licencia.getPasswordBd()
         );
-        scriptExecutorPort.executeScript(scriptData);
+        scriptExecutorPort.executeScript(dbConnectionInfo);
 
         /* Persistir licencia */
         return licenciaRepositoryPort.save(licencia);
