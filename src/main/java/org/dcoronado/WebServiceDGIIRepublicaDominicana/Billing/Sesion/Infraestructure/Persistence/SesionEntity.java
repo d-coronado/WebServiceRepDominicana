@@ -42,7 +42,7 @@ public class SesionEntity {
     @Column(name = "sesionempresa_tokenexpira")
     private LocalDateTime expira;
 
-    @Column(name = "sesionempresa_fecharegistro" , nullable = false)
+    @Column(name = "sesionempresa_fecharegistro", nullable = false)
     private LocalDateTime fechaRegitro;
 
     @PrePersist

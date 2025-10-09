@@ -41,7 +41,7 @@ public class SesionController extends AbstractApi {
     }
 
     @PostMapping("/obtener_activa")
-    public ResponseEntity<CustomResponse> getSesionActiva(@Valid @RequestBody SesionRequestDto sesionRequestDto){
+    public ResponseEntity<CustomResponse> getSesionActiva(@Valid @RequestBody SesionRequestDto sesionRequestDto) {
         Sesion sesion = sesionFactory.ofDto(sesionRequestDto);
         return getSesionActivaUseCase.getSesionActiva(sesion)
                 .map(s -> {

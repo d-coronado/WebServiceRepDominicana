@@ -24,6 +24,6 @@ public class JpaSesionRepositoryAdapter implements SesionRepositoryPort {
 
     @Override
     public Optional<Sesion> findSesionActiveByRnc(Sesion sesion, LocalDateTime ahora) {
-        return springDataSesionRepository.findSesionActivaByRnc(sesion.getRnc(),sesion.getAmbiente().getCodigo(),ahora).map(sesionMapper::toDomain);
+        return springDataSesionRepository.findSesionActivaByRnc(sesion.getRnc(), sesion.getAmbiente().getCodigo(), ahora).map(sesionMapper::toDomain);
     }
 }

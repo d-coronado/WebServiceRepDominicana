@@ -9,7 +9,7 @@ import java.time.ZoneOffset;
 @Component
 public class SesionMapper {
     public SesionEntity toEntity(Sesion sesion) {
-        if(sesion == null) return null;
+        if (sesion == null) return null;
         SesionEntity sesionEntity = new SesionEntity();
         sesionEntity.setId(sesion.getId());
         sesionEntity.setRnc(sesion.getRnc());
@@ -21,7 +21,7 @@ public class SesionMapper {
     }
 
     public Sesion toDomain(SesionEntity sesionEntity) {
-        if(sesionEntity == null) return null;
+        if (sesionEntity == null) return null;
         Sesion sesion = new Sesion();
         sesion.setId(sesionEntity.getId());
         sesion.setRnc(sesionEntity.getRnc());

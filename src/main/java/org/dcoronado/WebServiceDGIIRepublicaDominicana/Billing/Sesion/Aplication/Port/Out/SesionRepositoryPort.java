@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface SesionRepositoryPort {
     Sesion save(Sesion sesion);
+
     Optional<Sesion> findSesionActiveByRnc(Sesion sesion, LocalDateTime ahora);
 }

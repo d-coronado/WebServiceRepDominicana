@@ -11,9 +11,9 @@ import static java.util.Objects.isNull;
 public class SesionFactory {
 
     public Sesion ofDto(SesionRequestDto request) {
-        if(isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
+        if (isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
         Sesion sesion = new Sesion();
-        this.updateOfDto(request,sesion);
+        this.updateOfDto(request, sesion);
         return sesion;
     }
 

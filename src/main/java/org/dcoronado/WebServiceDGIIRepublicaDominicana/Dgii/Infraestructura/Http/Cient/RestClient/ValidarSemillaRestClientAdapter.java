@@ -21,6 +21,6 @@ public class ValidarSemillaRestClientAdapter implements ValidarSemillaPort {
     @Override
     public InfoTokenDgii validarSemilla(AmbienteEnum ambiente, String xmlSemilla) {
         String url = dgiiEnviroments.getValidarSemillaUrl(ambiente);
-        return restClientUtil.postFile(url,"xml", "semillaFirmada.xml",xmlSemilla,MediaType.TEXT_XML, InfoTokenDgii.class);
+        return restClientUtil.postFile(url, "xml", "semillaFirmada.xml", xmlSemilla, MediaType.TEXT_XML, InfoTokenDgii.class);
     }
 }

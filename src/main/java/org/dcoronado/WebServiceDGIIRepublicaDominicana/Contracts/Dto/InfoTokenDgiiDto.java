@@ -6,5 +6,6 @@ public record InfoTokenDgiiDto(
         @NotBlank String token,
         @NotBlank String fechaExpedido,
         @NotBlank String fechaExpira
-) {}
+) {
+}
 

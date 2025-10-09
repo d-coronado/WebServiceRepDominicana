@@ -5,5 +5,5 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Ses
 import java.util.Optional;
 
 public interface GetSesionActivaUseCase {
-    Optional<Sesion>getSesionActiva(Sesion sesion);
+    Optional<Sesion> getSesionActiva(Sesion sesion);
 }

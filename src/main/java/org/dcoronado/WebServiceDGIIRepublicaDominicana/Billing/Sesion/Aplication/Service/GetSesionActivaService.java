@@ -37,7 +37,7 @@ public class GetSesionActivaService implements GetSesionActivaUseCase {
         LocalDateTime ahoraUtc = LocalDateTime.now(ZoneOffset.UTC);
 
         // Consultar sesión activa en el repositorio
-        return sesionRepositoryPort.findSesionActiveByRnc(sesion,ahoraUtc);
+        return sesionRepositoryPort.findSesionActiveByRnc(sesion, ahoraUtc);
     }
 
 }

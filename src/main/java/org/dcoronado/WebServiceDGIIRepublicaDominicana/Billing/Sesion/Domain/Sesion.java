@@ -34,7 +34,7 @@ public class Sesion {
 
     public void validarAccesLimitAmbienteLicencia(AmbienteEnum ambienteLicencia) {
         notNull(ambienteLicencia, "Licencia encontrada no cuenta con un ambiente valido");
-        if(this.ambiente == AmbienteEnum.PRODUCCION && !ambienteLicencia.equals(AmbienteEnum.PRODUCCION))
+        if (this.ambiente == AmbienteEnum.PRODUCCION && !ambienteLicencia.equals(AmbienteEnum.PRODUCCION))
             throw new InvalidArgumentException("Licencia encontrada no cuenta acceso a entornos productivos");
     }
 
@@ -43,14 +43,14 @@ public class Sesion {
         notBlank(claveCertificado, "Licencia encontrada no cuenta con una clave de certificado valido");
     }
 
-    public void validarDatosObtenidosSesion(String token,String fechaExpedido,String fechaExpira) {
+    public void validarDatosObtenidosSesion(String token, String fechaExpedido, String fechaExpira) {
         notBlank(token, "Token obtenedio por Dgii no es valido");
         notBlank(fechaExpedido, "Fecha de expedido obtenido por DGII no es valido");
         notBlank(fechaExpira, "Fecha de expiracion obtenido por DGII no es valido");
     }
 
-    public void setDatosSesion(String token,String fechaExpedido,String fechaExpira){
-        validarDatosObtenidosSesion(token,fechaExpedido,fechaExpira);
+    public void setDatosSesion(String token, String fechaExpedido, String fechaExpira) {
+        validarDatosObtenidosSesion(token, fechaExpedido, fechaExpira);
         this.token = token;
         this.expedido = parseUtcStringToOffsetDateTime(fechaExpedido);
         this.expira = parseUtcStringToOffsetDateTime(fechaExpira);

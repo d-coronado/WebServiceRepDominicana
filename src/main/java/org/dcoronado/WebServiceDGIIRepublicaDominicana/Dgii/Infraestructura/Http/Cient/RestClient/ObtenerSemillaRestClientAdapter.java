@@ -19,6 +19,6 @@ public class ObtenerSemillaRestClientAdapter implements ObtenerSemillaPort {
     @Override
     public String execute(AmbienteEnum ambiente) {
         String url = dgiiEnviroments.getGenerarSemillaUrl(ambiente);
-        return restClientUtil.get(url,String.class);
+        return restClientUtil.get(url, String.class);
     }
 }

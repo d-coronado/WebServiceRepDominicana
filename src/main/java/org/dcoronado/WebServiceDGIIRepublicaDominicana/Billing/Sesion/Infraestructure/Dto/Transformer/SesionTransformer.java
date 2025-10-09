@@ -13,7 +13,7 @@ public class SesionTransformer extends DtoTransformer<SesionResponseDto, Sesion>
 
     @Override
     public SesionResponseDto fromObject(Sesion sesion) {
-        if(isNull(sesion)) throw new InvalidArgumentException("Licencia no puede ser null");
+        if (isNull(sesion)) throw new InvalidArgumentException("Licencia no puede ser null");
         return new SesionResponseDto(
                 sesion.getId(),
                 sesion.getRnc(),
