@@ -19,7 +19,7 @@ public class StringToValUtil {
         return new BigDecimal(input.trim());
     }
 
-    public static Double toDouble(String input){
+    public static Double toDouble(String input) {
         if (input == null || input.trim().isEmpty()) return null;
         return Double.valueOf(input.trim());
     }

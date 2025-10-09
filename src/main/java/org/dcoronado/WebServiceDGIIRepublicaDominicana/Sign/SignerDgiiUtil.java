@@ -1,4 +1,5 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign;
+
 import oracle.xml.parser.v2.DOMParser;
 import oracle.xml.parser.v2.XMLDocument;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;

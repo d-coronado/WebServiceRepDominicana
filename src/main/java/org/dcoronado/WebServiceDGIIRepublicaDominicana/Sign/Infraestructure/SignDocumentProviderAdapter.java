@@ -13,6 +13,6 @@ public class SignDocumentProviderAdapter implements SignProviderPort {
 
     @Override
     public String execute(String document, String pathCertificado, String claveCertificado) throws Exception {
-        return signDocumentUseCase.execute(document,pathCertificado,claveCertificado);
+        return signDocumentUseCase.execute(document, pathCertificado, claveCertificado);
     }
 }

@@ -52,9 +52,8 @@ public class RestClientUtil {
     }
 
 
-
     public <T> T postFile(String url, String fieldName, String fileName,
-            String content, MediaType mediaType, Class<T> responseType) {
+                          String content, MediaType mediaType, Class<T> responseType) {
 
         ByteArrayResource resource = new ByteArrayResource(content.getBytes()) {
             @Override

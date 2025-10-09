@@ -9,4 +9,5 @@ public record ErrorResponse(
         String message,
         String cause,
         LocalDateTime localDateTime
-) {}
+) {
+}

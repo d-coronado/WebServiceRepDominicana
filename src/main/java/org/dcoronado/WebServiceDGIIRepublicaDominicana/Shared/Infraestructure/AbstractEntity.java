@@ -41,7 +41,7 @@ public abstract class AbstractEntity implements Serializable {
         this.isActive = false;
     }
 
-    public void enable(){
+    public void enable() {
         this.isActive = true;
     }
 

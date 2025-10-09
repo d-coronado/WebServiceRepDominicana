@@ -13,7 +13,7 @@ public class FechaUtil {
 
     private static final String REGEX_VALIDA_FORMATO_FECHA = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$";
 
-    public static boolean tieneFormatoFechaValido (final String fecha) {
+    public static boolean tieneFormatoFechaValido(final String fecha) {
         if (isNull(fecha)) return false;
         Pattern pattern = Pattern.compile(REGEX_VALIDA_FORMATO_FECHA);
         Matcher matcher = pattern.matcher(fecha);

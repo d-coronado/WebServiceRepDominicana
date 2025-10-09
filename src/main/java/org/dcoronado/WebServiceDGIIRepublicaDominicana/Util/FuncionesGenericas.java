@@ -18,11 +18,11 @@ public class FuncionesGenericas {
     private static final int ESCALA_DECIMALES = 2;
     private static final int MAX_ENTEROS = 16;
 
-    private FuncionesGenericas(){
+    private FuncionesGenericas() {
         // Evita instanciacion
     }
 
-    public static String rellenarConCeros(final String texto,final int largo) {
+    public static String rellenarConCeros(final String texto, final int largo) {
         return String.format("%0".concat(String.valueOf(largo)).concat("d"), Integer.parseInt(texto));
     }
 
@@ -41,21 +41,21 @@ public class FuncionesGenericas {
             }
             return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            throw new InfrastructureException("Ocurrio un error al leer el file",e);
+            throw new InfrastructureException("Ocurrio un error al leer el file", e);
         }
     }
 
     public static void validateArchivo(String nombreDocumento, byte[] archivo) {
-        notBlank(nombreDocumento,"Nombre Documento required");
+        notBlank(nombreDocumento, "Nombre Documento required");
         if (!nombreDocumento.matches("[a-zA-Z0-9._-]+"))
             throw new InvalidArgumentException("Nombre de archivo contiene caracteres inválidos");
-        if (archivo.length == 0) throw new InvalidArgumentException ("Archivo no puede estar vacío");
+        if (archivo.length == 0) throw new InvalidArgumentException("Archivo no puede estar vacío");
     }
 
     /**
      * Normaliza el monto a 2 decimales y valida:
-     *  - ≥ 0
-     *  - Máx 16 enteros + 2 decimales
+     * - ≥ 0
+     * - Máx 16 enteros + 2 decimales
      */
     public static BigDecimal validarMonto(BigDecimal monto) {
         // Normalizar siempre a 2 decimales con HALF_UP
@@ -73,7 +73,6 @@ public class FuncionesGenericas {
 
         return normalizado;
     }
-
 
 
 }

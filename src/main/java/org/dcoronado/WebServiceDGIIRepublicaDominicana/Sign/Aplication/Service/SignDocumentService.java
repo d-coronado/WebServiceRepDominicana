@@ -31,7 +31,7 @@ public class SignDocumentService implements SignDocumentUseCase {
         if (!certificateValidatorPort.isValidCertificate(certificate))
             throw new InvalidArgumentException("Certificate is not valid");
 
-        return cryptographicSignerPort.signDocument(documentContent,certificate);
+        return cryptographicSignerPort.signDocument(documentContent, certificate);
 
     }
 

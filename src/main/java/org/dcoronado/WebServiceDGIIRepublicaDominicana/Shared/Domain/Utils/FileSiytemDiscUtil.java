@@ -9,7 +9,8 @@ import java.nio.file.Paths;
 
 public final class FileSiytemDiscUtil {
 
-    private FileSiytemDiscUtil() {}
+    private FileSiytemDiscUtil() {
+    }
 
     public static void store(String path, byte[] content) {
         try {
