@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 import java.util.UUID;
 
@@ -32,7 +32,7 @@ public class Licencia {
     private String nombreBd;
     private String usuarioBd;
     private String passwordBd;
-    private Ambiente ambiente;
+    private AmbienteEnum ambiente;
     private Boolean isActive;
 
 

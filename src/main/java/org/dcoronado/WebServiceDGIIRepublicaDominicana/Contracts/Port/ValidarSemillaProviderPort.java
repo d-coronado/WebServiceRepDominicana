@@ -1,8 +1,8 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.InfoTokenDgiiDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 public interface ValidarSemillaProviderPort {
-    InfoTokenDgiiDto execute(Ambiente ambiente, String documentConten);
+    InfoTokenDgiiDto execute(AmbienteEnum ambiente, String documentConten);
 }

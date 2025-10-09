@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestructure.Persistence;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneOffset;
@@ -25,7 +25,7 @@ public class SesionMapper {
         Sesion sesion = new Sesion();
         sesion.setId(sesionEntity.getId());
         sesion.setRnc(sesionEntity.getRnc());
-        sesion.setAmbiente(Ambiente.fromCodigoOrNull(sesionEntity.getAmbiente()));
+        sesion.setAmbiente(AmbienteEnum.fromCodigoOrNull(sesionEntity.getAmbiente()));
         sesion.setToken(sesionEntity.getToken());
         sesion.setExpedido(sesionEntity.getExpedido().atOffset(ZoneOffset.UTC));  // Recuperamos como LocalDateTime y lo envolvemos como UTC explícito
         sesion.setExpira(sesionEntity.getExpira().atOffset(ZoneOffset.UTC));  // Recuperamos como LocalDateTime y lo envolvemos como UTC explícito

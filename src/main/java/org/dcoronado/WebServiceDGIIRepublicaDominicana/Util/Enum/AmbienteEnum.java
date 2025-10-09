@@ -8,7 +8,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.I
 import java.util.Arrays;
 
 @AllArgsConstructor
-public enum Ambiente {
+public enum AmbienteEnum {
     PRUEBAS("1"),
     CERTIFICACION("2"),
     PRODUCCION("3");
@@ -17,7 +17,7 @@ public enum Ambiente {
 
     // Cuando se deserializa (JSON → Java)
     @JsonCreator
-    public static Ambiente fromCodigo(String codigo) {
+    public static AmbienteEnum fromCodigo(String codigo) {
         return Arrays.stream(values())
                 .filter(a -> a.codigo.equals(codigo))
                 .findFirst()
@@ -25,7 +25,7 @@ public enum Ambiente {
     }
 
     // Para cuando Mappee de Entity->Domain y no lance error si es que encuentra null en la entidad.
-    public static Ambiente fromCodigoOrNull(String codigo) {
+    public static AmbienteEnum fromCodigoOrNull(String codigo) {
         if (codigo == null) return null;
         return Arrays.stream(values())
                 .filter(a -> a.codigo.equals(codigo))

@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Persistence;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
@@ -53,7 +53,7 @@ public class LicenciaMapper {
         model.setNombreBd(entity.getNombreBd());
         model.setUsuarioBd(entity.getUsuarioBd());
         model.setPasswordBd(entity.getPasswordBd());
-        model.setAmbiente(Ambiente.fromCodigoOrNull(entity.getAmbiente()));
+        model.setAmbiente(AmbienteEnum.fromCodigoOrNull(entity.getAmbiente()));
         model.setIsActive(entity.getIsActive());
         return model;
     }

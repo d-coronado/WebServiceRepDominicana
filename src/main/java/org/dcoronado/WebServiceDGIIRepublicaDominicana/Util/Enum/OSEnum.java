@@ -1,5 +1,5 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum;
 
-public enum OS {
+public enum OSEnum {
     WINDOWS, LINUX, MAC, OTHER
 }

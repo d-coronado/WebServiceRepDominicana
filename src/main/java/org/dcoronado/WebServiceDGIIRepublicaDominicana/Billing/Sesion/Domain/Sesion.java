@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 import java.time.OffsetDateTime;
 
@@ -22,7 +22,7 @@ public class Sesion {
 
     private Long id;
     private String rnc;
-    private Ambiente ambiente;
+    private AmbienteEnum ambiente;
     private OffsetDateTime expedido; // SIEMPRE EN UTC
     private OffsetDateTime expira; // SIEMPRE EN UTC
     private String token;
@@ -32,9 +32,9 @@ public class Sesion {
         notBlank(this.ambiente.getCodigo(), "Ambiente required");
     }
 
-    public void validarAccesLimitAmbienteLicencia(Ambiente ambienteLicencia) {
+    public void validarAccesLimitAmbienteLicencia(AmbienteEnum ambienteLicencia) {
         notNull(ambienteLicencia, "Licencia encontrada no cuenta con un ambiente valido");
-        if(this.ambiente == Ambiente.PRODUCCION && !ambienteLicencia.equals(Ambiente.PRODUCCION))
+        if(this.ambiente == AmbienteEnum.PRODUCCION && !ambienteLicencia.equals(AmbienteEnum.PRODUCCION))
             throw new InvalidArgumentException("Licencia encontrada no cuenta acceso a entornos productivos");
     }
 

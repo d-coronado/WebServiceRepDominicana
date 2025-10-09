@@ -2,7 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 public record LicenciaRequestDto(
     @NotBlank String rnc,
@@ -11,6 +11,6 @@ public record LicenciaRequestDto(
     String alias,
     String nombreContacto,
     String telefonoContacto,
-    @NotNull Ambiente ambiente
+    @NotNull AmbienteEnum ambiente
 ){}
 

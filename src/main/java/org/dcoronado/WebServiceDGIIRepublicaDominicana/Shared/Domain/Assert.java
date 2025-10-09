@@ -78,4 +78,13 @@ public final class Assert {
             throw new InvalidArgumentException(message);
         }
     }
+
+    public static <T> boolean esValorValido(T valor, T... permitidos) {
+        if (valor == null) return false;
+        for (T p : permitidos) {
+            if (valor.equals(p)) return true;
+        }
+        return false;
+    }
+
 }

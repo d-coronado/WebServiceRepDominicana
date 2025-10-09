@@ -6,7 +6,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.DgiiEnviroments;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Domain.InfoTokenDgii;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.http.RestClientUtil;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class ValidarSemillaRestClientAdapter implements ValidarSemillaPort {
     private final DgiiEnviroments dgiiEnviroments;
 
     @Override
-    public InfoTokenDgii validarSemilla(Ambiente ambiente, String xmlSemilla) {
+    public InfoTokenDgii validarSemilla(AmbienteEnum ambiente, String xmlSemilla) {
         String url = dgiiEnviroments.getValidarSemillaUrl(ambiente);
         return restClientUtil.postFile(url,"xml", "semillaFirmada.xml",xmlSemilla,MediaType.TEXT_XML, InfoTokenDgii.class);
     }

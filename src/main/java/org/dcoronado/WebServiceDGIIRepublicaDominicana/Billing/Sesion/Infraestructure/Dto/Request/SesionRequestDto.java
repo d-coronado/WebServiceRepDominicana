@@ -2,9 +2,9 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestr
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 public record SesionRequestDto (
          @NotBlank String rnc,
-         @NotNull Ambiente ambiente
+         @NotNull AmbienteEnum ambiente
 ){ }

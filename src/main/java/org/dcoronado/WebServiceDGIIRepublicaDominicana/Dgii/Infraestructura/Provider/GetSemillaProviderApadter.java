@@ -3,7 +3,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Pro
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.GetSemillaProviderPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ObtenerSemillaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,7 +13,7 @@ public class GetSemillaProviderApadter implements GetSemillaProviderPort {
     private final ObtenerSemillaUseCase obtenerSemillaUseCase;
 
     @Override
-    public String execute(Ambiente ambiente) {
+    public String execute(AmbienteEnum ambiente) {
         return obtenerSemillaUseCase.obtenerSemilla(ambiente);
     }
 }

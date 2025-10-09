@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ValidarSemillaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.ValidarSemillaPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Domain.InfoTokenDgii;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,7 @@ public class ValidarSemillaService implements ValidarSemillaUseCase {
     private final ValidarSemillaPort validarSemillaPort;
 
     @Override
-    public InfoTokenDgii validarSemilla(Ambiente ambiente, String xmlSemilla) {
+    public InfoTokenDgii validarSemilla(AmbienteEnum ambiente, String xmlSemilla) {
         return validarSemillaPort.validarSemilla(ambiente, xmlSemilla);
     }
 }

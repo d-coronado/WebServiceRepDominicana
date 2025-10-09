@@ -5,7 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.InfoTokenDg
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.ValidarSemillaProviderPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ValidarSemillaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Domain.InfoTokenDgii;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +15,7 @@ public class ValidarSemillaProviderAdapter implements ValidarSemillaProviderPort
     private final ValidarSemillaUseCase validarSemillaUseCase;
 
     @Override
-    public InfoTokenDgiiDto execute(Ambiente ambiente, String documentConten) {
+    public InfoTokenDgiiDto execute(AmbienteEnum ambiente, String documentConten) {
         InfoTokenDgii result = validarSemillaUseCase.validarSemilla(ambiente, documentConten);
         return new InfoTokenDgiiDto(
                 result.token(),

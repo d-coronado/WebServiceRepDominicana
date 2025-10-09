@@ -6,7 +6,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.SesionInfoDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SesionProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -19,7 +19,7 @@ public class SesionProviderAdapter implements SesionProviderPort {
     private final GetSesionActivaUseCase getSesionActivaUseCase;
 
     @Override
-    public SesionInfoDto crear(String rnc, Ambiente ambiente) throws Exception {
+    public SesionInfoDto crear(String rnc, AmbienteEnum ambiente) throws Exception {
         Sesion sesion = new Sesion();
         sesion.setRnc(rnc);
         sesion.setAmbiente(ambiente);
@@ -31,7 +31,7 @@ public class SesionProviderAdapter implements SesionProviderPort {
     }
 
     @Override
-    public Optional<SesionInfoDto> obtenerSesionActiva(String rnc, Ambiente ambiente) {
+    public Optional<SesionInfoDto> obtenerSesionActiva(String rnc, AmbienteEnum ambiente) {
         Sesion sesion = new Sesion();
         sesion.setRnc(rnc);
         sesion.setAmbiente(ambiente);

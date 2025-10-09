@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.ObtenerSemillaPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http.DgiiEnviroments;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.http.RestClientUtil;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Ambiente;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -17,7 +17,7 @@ public class ObtenerSemillaRestClientAdapter implements ObtenerSemillaPort {
     private final DgiiEnviroments dgiiEnviroments;
 
     @Override
-    public String execute(Ambiente ambiente) {
+    public String execute(AmbienteEnum ambiente) {
         String url = dgiiEnviroments.getGenerarSemillaUrl(ambiente);
         return restClientUtil.get(url,String.class);
     }
