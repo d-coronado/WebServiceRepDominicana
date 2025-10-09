@@ -11,15 +11,15 @@ import static java.util.Objects.isNull;
 public class LicenciaFactory {
 
     public Licencia ofDto(LicenciaRequestDto request) {
-        if(isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
+        if (isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
         Licencia licencia = new Licencia();
-        this.updateOfDto(request,licencia);
+        this.updateOfDto(request, licencia);
         return licencia;
     }
 
     public Licencia fromDtoForUpdate(Long id, LicenciaRequestDto request) {
-        if(isNull(id)) throw new InvalidArgumentException("ID no puede ser null para actualización");
-        if(isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
+        if (isNull(id)) throw new InvalidArgumentException("ID no puede ser null para actualización");
+        if (isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
 
         Licencia licencia = new Licencia();
         licencia.setId(id);

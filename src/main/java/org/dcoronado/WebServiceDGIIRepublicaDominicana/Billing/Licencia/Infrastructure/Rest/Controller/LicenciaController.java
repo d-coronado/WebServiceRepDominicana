@@ -38,25 +38,23 @@ public class LicenciaController extends AbstractApi {
     private final FirmarDocumentUseCase firmarDocumentByLicenciaUseCase;
 
     @PostMapping
-    public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request)
-    {
+    public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request) {
         Licencia licencia = licenciaFactory.ofDto(request); // DTO → Domain
         Licencia result = createLicenciaUseCase.createLicencia(licencia); // Ejecutar caso de uso
         LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result); // Domain → DTO
-        return success(responseDto,"Licencia Creada Exitosamente");
+        return success(responseDto, "Licencia Creada Exitosamente");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @Valid @RequestBody LicenciaRequestDto request){
-        Licencia licencia = licenciaFactory.fromDtoForUpdate(id,request);
+    public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @Valid @RequestBody LicenciaRequestDto request) {
+        Licencia licencia = licenciaFactory.fromDtoForUpdate(id, request);
         Licencia result = updateLicenciaUseCase.updateLicencia(licencia);
         LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result);
-        return success(responseDto,"Licencia Actualizada Exitosamente");
+        return success(responseDto, "Licencia Actualizada Exitosamente");
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomResponse> getLicenciaById(@PathVariable("id") final Long id)
-    {
+    public ResponseEntity<CustomResponse> getLicenciaById(@PathVariable("id") final Long id) {
         return getLicenciaUseCase.findById(id)
                 .map(l -> {
                     LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(l);
@@ -66,24 +64,23 @@ public class LicenciaController extends AbstractApi {
     }
 
     @GetMapping("/rnc/{rnc}")
-    public ResponseEntity<CustomResponse> getLicenciaByRnc(@PathVariable("rnc") final String rnc)
-    {
+    public ResponseEntity<CustomResponse> getLicenciaByRnc(@PathVariable("rnc") final String rnc) {
         return getLicenciaUseCase.finByRnc(rnc)
                 .map(l -> {
                     LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(l);
                     return success(responseDto);
                 })
-                .orElseGet(()->success("Licencia con RNC: " + rnc + " no encontrada"));
+                .orElseGet(() -> success("Licencia con RNC: " + rnc + " no encontrada"));
     }
 
     @PostMapping("/subir_certificado/{rnc}")
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(
-            @PathVariable("rnc") final String rnc,@RequestParam("archivo") final MultipartFile archivo,
+            @PathVariable("rnc") final String rnc, @RequestParam("archivo") final MultipartFile archivo,
             @RequestParam("contrasenia") final String contrasenia
     ) throws IOException {
         String nombreArchvio = archivo.getOriginalFilename();
         byte[] contenido = archivo.getBytes();
-        uploadCertificadoUseCase.execute(rnc,nombreArchvio,contenido,contrasenia);
+        uploadCertificadoUseCase.execute(rnc, nombreArchvio, contenido, contrasenia);
         return success("Certificado cargado correctamente para la licencia con RNC: " + rnc);
     }
 
@@ -92,7 +89,7 @@ public class LicenciaController extends AbstractApi {
                                                        @RequestParam("archivo") final MultipartFile archivo) throws Exception {
         String nombreArchvio = archivo.getOriginalFilename();
         byte[] contenido = archivo.getBytes();
-        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc,nombreArchvio,contenido);
+        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc, nombreArchvio, contenido);
         String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
         return success(documentoBase64);
     }

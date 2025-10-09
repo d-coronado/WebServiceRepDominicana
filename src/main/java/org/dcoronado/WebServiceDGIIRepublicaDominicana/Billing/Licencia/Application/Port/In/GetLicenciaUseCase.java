@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface GetLicenciaUseCase {
     Optional<Licencia> findById(Long id);
+
     Optional<Licencia> finByRnc(String rnc);
 }

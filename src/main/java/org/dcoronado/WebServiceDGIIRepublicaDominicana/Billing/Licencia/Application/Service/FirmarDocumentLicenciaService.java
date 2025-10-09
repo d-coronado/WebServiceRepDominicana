@@ -31,19 +31,19 @@ public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
     /**
      * Firma un documento electrónico asociado a una licencia.
      *
-     * @param rnc identificador único de la licencia
+     * @param rnc             identificador único de la licencia
      * @param nombreDocumento nombre del archivo a firmar
-     * @param archivo contenido binario del archivo
+     * @param archivo         contenido binario del archivo
      * @return documento firmado en formato texto
-     * @throws Exception si ocurre un error durante el proceso de firma
+     * @throws Exception         si ocurre un error durante el proceso de firma
      * @throws NotFoundException si no se encuentra la licencia con el RNC indicado
      */
     @Override
-    public String firmarDocumentByLicencia(String rnc, String nombreDocumento, byte[] archivo) throws Exception{
+    public String firmarDocumentByLicencia(String rnc, String nombreDocumento, byte[] archivo) throws Exception {
 
         // Validar parámetros de entrada
-        notBlank(rnc,"RNC required");
-        validateArchivo(nombreDocumento,archivo);
+        notBlank(rnc, "RNC required");
+        validateArchivo(nombreDocumento, archivo);
         FileExtensionValidator.validateExtensionXml(nombreDocumento);
 
         // Buscar licencia y validar existencia
@@ -57,6 +57,6 @@ public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
         String documentoString = new String(archivo, StandardCharsets.UTF_8);
 
         // Delegar la firma al proveedor externo
-        return signProviderPort.execute(documentoString,licencia.getRutaCertificado(),licencia.getClaveCertificado());
+        return signProviderPort.execute(documentoString, licencia.getRutaCertificado(), licencia.getClaveCertificado());
     }
 }

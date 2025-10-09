@@ -4,4 +4,5 @@ public record DbConnectionInfo(
         String urlConexionBd,
         String usuarioBd,
         String passwordBd
-) {}
+) {
+}

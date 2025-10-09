@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface LicenciaRepositoryPort {
     Licencia save(Licencia licencia);
+
     Optional<Licencia> findById(Long id);
+
     Optional<Licencia> findByRnc(String rnc);
 }

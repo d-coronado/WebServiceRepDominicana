@@ -40,12 +40,13 @@ public class UpdateLicenciaService implements UpdateLicenciaUseCase {
      * @return la licencia actualizada
      * @throws InvalidArgumentException si la licencia es nula
      * @throws IllegalArgumentException si la licencia no tiene ID o si se intenta cambiar el RNC
-     * @throws NotFoundException si no existe una licencia con el ID indicado
+     * @throws NotFoundException        si no existe una licencia con el ID indicado
      */
     @Override
     public Licencia updateLicencia(Licencia licencia) {
         if (isNull(licencia)) throw new InvalidArgumentException("La licencia no puede ser null");
-        if (licencia.getId() == null) throw new IllegalArgumentException("La licencia debe tener un ID para actualizarse");
+        if (licencia.getId() == null)
+            throw new IllegalArgumentException("La licencia debe tener un ID para actualizarse");
 
         Licencia licenciaPersistida = licenciaRepositoryPort.findById(licencia.getId())
                 .orElseThrow(() -> new NotFoundException("Licencia con ID " + licencia.getId() + " no encontrada"));

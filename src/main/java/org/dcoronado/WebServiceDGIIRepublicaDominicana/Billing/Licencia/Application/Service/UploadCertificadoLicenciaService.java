@@ -33,30 +33,30 @@ public class UploadCertificadoLicenciaService implements UploadCertificadoUseCas
     /**
      * Carga un certificado digital y lo asocia a la licencia correspondiente.
      *
-     * @param rnc identificador único de la licencia
+     * @param rnc           identificador único de la licencia
      * @param nombreArchivo nombre del archivo del certificado
-     * @param archivo contenido binario del certificado
-     * @param password contraseña del certificado
-     * @throws IOException si ocurre un error al guardar el archivo
+     * @param archivo       contenido binario del certificado
+     * @param password      contraseña del certificado
+     * @throws IOException       si ocurre un error al guardar el archivo
      * @throws NotFoundException si no se encuentra la licencia con el RNC indicado
      */
     @Override
-    public void execute(String rnc,String nombreArchivo, byte[] archivo, String password) throws IOException {
+    public void execute(String rnc, String nombreArchivo, byte[] archivo, String password) throws IOException {
         // Validar parámetros de entrada
-        notBlank(rnc,"RNC required");
-        notBlank(password,"Password required");
-        validateArchivo(nombreArchivo,archivo);
+        notBlank(rnc, "RNC required");
+        notBlank(password, "Password required");
+        validateArchivo(nombreArchivo, archivo);
 
         // Buscar licencia y validar existencia
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
                 .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
 
         // Buscar licencia y validar existencia
-        String rutaRelativaCertificado = getRelativaCertificadoLicencia(rnc,nombreArchivo);
-        String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado,archivo);
+        String rutaRelativaCertificado = getRelativaCertificadoLicencia(rnc, nombreArchivo);
+        String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado, archivo);
 
         // Actualizar los datos de la licencia con la información del certificado
-        licencia.actualizarDatosCertificado(rutaAbsolute,nombreArchivo,password);
+        licencia.actualizarDatosCertificado(rutaAbsolute, nombreArchivo, password);
         licenciaRepositoryPort.save(licencia);
     }
 }

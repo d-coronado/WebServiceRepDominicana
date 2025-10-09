@@ -13,17 +13,17 @@ public class LicenciaDtoTransformer extends DtoTransformer<LicenciaResponseDto, 
 
     @Override
     public LicenciaResponseDto fromObject(Licencia licencia) {
-        if(isNull(licencia)) throw new InvalidArgumentException("Licencia no puede ser null");
+        if (isNull(licencia)) throw new InvalidArgumentException("Licencia no puede ser null");
         return new LicenciaResponseDto(
-            licencia.getId(),
-            licencia.getRnc(),
-            licencia.getRazonSocial(),
-            licencia.getDireccionFiscal(),
-            licencia.getAlias(),
-            licencia.getNombreContacto(),
-            licencia.getTelefonoContacto(),
-            licencia.getAmbiente().getCodigo(),
-            licencia.getIsActive()
+                licencia.getId(),
+                licencia.getRnc(),
+                licencia.getRazonSocial(),
+                licencia.getDireccionFiscal(),
+                licencia.getAlias(),
+                licencia.getNombreContacto(),
+                licencia.getTelefonoContacto(),
+                licencia.getAmbiente().getCodigo(),
+                licencia.getIsActive()
         );
     }
 }

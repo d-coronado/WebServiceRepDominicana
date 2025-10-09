@@ -46,7 +46,7 @@ public class Licencia {
         notBlank(this.rnc, "RNC required");
         notBlank(this.razonSocial, "Razon social required");
         notBlank(this.direccionFiscal, "Direccion Fiscal required");
-        notNull(this.ambiente,"Ambiente required");
+        notNull(this.ambiente, "Ambiente required");
     }
 
     public void validarDatosConexionBD() {
@@ -57,7 +57,7 @@ public class Licencia {
         notBlank(this.passwordBd, "passwordBd required");
     }
 
-    public void validarDatosParaFirma(){
+    public void validarDatosParaFirma() {
         notBlank(this.rutaCertificado, "rutaCertificado required");
         notBlank(this.claveCertificado, "claveCertificado social required");
     }
@@ -77,7 +77,7 @@ public class Licencia {
         this.ambiente = licencia.getAmbiente();
     }
 
-    public void actualizarDatosCertificado(String rutaCertificado, String nombreCertificado,String claveCertificado) {
+    public void actualizarDatosCertificado(String rutaCertificado, String nombreCertificado, String claveCertificado) {
         notBlank(rutaCertificado, "rutaCertificado required");
         notBlank(nombreCertificado, "nombreCertificado required");
         notBlank(claveCertificado, "claveCertificado required");

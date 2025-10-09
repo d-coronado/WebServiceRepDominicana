@@ -20,12 +20,13 @@ public class FileSystemProperties {
 
     public String getBasePathByCurrentOS() {
         String basePath;
-         switch (getCurrentOS()) {
+        switch (getCurrentOS()) {
             case WINDOWS -> basePath = windows;
             case MAC -> basePath = mac;
             case LINUX -> basePath = linux;
             default -> throw new IllegalStateException("SO no soportado");
-        };
+        }
+        ;
         notBlank(basePath, "Debes definir el basepath para tu SO :" + getCurrentOS().toString());
         return basePath;
     }

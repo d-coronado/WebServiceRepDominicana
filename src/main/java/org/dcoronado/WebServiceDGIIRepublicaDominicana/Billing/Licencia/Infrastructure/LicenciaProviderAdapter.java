@@ -17,7 +17,7 @@ public class LicenciaProviderAdapter implements LicenciaProviderPort {
 
     @Override
     public LicenciaInfoDto getLicenciaInfoByRnc(String rnc) {
-                notBlank(rnc, "Rnc Requerido");
+        notBlank(rnc, "Rnc Requerido");
 
         return getLicenciaUseCase.finByRnc(rnc)
                 .map(licencia -> new LicenciaInfoDto(

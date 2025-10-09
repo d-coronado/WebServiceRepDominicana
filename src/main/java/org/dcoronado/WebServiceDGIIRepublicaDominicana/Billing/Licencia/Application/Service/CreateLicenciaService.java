@@ -38,7 +38,7 @@ public class CreateLicenciaService implements CreateLicenciaUseCase {
      * @param licencia objeto de dominio a crear
      * @return la licencia creada y persistida
      * @throws InvalidArgumentException si la licencia es null
-     * @throws AlreadyExistsException si ya existe una licencia con el mismo RNC
+     * @throws AlreadyExistsException   si ya existe una licencia con el mismo RNC
      */
     @Override
     public Licencia createLicencia(Licencia licencia) {

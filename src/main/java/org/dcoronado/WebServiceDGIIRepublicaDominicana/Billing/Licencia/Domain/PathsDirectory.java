@@ -20,13 +20,14 @@ public final class PathsDirectory {
     public static final String APROBACION_EMISION = "aprobacion_comercial_emision";
     public static final String APROBACION_RECEPCION = "aprobacion_comercial_recepcion";
 
-    private PathsDirectory() {}
+    private PathsDirectory() {
+    }
 
 
     public static String getRelativaCertificadoLicencia(String rnc, String nombreCerficado) {
         notBlank(rnc, "rnc required");
         notBlank(nombreCerficado, "nombreCerficado required");
-        return PathsDirectory.ROOT + "/"+ rnc + "/" + PathsDirectory.CARPETA_CERTIFICADO + "/" + nombreCerficado;
+        return PathsDirectory.ROOT + "/" + rnc + "/" + PathsDirectory.CARPETA_CERTIFICADO + "/" + nombreCerficado;
     }
 
 }

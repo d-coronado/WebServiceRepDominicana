@@ -16,7 +16,7 @@ public class GetLicenciaService implements GetLicenciaUseCase {
 
     @Override
     public Optional<Licencia> findById(Long id) {
-        return  licenciaRepositoryPort.findById(id);
+        return licenciaRepositoryPort.findById(id);
     }
 
     @Override
