@@ -24,7 +24,9 @@ public class LicenciaProviderAdapter implements LicenciaProviderPort {
                         licencia.getRnc(),
                         licencia.getRutaCertificado(),
                         licencia.getClaveCertificado(),
-                        licencia.getAmbiente()
+                        licencia.getAmbiente(),
+                        licencia.getRazonSocial(),
+                        licencia.getDireccionFiscal()
                 ))
                 .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
     }

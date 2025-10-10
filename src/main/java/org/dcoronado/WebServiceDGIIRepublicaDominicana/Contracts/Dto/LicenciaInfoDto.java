@@ -6,6 +6,8 @@ public record LicenciaInfoDto(
         String rnc,
         String pathCertificado,
         String claveCertificado,
-        AmbienteEnum limitAccessAmbiente
+        AmbienteEnum limitAccessAmbiente,
+        String razonSocial,
+        String direccionFiscal
 ) {
 }
