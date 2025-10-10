@@ -11,7 +11,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import java.time.OffsetDateTime;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notNull;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FechaUtil.parseUtcStringToOffsetDateTime;
 
 @Getter
@@ -33,7 +33,7 @@ public class Sesion {
     }
 
     public void validarAccesLimitAmbienteLicencia(AmbienteEnum ambienteLicencia) {
-        notNull(ambienteLicencia, "Licencia encontrada no cuenta con un ambiente valido");
+        required(ambienteLicencia, "Licencia encontrada no cuenta con un ambienteEnum valido");
         if (this.ambiente == AmbienteEnum.PRODUCCION && !ambienteLicencia.equals(AmbienteEnum.PRODUCCION))
             throw new InvalidArgumentException("Licencia encontrada no cuenta acceso a entornos productivos");
     }

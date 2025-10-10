@@ -10,7 +10,7 @@ public class DgiiEnviroments {
         // Evita instanciación
     }
 
-    // Bases por ambiente
+    // Bases por ambienteEnum
     private final String BASE_URL_PRUEBAS = "https://ecf.dgii.gov.do/testecf";
     private final String BASE_URL_CERTIFICACION = "https://ecf.dgii.gov.do/testecf";
     private final String BASE_URL_PRODUCCION = "https://ecf.dgii.gov.do/testecf";

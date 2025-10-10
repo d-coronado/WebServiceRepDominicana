@@ -21,7 +21,7 @@ public enum AmbienteEnum {
         return Arrays.stream(values())
                 .filter(a -> a.codigo.equals(codigo))
                 .findFirst()
-                .orElseThrow(() -> new InvalidArgumentException("Código de ambiente inválido: " + codigo));
+                .orElseThrow(() -> new InvalidArgumentException("Código de ambienteEnum inválido: " + codigo));
     }
 
     // Para cuando Mappee de Entity->Domain y no lance error si es que encuentra null en la entidad.

@@ -9,7 +9,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import java.util.UUID;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notNull;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
 
 @Getter
 @Setter
@@ -46,7 +46,7 @@ public class Licencia {
         notBlank(this.rnc, "RNC required");
         notBlank(this.razonSocial, "Razon social required");
         notBlank(this.direccionFiscal, "Direccion Fiscal required");
-        notNull(this.ambiente, "Ambiente required");
+        required(this.ambiente, "Ambiente required");
     }
 
     public void validarDatosConexionBD() {

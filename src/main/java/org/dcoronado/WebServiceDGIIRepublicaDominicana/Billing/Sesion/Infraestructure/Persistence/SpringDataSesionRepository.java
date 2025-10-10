@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface SpringDataSesionRepository extends JpaRepository<SesionEntity, Long> {
 
-    String FIND_SESION_ACTIVA = "SELECT s.* FROM sesionempresa s WHERE s.sesionempresa_rnc = :rnc AND s.sesionempresa_ambiente = :ambiente AND s.sesionempresa_tokenexpira > :ahora ORDER BY s.sesionempresa_tokenexpedido DESC LIMIT 1";
+    String FIND_SESION_ACTIVA = "SELECT s.* FROM sesionempresa s WHERE s.sesionempresa_rnc = :rnc AND s.sesionempresa_ambiente = :ambienteEnum AND s.sesionempresa_tokenexpira > :ahora ORDER BY s.sesionempresa_tokenexpedido DESC LIMIT 1";
 
     @Query(value = FIND_SESION_ACTIVA, nativeQuery = true)
-    Optional<SesionEntity> findSesionActivaByRnc(@Param("rnc") String rnc, @Param("ambiente") String ambiente, @Param("ahora") LocalDateTime ahora);
+    Optional<SesionEntity> findSesionActivaByRnc(@Param("rnc") String rnc, @Param("ambienteEnum") String ambiente, @Param("ahora") LocalDateTime ahora);
 }

@@ -16,7 +16,6 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Asse
 public class FuncionesGenericas {
 
     private static final int ESCALA_DECIMALES = 2;
-    private static final int MAX_ENTEROS = 16;
 
     private FuncionesGenericas() {
         // Evita instanciacion
@@ -53,25 +52,28 @@ public class FuncionesGenericas {
     }
 
     /**
-     * Normaliza el monto a 2 decimales y valida:
-     * - ≥ 0
-     * - Máx 16 enteros + 2 decimales
+     *  Normaliza el monto a 2 decimales con HALF_UP.
+     * No valida, solo formatea.
      */
-    public static BigDecimal validarMonto(BigDecimal monto) {
-        // Normalizar siempre a 2 decimales con HALF_UP
-        BigDecimal normalizado = monto.setScale(ESCALA_DECIMALES, RoundingMode.HALF_UP);
+    public static BigDecimal normalizarMonto(BigDecimal monto) {
+        if (monto == null)
+            throw new InvalidArgumentException("El monto no puede ser nulo");
 
-        if (normalizado.compareTo(BigDecimal.ZERO) < 0)
+        return monto.setScale(ESCALA_DECIMALES, RoundingMode.HALF_UP);
+    }
+
+    /**
+     *  Valida que el monto cumpla las reglas:
+     * - ≥ 0
+     * - Máximo 16 enteros + 2 decimales
+     */
+    public static void validarMontoPositivo(BigDecimal monto) {
+        if (monto == null)
+            throw new InvalidArgumentException("El monto no puede ser nulo");
+
+        if (monto.compareTo(BigDecimal.ZERO) < 0)
             throw new InvalidArgumentException("El monto debe ser positivo o cero");
 
-        int enteros = normalizado.precision() - normalizado.scale();
-        if (enteros > MAX_ENTEROS) {
-            throw new InvalidArgumentException(
-                    "El monto excede el límite de " + MAX_ENTEROS + " enteros"
-            );
-        }
-
-        return normalizado;
     }
 
 

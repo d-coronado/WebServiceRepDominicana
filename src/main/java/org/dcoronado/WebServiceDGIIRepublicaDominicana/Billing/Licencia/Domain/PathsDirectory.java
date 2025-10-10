@@ -14,7 +14,7 @@ public final class PathsDirectory {
     public static final String AMBIENTE_CERTIFICACION = "certificacion";
     public static final String AMBIENTE_PRODUCCION = "produccion";
 
-    /* Subcarpetas de cada ambiente */
+    /* Subcarpetas de cada ambienteEnum */
     public static final String COMPROBANTES_EMISION = "comprobantes_emision";
     public static final String COMPROBANTES_RECEPCION = "comprobantes_recepcion";
     public static final String APROBACION_EMISION = "aprobacion_comercial_emision";

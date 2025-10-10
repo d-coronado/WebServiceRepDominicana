@@ -11,13 +11,39 @@ import static java.util.Objects.isNull;
 
 public class FechaUtil {
 
-    private static final String REGEX_VALIDA_FORMATO_FECHA = "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$";
+    private static final String FORMATO_FECHA = "dd-MM-yyyy";
+    private static final Pattern REGEX_FECHA = Pattern.compile(
+            "^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\\d{4})$"
+    );
 
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+
+    /**
+     * Verifica si la fecha tiene formato correcto dd-MM-yyyy.
+     * Retorna true si es válida, false si no.
+     */
     public static boolean tieneFormatoFechaValido(final String fecha) {
         if (isNull(fecha)) return false;
-        Pattern pattern = Pattern.compile(REGEX_VALIDA_FORMATO_FECHA);
-        Matcher matcher = pattern.matcher(fecha);
-        return matcher.matches();
+        return REGEX_FECHA.matcher(fecha).matches();
+    }
+
+
+    public static boolean isBefore(String fecha1, String fecha2) {
+        LocalDate f1 = LocalDate.parse(fecha1, FORMATTER);
+        LocalDate f2 = LocalDate.parse(fecha2, FORMATTER);
+        return f1.isBefore(f2);
+    }
+
+    public static boolean isAfter(String fecha1, String fecha2) {
+        LocalDate f1 = LocalDate.parse(fecha1, FORMATTER);
+        LocalDate f2 = LocalDate.parse(fecha2, FORMATTER);
+        return f1.isAfter(f2);
+    }
+
+    public static boolean isEqual(String fecha1, String fecha2) {
+        LocalDate f1 = LocalDate.parse(fecha1, FORMATTER);
+        LocalDate f2 = LocalDate.parse(fecha2, FORMATTER);
+        return f1.isEqual(f2);
     }
 
     public static LocalDate toDate(final String fechaString) {

@@ -13,7 +13,7 @@ public final class Assert {
         }
     }
 
-    public static void notNull(Object value, String message) {
+    public static void required(Object value, String message) {
         if (value == null) {
             throw new MissingParameterException(message);
         }
@@ -79,8 +79,12 @@ public final class Assert {
         }
     }
 
+    /**
+     * Retorna true si el valor está en la lista de valores permitidos.
+     * Puede usarse de forma independiente.
+     */
     public static <T> boolean esValorValido(T valor, T... permitidos) {
-        if (valor == null) return false;
+        if (valor == null || permitidos == null) return false;
         for (T p : permitidos) {
             if (valor.equals(p)) return true;
         }

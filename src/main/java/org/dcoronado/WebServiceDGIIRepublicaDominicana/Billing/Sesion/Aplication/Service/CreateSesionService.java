@@ -30,7 +30,7 @@ public class CreateSesionService implements CrearSesionUseCase {
 
 
     /**
-     * Crea una nueva sesión para el ambiente indicado.
+     * Crea una nueva sesión para el ambienteEnum indicado.
      * Valida los parámetros, la licencia y genera la semilla firmada para DGII.
      *
      * @param sesion objeto de dominio que contiene los datos de la sesión a crear
