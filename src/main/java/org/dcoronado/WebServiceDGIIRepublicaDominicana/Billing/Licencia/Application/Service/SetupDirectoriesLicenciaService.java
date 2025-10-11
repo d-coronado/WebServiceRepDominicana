@@ -6,7 +6,6 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.SetupDirectoriesPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.SetupStatusEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class SetupDirectoriesLicenciaService implements SetupDirectoriesLicencia
 
     @Override
     public void execute(String rnc) {
-        notBlank(rnc,"rnc required");
+        notBlank(rnc, "rnc required");
 
         // Busca la licencia
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)

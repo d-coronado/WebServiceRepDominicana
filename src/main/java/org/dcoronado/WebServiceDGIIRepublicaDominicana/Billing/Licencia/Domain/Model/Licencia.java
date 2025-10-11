@@ -76,8 +76,8 @@ public class Licencia {
      * No incluye datos técnicos como RNC o configuración de BD.
      */
     public void actualizarDatos(String razonSocial, String direccionFiscal,
-                                         String alias, String nombreContacto,
-                                         String telefonoContacto, AmbienteEnum ambiente) {
+                                String alias, String nombreContacto,
+                                String telefonoContacto, AmbienteEnum ambiente) {
         this.razonSocial = razonSocial;
         this.direccionFiscal = direccionFiscal;
         this.alias = alias;
@@ -90,7 +90,7 @@ public class Licencia {
      * Actualiza la información del certificado digital.
      */
     public void actualizarDatosCertificado(String rutaCertificado, String nombreCertificado,
-                                      String claveCertificado) {
+                                           String claveCertificado) {
         notBlank(rutaCertificado, "rutaCertificado required");
         notBlank(nombreCertificado, "nombreCertificado required");
         notBlank(claveCertificado, "claveCertificado required");

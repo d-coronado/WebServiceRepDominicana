@@ -28,7 +28,7 @@ public class SetupDataBaseLicenciaService implements SetupDatabaseLicenciaUseCas
     @Override
     public void execute(String rnc) {
 
-        notBlank(rnc,"rnc required");
+        notBlank(rnc, "rnc required");
 
         // Busca la licencia
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
