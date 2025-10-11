@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.File;
 
 import lombok.RequiredArgsConstructor;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.DirectoryPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.SetupDirectoriesPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 
 @Component
 @RequiredArgsConstructor
-public class ArbolDirectoryDiscAdapter implements DirectoryPort {
+public class ArbolDirectoryDiscAdapter implements SetupDirectoriesPort {
 
     private final FileSystemProperties fileSystemProperties;
 

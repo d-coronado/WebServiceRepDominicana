@@ -3,11 +3,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.CreateLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.GetLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UpdateLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UploadCertificadoUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.FirmarDocumentUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Factory.LicenciaFactory;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaRequestDto;
@@ -33,9 +29,11 @@ public class LicenciaController extends AbstractApi {
     private final UpdateLicenciaUseCase updateLicenciaUseCase;
     private final GetLicenciaUseCase getLicenciaUseCase;
     private final UploadCertificadoUseCase uploadCertificadoUseCase;
+    private final FirmarDocumentUseCase firmarDocumentByLicenciaUseCase;
+    private final SetupDatabaseLicenciaUseCase setupDatabaseLicenciaUseCase;
+    private final SetupDirectoriesLicenciaUseCase setupDirectoriesLicenciaUseCase;
     private final LicenciaFactory licenciaFactory;
     private final LicenciaDtoTransformer licenciaDtoTransformer;
-    private final FirmarDocumentUseCase firmarDocumentByLicenciaUseCase;
 
     @PostMapping
     public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request) {
@@ -73,6 +71,22 @@ public class LicenciaController extends AbstractApi {
                 .orElseGet(() -> success("Licencia con RNC: " + rnc + " no encontrada"));
     }
 
+    /**
+     * Setup de base de datos (solo una vez)
+     */
+    @PostMapping("/{rnc}/setup-database")
+    public ResponseEntity<CustomResponse> setupDatabase(@PathVariable String rnc) {
+        setupDatabaseLicenciaUseCase.execute(rnc);
+        return success("Setup database creado correctamente");
+    }
+
+
+    @PostMapping("/{rnc}/setup-directories")
+    public ResponseEntity<CustomResponse> setupDirectories(@PathVariable String rnc) {
+        setupDirectoriesLicenciaUseCase.execute(rnc);
+        return success("Setup directories creado correctamente");
+    }
+
     @PostMapping("/subir_certificado/{rnc}")
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(
             @PathVariable("rnc") final String rnc, @RequestParam("archivo") final MultipartFile archivo,
@@ -93,4 +107,5 @@ public class LicenciaController extends AbstractApi {
         String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
         return success(documentoBase64);
     }
+
 }

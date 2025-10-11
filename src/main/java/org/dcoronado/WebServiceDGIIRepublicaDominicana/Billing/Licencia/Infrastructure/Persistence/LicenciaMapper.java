@@ -8,54 +8,62 @@ import static java.util.Objects.isNull;
 
 @Component
 public class LicenciaMapper {
+
     public LicenciaEntity toEntity(Licencia model) {
         if (model == null) return null;
 
-        LicenciaEntity entity = new LicenciaEntity();
-        entity.setId(model.getId()); // En creación puede ser null
-        entity.setRnc(model.getRnc());
-        entity.setRazonSocial(model.getRazonSocial());
-        entity.setDireccionFiscal(model.getDireccionFiscal());
-        entity.setAlias(model.getAlias());
-        entity.setNombreContacto(model.getNombreContacto());
-        entity.setTelefonoContacto(model.getTelefonoContacto());
-        entity.setRutaCertificado(model.getRutaCertificado());
-        entity.setNombreCertificado(model.getNombreCertificado());
-        entity.setClaveCertificado(model.getClaveCertificado());
-        entity.setHostBd(model.getHostBd());
-        entity.setPuertoBd(model.getPuertoBd());
-        entity.setUrlConexionBd(model.getUrlConexionBd());
-        entity.setNombreBd(model.getNombreBd());
-        entity.setUsuarioBd(model.getUsuarioBd());
-        entity.setPasswordBd(model.getPasswordBd());
-        entity.setAmbiente(model.getAmbiente().getCodigo());
-        entity.setIsActive(model.getIsActive());
-        return entity;
+        return LicenciaEntity.builder()
+                .id(model.getId()) // puede ser null en creación
+                .rnc(model.getRnc())
+                .razonSocial(model.getRazonSocial())
+                .direccionFiscal(model.getDireccionFiscal())
+                .alias(model.getAlias())
+                .nombreContacto(model.getNombreContacto())
+                .telefonoContacto(model.getTelefonoContacto())
+                .rutaCertificado(model.getRutaCertificado())
+                .nombreCertificado(model.getNombreCertificado())
+                .claveCertificado(model.getClaveCertificado())
+                .hostBd(model.getHostBd())
+                .puertoBd(model.getPuertoBd())
+                .urlConexionBd(model.getUrlConexionBd())
+                .nombreBd(model.getNombreBd())
+                .usuarioBd(model.getUsuarioBd())
+                .passwordBd(model.getPasswordBd())
+                .ambiente(model.getAmbiente())
+                .databaseSetupStatus(model.getDatabaseSetupStatus())
+                .databaseSetupAt(model.getDatabaseSetupAt())
+                .directoriesSetupStatus(model.getDirectoriesSetupStatus())
+                .directoriesSetupAt(model.getDirectoriesSetupAt())
+                .isActive(model.getIsActive())
+                .build();
     }
 
     public Licencia toDomain(LicenciaEntity entity) {
         if (isNull(entity)) return null;
 
-        Licencia model = new Licencia();
-        model.setId(entity.getId());
-        model.setRnc(entity.getRnc());
-        model.setRazonSocial(entity.getRazonSocial());
-        model.setDireccionFiscal(entity.getDireccionFiscal());
-        model.setAlias(entity.getAlias());
-        model.setNombreContacto(entity.getNombreContacto());
-        model.setTelefonoContacto(entity.getTelefonoContacto());
-        model.setRutaCertificado(entity.getRutaCertificado());
-        model.setNombreCertificado(entity.getNombreCertificado());
-        model.setClaveCertificado(entity.getClaveCertificado());
-        model.setHostBd(entity.getHostBd());
-        model.setPuertoBd(entity.getPuertoBd());
-        model.setUrlConexionBd(entity.getUrlConexionBd());
-        model.setNombreBd(entity.getNombreBd());
-        model.setUsuarioBd(entity.getUsuarioBd());
-        model.setPasswordBd(entity.getPasswordBd());
-        model.setAmbiente(AmbienteEnum.fromCodigoOrNull(entity.getAmbiente()));
-        model.setIsActive(entity.getIsActive());
-        return model;
+        return Licencia.builder()
+                .id(entity.getId())
+                .rnc(entity.getRnc())
+                .razonSocial(entity.getRazonSocial())
+                .direccionFiscal(entity.getDireccionFiscal())
+                .alias(entity.getAlias())
+                .nombreContacto(entity.getNombreContacto())
+                .telefonoContacto(entity.getTelefonoContacto())
+                .rutaCertificado(entity.getRutaCertificado())
+                .nombreCertificado(entity.getNombreCertificado())
+                .claveCertificado(entity.getClaveCertificado())
+                .hostBd(entity.getHostBd())
+                .puertoBd(entity.getPuertoBd())
+                .urlConexionBd(entity.getUrlConexionBd())
+                .nombreBd(entity.getNombreBd())
+                .usuarioBd(entity.getUsuarioBd())
+                .passwordBd(entity.getPasswordBd())
+                .ambiente(entity.getAmbiente())
+                .databaseSetupAt(entity.getDatabaseSetupAt())
+                .databaseSetupStatus(entity.getDatabaseSetupStatus())
+                .directoriesSetupAt(entity.getDirectoriesSetupAt())
+                .directoriesSetupStatus(entity.getDirectoriesSetupStatus())
+                .isActive(entity.getIsActive())
+                .build();
     }
-
 }

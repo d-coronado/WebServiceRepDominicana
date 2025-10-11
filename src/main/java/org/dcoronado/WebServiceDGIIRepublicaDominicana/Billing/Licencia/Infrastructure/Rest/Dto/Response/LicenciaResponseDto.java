@@ -1,5 +1,10 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Response;
 
+import lombok.Builder;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.SetupStatusEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+
+@Builder
 public record LicenciaResponseDto(
         Long id,
         String rncEmpresa,
@@ -8,7 +13,9 @@ public record LicenciaResponseDto(
         String alias,
         String nombreContacto,
         String telefonoContacto,
-        String ambiente,
+        AmbienteEnum ambiente,
+        SetupStatusEnum setupBdStatus,
+        SetupStatusEnum setupDirectoriesStatus,
         Boolean isActive
 ) {
 }

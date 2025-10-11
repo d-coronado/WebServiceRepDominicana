@@ -25,8 +25,6 @@ public record Comprobante(
     public Comprobante {
 
         required(ambienteEnum, "ambienteEnum required");
-        if (isNull(AmbienteEnum.fromCodigoOrNull(ambienteEnum.getCodigo())))
-            throw new InvalidArgumentException("Ambiente inválido: " + ambienteEnum);
 
         required(tipoComprobanteTributarioEnum, "Tipo de comprobante required");
         if (isNull(TipoComprobanteTributarioEnum.fromValorOrNull(tipoComprobanteTributarioEnum.getValor()))) {

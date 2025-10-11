@@ -2,6 +2,6 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
 
-public interface DirectoryPort {
+public interface SetupDirectoriesPort {
     void createDirectory(DirectorioNode estructura);
 }

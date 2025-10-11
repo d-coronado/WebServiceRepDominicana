@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 import java.time.LocalDateTime;
 
@@ -24,8 +25,9 @@ public class SesionEntity {
     @Column(name = "sesionempresa_rnc")
     private String rnc;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "sesionempresa_ambiente")
-    private String ambiente;
+    private AmbienteEnum ambiente;
 
     @Column(name = "sesionempresa_token", columnDefinition = "TEXT")
     private String token;

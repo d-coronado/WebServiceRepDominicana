@@ -29,7 +29,7 @@ public class Sesion {
 
     public void validarParametrosGenericos() {
         notBlank(this.rnc, "RNC required");
-        notBlank(this.ambiente.getCodigo(), "Ambiente required");
+        required(this.ambiente, "Ambiente required");
     }
 
     public void validarAccesLimitAmbienteLicencia(AmbienteEnum ambienteLicencia) {

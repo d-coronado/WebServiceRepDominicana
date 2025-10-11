@@ -5,6 +5,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.UploadCertificatePort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.SetupStatusEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +53,16 @@ public class UploadCertificadoLicenciaService implements UploadCertificadoUseCas
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
                 .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
 
-        // Buscar licencia y validar existencia
+
+        // Si no tiene el directorio creado no se va a poder guardar el certificado
+        if (!licencia.tieneSetupDirectoriosCompletado()) {
+            throw new InvalidArgumentException(
+                    "No se puede subir la licencia porque la creación de directorios aún está pendiente. " +
+                            "Estado actual: %s".formatted(licencia.getDirectoriesSetupStatus())
+            );
+        }
+
+
         String rutaRelativaCertificado = getRelativaCertificadoLicencia(rnc, nombreArchivo);
         String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado, archivo);
 

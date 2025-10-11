@@ -1,10 +1,9 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Persistence;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.SetupStatusEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class LicenciaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,11 +72,26 @@ public class LicenciaEntity {
     @Column(name = "password_bd")
     private String passwordBd;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ambiente")
-    private String ambiente;
+    private AmbienteEnum ambiente;
 
     @Column(name = "is_active")
     private Boolean isActive;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "database_setup_status")
+    private SetupStatusEnum databaseSetupStatus;
+
+    @Column(name = "database_setup_at")
+    private LocalDateTime databaseSetupAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "directories_setup_status")
+    private SetupStatusEnum directoriesSetupStatus;
+
+    @Column(name = "directories_setup_at")
+    private LocalDateTime directoriesSetupAt;
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
@@ -86,12 +101,15 @@ public class LicenciaEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+
     @PrePersist
     public void prePersist() {
         if (uuid == null) {
             uuid = UUID.randomUUID();
         }
         isActive = true;
+        databaseSetupStatus = SetupStatusEnum.PENDING;
+        directoriesSetupStatus = SetupStatusEnum.PENDING;
     }
 
 }
