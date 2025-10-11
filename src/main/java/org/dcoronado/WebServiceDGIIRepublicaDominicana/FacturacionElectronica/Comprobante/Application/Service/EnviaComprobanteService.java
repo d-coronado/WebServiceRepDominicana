@@ -12,7 +12,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Service.ComprobanteValidatorFactory.getValidator;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Validator.ComprobanteValidatorFactory.getValidator;
 
 @Service
 @RequiredArgsConstructor
