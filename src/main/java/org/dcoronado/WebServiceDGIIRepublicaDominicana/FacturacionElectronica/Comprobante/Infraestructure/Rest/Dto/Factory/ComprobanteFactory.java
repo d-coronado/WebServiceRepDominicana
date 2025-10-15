@@ -181,7 +181,11 @@ public class ComprobanteFactory {
     }
 
     private List<FormaPago> mapFormasPago(List<FormaPagoRequestDto> lista) {
-        return !isNull(lista) ? lista.stream().map(this::mapFormaPago).collect(Collectors.toList()) : null;
+        if (lista == null || lista.isEmpty()) return null;
+
+        return lista.stream()
+                .map(this::mapFormaPago)
+                .collect(Collectors.toList());
     }
 
     private FormaPago mapFormaPago(FormaPagoRequestDto request) {
@@ -193,6 +197,7 @@ public class ComprobanteFactory {
     }
 
     private List<TotalesEncabezado.ImpuestoAdicional> mapImpuestosAdicionales(List<ImpuestoAdicionalRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapItemAdicional).collect(Collectors.toList());
     }
 
@@ -208,6 +213,7 @@ public class ComprobanteFactory {
     }
 
     private List<OtraMonedaEncabezado.ImpuestoAdicionalOtraMoneda> mapImpuestosAdicionalesOtraMoneda(List<ImpuestoAdicionalRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapImpuestosAdicionalesOtraMoneda).collect(Collectors.toList());
     }
 
@@ -225,6 +231,7 @@ public class ComprobanteFactory {
     /* Builder de items */
 
     private List<Item> mapItems(List<DetalleGenericoRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapItem).collect(Collectors.toList());
     }
 
@@ -259,6 +266,7 @@ public class ComprobanteFactory {
     }
 
     private List<CodigoItem> mapCodificacionesItem(List<CodificacionGenericRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapCodificacionItem).collect(Collectors.toList());
     }
 
@@ -280,6 +288,7 @@ public class ComprobanteFactory {
     }
 
     private List<SubCantidadItem> mapSubCantidadesItem(List<SubCantidadRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapSubCantidadItem).collect(Collectors.toList());
     }
 
@@ -292,6 +301,7 @@ public class ComprobanteFactory {
     }
 
     private List<SubDescuentoItem> mapSubDescuentosItem(List<SubDescuentoRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapSubDescuentoItem).collect(Collectors.toList());
     }
 
@@ -305,6 +315,7 @@ public class ComprobanteFactory {
     }
 
     private List<SubRecargoItem> mapSubRecargosItem(List<SubRecargoRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapSubRecargoItem).collect(Collectors.toList());
     }
 
@@ -317,8 +328,9 @@ public class ComprobanteFactory {
                 .build();
     }
 
-    private List<ImpuestoAdicionalItem> mapImpuestoAdicionalItem(List<String> listaImpuestos) {
-        return listaImpuestos.stream().map(
+    private List<ImpuestoAdicionalItem> mapImpuestoAdicionalItem(List<String> lista) {
+        if (lista == null || lista.isEmpty()) return null;
+        return lista.stream().map(
                 item -> ImpuestoAdicionalItem.builder().tipoImpuestoAdicional(item).build()
         ).collect(Collectors.toList());
     }
@@ -336,6 +348,7 @@ public class ComprobanteFactory {
     /* Builder de descuentosORecargos */
 
     private List<DescuentoORecargo> mapDescuentoORecargo(List<DescuentoRecargoRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapDescuentoORecargo).collect(Collectors.toList());
     }
 
@@ -357,6 +370,7 @@ public class ComprobanteFactory {
     /* Builder de paginas */
 
     private List<PaginaSubTotal> mapPaginas(List<PaginaSubTotalRequestDto> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapPagina).collect(Collectors.toList());
     }
 

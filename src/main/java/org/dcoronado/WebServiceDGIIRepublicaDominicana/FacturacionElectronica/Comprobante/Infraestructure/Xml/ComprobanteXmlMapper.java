@@ -180,6 +180,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<FormaPagoXml> mapFormasPago(List<FormaPago> formaPagoList) {
+        if (formaPagoList == null || formaPagoList.isEmpty()) return null;
         return !isNull(formaPagoList) ? formaPagoList.stream().map(this::mapFormaPago).collect(Collectors.toList()) : null;
     }
 
@@ -192,6 +193,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<ImpuestoAdicionalXml> mapImpuestosAdicionales(List<TotalesEncabezado.ImpuestoAdicional> impuestoAdicionalList) {
+        if (impuestoAdicionalList == null || impuestoAdicionalList.isEmpty()) return null;
         return impuestoAdicionalList.stream().map(this::mapItemAdicional).collect(Collectors.toList());
     }
 
@@ -207,6 +209,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<ImpuestoAdicionalOtraMonedaXml> mapImpuestosAdicionalesOtraMoneda(List<OtraMonedaEncabezado.ImpuestoAdicionalOtraMoneda> lista) {
+        if (lista == null || lista.isEmpty()) return null;
         return lista.stream().map(this::mapImpuestosAdicionalesOtraMoneda).collect(Collectors.toList());
     }
 
@@ -224,6 +227,7 @@ public class ComprobanteXmlMapper {
     /* Builder de Items */
 
     private List<LineaComprobanteXml> mapDetalles(List<Item> itemList) {
+        if (itemList == null || itemList.isEmpty()) return null;
         return itemList.stream().map(this::mapDetallesItem).collect(Collectors.toList());
     }
 
@@ -257,6 +261,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<CodigoItemXml> mapCodigosItem (List<CodigoItem> codigoItemList) {
+        if (codigoItemList == null || codigoItemList.isEmpty()) return null;
         return codigoItemList.stream().map(this::mapCodificacionItem).collect(Collectors.toList());
     }
 
@@ -278,6 +283,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<SubCantidadItemXml> mapSubCantidadesItem(List<SubCantidadItem> subCantidadItemList) {
+        if (subCantidadItemList == null || subCantidadItemList.isEmpty()) return null;
         return subCantidadItemList.stream().map(this::mapSubCantidadItem).collect(Collectors.toList());
     }
 
@@ -290,6 +296,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<SubDescuentoXml> mapSubDescuentosItem(List<SubDescuentoItem> subDescuentoItemList) {
+        if (subDescuentoItemList == null || subDescuentoItemList.isEmpty()) return null;
         return subDescuentoItemList.stream().map(this::mapSubDescuentoItem).collect(Collectors.toList());
     }
 
@@ -303,6 +310,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<SubRecargoXml> mapSubRecargosItem(List<SubRecargoItem> subRecargoItemList) {
+        if (subRecargoItemList == null || subRecargoItemList.isEmpty()) return null;
         return subRecargoItemList.stream().map(this::mapSubRecargoItem).collect(Collectors.toList());
     }
 
@@ -316,6 +324,7 @@ public class ComprobanteXmlMapper {
     }
 
     private List<ImpuestoAdicionalDetalleXml> mapImpuestoAdicionalItem(List<ImpuestoAdicionalItem> impuestoAdicionalItems) {
+        if (impuestoAdicionalItems == null || impuestoAdicionalItems.isEmpty()) return null;
         return impuestoAdicionalItems.stream().map(
                 item -> ImpuestoAdicionalDetalleXml.builder().tipoImpuestoAdicional(item.tipoImpuestoAdicional()).build()
         ).collect(Collectors.toList());
@@ -334,6 +343,7 @@ public class ComprobanteXmlMapper {
     /* Builder descuentosoRecargos */
 
     private List<DescuentoORecargoXml> mapDescuentoORecargo(List<DescuentoORecargo> descuentoORecargoList) {
+        if (descuentoORecargoList == null || descuentoORecargoList.isEmpty()) return null;
         return descuentoORecargoList.stream().map(this::mapDescuentoORecargo).collect(Collectors.toList());
     }
 
@@ -355,6 +365,7 @@ public class ComprobanteXmlMapper {
     /* Builder paginas */
 
     private List<PaginaSubTotalXml> mapPaginas(List<PaginaSubTotal> paginaSubTotalList) {
+        if (paginaSubTotalList == null || paginaSubTotalList.isEmpty()) return null;
         return paginaSubTotalList.stream().map(this::mapPagina).collect(Collectors.toList());
     }
 
