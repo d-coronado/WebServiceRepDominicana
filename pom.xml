@@ -63,6 +63,19 @@
             <artifactId>xmlparserv2</artifactId>
             <version>21.8.0.0</version>
         </dependency>
+        <!-- API pública (interfaces y anotaciones) -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <!-- Implementación concreta (GlassFish JAXB runtime) -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>4.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

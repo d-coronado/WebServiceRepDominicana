@@ -1,0 +1,5 @@
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Validator.TiposComprobantes;
+
+public class FacturaConsumoValidatorExtendida extends FacturaConsumoValidator {
+
+}
