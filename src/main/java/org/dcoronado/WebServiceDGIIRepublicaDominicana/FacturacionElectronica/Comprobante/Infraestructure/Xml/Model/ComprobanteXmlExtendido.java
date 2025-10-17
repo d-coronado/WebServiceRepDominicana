@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @XmlRootElement(name = "ECF")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ComprobanteXml {
+public class ComprobanteXmlExtendido {
     @XmlElement(name = "Encabezado")
     protected EncabezadoXml encabezado;
 

@@ -1,9 +1,14 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain;
 
+import java.math.BigDecimal;
+
 public final class ComprobanteConstantes {
 
     private ComprobanteConstantes() {
     } // evita instanciación
+
+    public static final String VERSION_FORMATO = "1.0";
+    public static final BigDecimal UMBRAL_FACTURA_CONSUMO_RESUMIDA = new BigDecimal("250000.00");
 
     // indicadorMontoGravado
     public static final int ITEM_ITBIS_NO_INCLUIDO = 0;

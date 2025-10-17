@@ -23,6 +23,7 @@ public class ComprobanteFactory {
         return Comprobante.builder()
                 .ambienteEnum(request.entornoProduccion())
                 .tipoComprobanteTributarioEnum(request.tipoComprobante())
+                .fechaEmision(request.fechaEmision())
                 .encabezado(this.mapEncabezado(request.encabezado()))
                 .items(this.mapItems(request.detalles()))
                 .descuentosORecargos(this.mapDescuentoORecargo(request.descuentosORecargos()))
@@ -89,7 +90,6 @@ public class ComprobanteFactory {
                 .zonaVenta(emisorRequestDto.zonaVenta())
                 .rutaVenta(emisorRequestDto.rutaVenta())
                 .informacionAdicionalEmisor(emisorRequestDto.informacionAdicional())
-                .fechaEmision(emisorRequestDto.fechaEmision())
                 .build();
     }
 

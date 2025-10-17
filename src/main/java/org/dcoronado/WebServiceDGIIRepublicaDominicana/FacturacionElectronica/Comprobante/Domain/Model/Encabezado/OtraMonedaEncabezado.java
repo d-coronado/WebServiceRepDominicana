@@ -3,14 +3,12 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
 public class OtraMonedaEncabezado {
 
@@ -33,9 +31,9 @@ public class OtraMonedaEncabezado {
     private BigDecimal montoTotalOtraMoneda;
 
     @Getter
-    @AllArgsConstructor
+    @Setter
     @Builder
-    public static class ImpuestoAdicionalOtraMoneda {
+    public final static class ImpuestoAdicionalOtraMoneda {
         private final String tipoImpuestoOtraMoneda;
         private BigDecimal tasaImpuestoAdicionalOtraMoneda;
         private BigDecimal montoImpuestoSelectivoConsumoEspecificoOtraMoneda;

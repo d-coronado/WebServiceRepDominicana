@@ -1,23 +1,28 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
-public record SubTotal(
-        Integer numeroSubTotal,
-        String descripcionSubtotal,
-        Integer orden,
-        BigDecimal subTotalMontoGravadoTotal,
-        BigDecimal subTotalMontoGravadoI1,
-        BigDecimal subTotalMontoGravadoI2,
-        BigDecimal subTotalMontoGravadoI3,
-        BigDecimal subTotaITBIS,
-        BigDecimal subTotaITBIS1,
-        BigDecimal subTotaITBIS2,
-        BigDecimal subTotaITBIS3,
-        BigDecimal subTotalImpuestoAdicional,
-        BigDecimal subTotalExento,
-        BigDecimal montoSubTotal,
-        Integer lineas
-) {
-
+@Getter
+@Setter
+@Builder
+public final class SubTotal {
+    private final Integer numeroSubTotal;
+    private final String descripcionSubtotal;
+    private final Integer orden;
+    private BigDecimal subTotalMontoGravadoTotal;
+    private BigDecimal subTotalMontoGravadoI1;
+    private BigDecimal subTotalMontoGravadoI2;
+    private BigDecimal subTotalMontoGravadoI3;
+    private BigDecimal subTotaITBIS;
+    private BigDecimal subTotaITBIS1;
+    private BigDecimal subTotaITBIS2;
+    private BigDecimal subTotaITBIS3;
+    private BigDecimal subTotalImpuestoAdicional;
+    private BigDecimal subTotalExento;
+    private BigDecimal montoSubTotal;
+    private final Integer lineas;
 }

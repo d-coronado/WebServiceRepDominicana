@@ -2,6 +2,6 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
 
-public interface ComprobanteValidator {
+public interface ComprobanteEspecificoValidator {
     void execute(Comprobante comprobante);
 }

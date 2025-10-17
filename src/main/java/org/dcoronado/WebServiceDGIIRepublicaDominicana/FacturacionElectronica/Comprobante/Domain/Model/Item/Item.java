@@ -1,6 +1,5 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Item;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,32 +9,31 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Builder
 public class Item {
 
     private final String numeroLinea;
-    private List<CodigoItem> codigosItem;
-    private Integer indicadorFacturacion;
-    private RetencionItem retencionItem;
+    private final List<CodigoItem> codigosItem;
+    private final Integer indicadorFacturacion;
+    private final RetencionItem retencionItem;
     private final String nombreItem;
-    private Integer indicadorBienoServicio;
+    private final Integer indicadorBienoServicio;
     private final String descripcionItem;
     private BigDecimal cantidadItem;
-    private Integer unidadMedida;
-    private Integer cantidadReferencia;
-    private Integer unidadReferencia;
-    private List<SubCantidadItem> tablaSubcantidad;
+    private final Integer unidadMedida;
+    private final Integer cantidadReferencia;
+    private final Integer unidadReferencia;
+    private final List<SubCantidadItem> tablaSubcantidad;
     private BigDecimal gradosAlcohol;
     private BigDecimal precioUnitarioReferencia;
-    private String fechaElaboracion;
-    private String fechaVencimiento;
+    private final String fechaElaboracion;
+    private final String fechaVencimiento;
     private BigDecimal precioUnitario;
     private BigDecimal descuentoMonto;
-    private List<SubDescuentoItem> tablaSubDescuentoItem;
+    private final List<SubDescuentoItem> tablaSubDescuentoItem;
     private BigDecimal recargoMonto;
-    private List<SubRecargoItem> tablaSubRecargoItem;
-    private List<ImpuestoAdicionalItem> tablaImpuestoAdicionalItem;
-    private OtraMonedaDescuentoItem otraMonedaDescuentoItem;
+    private final List<SubRecargoItem> tablaSubRecargoItem;
+    private final List<ImpuestoAdicionalItem> tablaImpuestoAdicionalItem;
+    private final OtraMonedaDescuentoItem otraMonedaDescuentoItem;
     private BigDecimal montoItem;
 }

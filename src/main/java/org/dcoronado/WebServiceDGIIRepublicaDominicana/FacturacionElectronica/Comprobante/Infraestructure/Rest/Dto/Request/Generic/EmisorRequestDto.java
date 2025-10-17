@@ -56,8 +56,5 @@ public record EmisorRequestDto(
         String rutaVenta,
 
         @JsonProperty("informacionAdicional")
-        String informacionAdicional,
-
-        @JsonProperty("fechaEmision")
-        String fechaEmision
+        String informacionAdicional
 ) {}

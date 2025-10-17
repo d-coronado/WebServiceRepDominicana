@@ -6,9 +6,11 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobante
 
 import java.util.Map;
 
-public class ComprobanteValidatorFactory {
+public final class ComprobanteValidatorFactory {
 
-    private static final Map<TipoComprobanteTributarioEnum, ComprobanteValidator> validators = Map.of(
+    private ComprobanteValidatorFactory() {}
+
+    private static final Map<TipoComprobanteTributarioEnum, ComprobanteEspecificoValidator> validators = Map.of(
             TipoComprobanteTributarioEnum.FACTURA_CREDITO_FISCAL, new FacturaCreditoFiscalValidator(),
             TipoComprobanteTributarioEnum.FACTURA_CONSUMO, new FacturaConsumoValidator(),
             TipoComprobanteTributarioEnum.NOTA_DEBITO, new NotaDebitoValidator(),
@@ -21,8 +23,8 @@ public class ComprobanteValidatorFactory {
             TipoComprobanteTributarioEnum.COMPROBANTE_PAGO_EXTERIOR, new ComprobantePagoExteriorValidator()
     );
 
-    public static ComprobanteValidator getValidator(TipoComprobanteTributarioEnum tipo) {
-        ComprobanteValidator validator = validators.get(tipo);
+    public static ComprobanteEspecificoValidator getValidator(TipoComprobanteTributarioEnum tipo) {
+        ComprobanteEspecificoValidator validator = validators.get(tipo);
         if (validator == null) throw new InvalidArgumentException("No existe validator para tipo: " + tipo);
         return validator;
     }

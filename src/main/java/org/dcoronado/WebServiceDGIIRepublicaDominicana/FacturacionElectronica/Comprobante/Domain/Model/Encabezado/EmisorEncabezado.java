@@ -1,47 +1,32 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Encabezado;
 
 import lombok.Builder;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FechaUtil;
+import lombok.Getter;
 
 import java.util.List;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-
+@Getter
 @Builder
-public record EmisorEncabezado(
-        String rnc,
-        String razonSocial,
-        String nombreComercial,
-        String sucursal,
-        String direccionEmisor,
-        String municipio,
-        String provincia,
-        List<TelefonoEmisor> tablaListaTelefonos,
-        String correoEmisor,
-        String sitioWeb,
-        String actividadEconomica,
-        String codigoVendedor,
-        String numeroFacturaInterna,
-        String numeroPedidoInterno,
-        String zonaVenta,
-        String rutaVenta,
-        String informacionAdicionalEmisor,
-        String fechaEmision
-) {
+public final class EmisorEncabezado {
+    private final String rnc;
+    private final String razonSocial;
+    private final String nombreComercial;
+    private final String sucursal;
+    private final String direccionEmisor;
+    private final String municipio;
+    private final String provincia;
+    List<TelefonoEmisor> tablaListaTelefonos;
+    private final String correoEmisor;
+    private final String sitioWeb;
+    private final String actividadEconomica;
+    private final String codigoVendedor;
+    private final String numeroFacturaInterna;
+    private final String numeroPedidoInterno;
+    private final String zonaVenta;
+    private final String rutaVenta;
+    private final String informacionAdicionalEmisor;
 
-    public EmisorEncabezado {
-        notBlank(rnc, "rnc del emisor required");
-        notBlank(razonSocial, "razon social del emisor required");
-        notBlank(direccionEmisor, "direccion emisor required");
-        notBlank(fechaEmision, "fecha Emision required");
-        if (!FechaUtil.tieneFormatoFechaValido(fechaEmision))
-            throw new InvalidArgumentException("fechaEmision tiene formato inválido.Debe tener formato dd-MM-AAAA");
+    private static final class TelefonoEmisor {
+        String telefonoEmisor;
     }
-
-    public record TelefonoEmisor(
-            String telefonoEmisor
-    ) {
-    }
-
 }

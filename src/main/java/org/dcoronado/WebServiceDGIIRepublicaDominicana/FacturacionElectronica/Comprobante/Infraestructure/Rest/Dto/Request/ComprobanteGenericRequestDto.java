@@ -17,6 +17,9 @@ public record ComprobanteGenericRequestDto(
         @JsonProperty("tipoComprobante")
         TipoComprobanteTributarioEnum tipoComprobante,
 
+        @JsonProperty("fechaEmision")
+        String fechaEmision,
+
         @JsonProperty("encabezado")
         EncabezadoGenericoRequestDto encabezado,
 

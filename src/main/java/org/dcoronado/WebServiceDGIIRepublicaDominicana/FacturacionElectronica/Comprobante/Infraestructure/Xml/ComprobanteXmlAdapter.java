@@ -14,22 +14,26 @@ import java.io.StringWriter;
 @RequiredArgsConstructor
 public class ComprobanteXmlAdapter implements ComprobanteToXmlPort {
 
-    private ComprobanteXmlMapper comprobanteXmlMapper;
+    private final ComprobanteXmlMapper comprobanteXmlMapper;
 
     @Override
-    public String execute(Comprobante comprobante) {
-        try {
-            // Mapear dominio → modelo JAXB
-            var xmlModel = comprobanteXmlMapper.toXMLExtendido(comprobante);
+    public String toXmlExtendido(Comprobante comprobante) {
+        return generarXml(comprobanteXmlMapper.toXMLExtendido(comprobante));
+    }
 
-            // Convertir modelo JAXB → String
+    @Override
+    public String toXmlResumido(Comprobante comprobante) {
+        return generarXml(comprobanteXmlMapper.toXMLResumido(comprobante));
+    }
+
+    private String generarXml(Object xmlModel) {
+        try {
             JAXBContext context = JAXBContext.newInstance(xmlModel.getClass());
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
             StringWriter writer = new StringWriter();
             marshaller.marshal(xmlModel, writer);
-
             return writer.toString();
         } catch (Exception e) {
             throw new InfrastructureException("Error generando XML del comprobante", e);

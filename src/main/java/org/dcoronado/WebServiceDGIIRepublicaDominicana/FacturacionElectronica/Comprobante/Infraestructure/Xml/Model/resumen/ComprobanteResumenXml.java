@@ -13,7 +13,7 @@ import jakarta.xml.bind.annotation.*;
 @Data
 @XmlRootElement(name = "RFCE")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResumenXml {
+public class ComprobanteResumenXml {
     @XmlElement(name = "Encabezado")
     protected EncabezadoResumenXml encabezado;
 }

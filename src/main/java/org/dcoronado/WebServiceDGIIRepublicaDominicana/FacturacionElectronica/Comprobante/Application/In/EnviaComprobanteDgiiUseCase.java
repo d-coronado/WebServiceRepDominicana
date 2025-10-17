@@ -3,5 +3,5 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
 
 public interface EnviaComprobanteDgiiUseCase {
-    Comprobante execute(Comprobante comprobante);
+    Comprobante execute(Comprobante comprobante) throws Exception;
 }

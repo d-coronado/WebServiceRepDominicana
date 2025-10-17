@@ -3,5 +3,6 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
 
 public interface ComprobanteToXmlPort {
-    String execute(Comprobante comprobante);
+    String toXmlExtendido(Comprobante comprobante);
+    String toXmlResumido(Comprobante comprobante);
 }

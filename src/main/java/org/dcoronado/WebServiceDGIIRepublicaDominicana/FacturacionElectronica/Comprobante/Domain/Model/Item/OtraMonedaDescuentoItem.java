@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class OtraMonedaDescuentoItem {
     private BigDecimal precioOtraMoneda;

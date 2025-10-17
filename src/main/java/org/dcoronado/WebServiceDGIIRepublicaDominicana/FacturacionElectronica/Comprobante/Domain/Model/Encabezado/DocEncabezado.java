@@ -1,38 +1,28 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Encabezado;
 
 import lombok.Builder;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
+import lombok.Getter;
 
 import java.util.List;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.*;
-
+@Getter
 @Builder
-public record DocEncabezado(
-        AmbienteEnum ambiente,
-        TipoComprobanteTributarioEnum tipoComprobante,
-        String secuencia,
-        String fechaVencimientoSecuencia,
-        Integer indicadorNotaCredito,
-        Integer indicadorEnvioDiferido,
-        Integer indicadorMontoGravado,
-        String tipoIngreso,
-        Integer tipoPago,
-        String fechaLimitePago,
-        String terminoPago,
-        List<FormaPago> tablaFormasPago,
-        String tipoCuentaPago,
-        String numeroCuentaPago,
-        String bancoPago,
-        String fechaDesde,
-        String fechaHasta,
-        Integer totalPaginas
-) {
-
-    public DocEncabezado {
-        notBlank(secuencia, "Secuencia obligatorio");
-
-    }
-
-}
+public final class DocEncabezado
+ {
+     private final String secuencia;
+     private final String fechaVencimientoSecuencia;
+     private final Integer indicadorNotaCredito;
+     private final Integer indicadorEnvioDiferido;
+     private final Integer indicadorMontoGravado;
+     private final String tipoIngreso;
+     private final Integer tipoPago;
+     private final String fechaLimitePago;
+     private final String terminoPago;
+     List<FormaPago> tablaFormasPago;
+     private final String tipoCuentaPago;
+     private final String numeroCuentaPago;
+     private final String bancoPago;
+     private final String fechaDesde;
+     private final String fechaHasta;
+     private final Integer totalPaginas;
+ }

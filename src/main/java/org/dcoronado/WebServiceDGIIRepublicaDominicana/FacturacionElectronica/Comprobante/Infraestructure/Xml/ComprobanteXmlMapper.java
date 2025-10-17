@@ -7,6 +7,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Item.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.PaginaSubTotal;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Xml.Model.*;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Xml.Model.resumen.*;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,114 +19,124 @@ import static java.util.Objects.isNull;
 @Component
 public class ComprobanteXmlMapper {
 
-    public ComprobanteXml toXMLExtendido(Comprobante comprobante) {
-        return ComprobanteXml.builder()
-                .encabezado(this.mapEncabezado(comprobante.encabezado()))
-                .detallesItems(this.mapDetalles(comprobante.items()))
+    public ComprobanteXmlExtendido toXMLExtendido(Comprobante comprobante) {
+        return ComprobanteXmlExtendido.builder()
+                .encabezado(this.mapEncabezado(comprobante.getEncabezado(),comprobante.getFechaEmision(),comprobante.getTipoComprobanteTributarioEnum(),comprobante.getEncf()))
+                .detallesItems(this.mapDetalles(comprobante.getItems()))
                 .subTotales(null) // No se maneja por el momento, ademas que es opcional
-                .descuentosORecargos(this.mapDescuentoORecargo(comprobante.descuentosORecargos()))
-                .paginas(this.mapPaginas(comprobante.paginas()))
-                .informacionReferencia(this.mapInformacionReferencia(comprobante.informacionReferencia()))
+                .descuentosORecargos(this.mapDescuentoORecargo(comprobante.getDescuentosORecargos()))
+                .paginas(this.mapPaginas(comprobante.getPaginas()))
+                .informacionReferencia(this.mapInformacionReferencia(comprobante.getInformacionReferencia()))
+                .fechaHoraFirma(comprobante.getFechaHoraFirma())
                 .build();
 
     }
+
+    public ComprobanteResumenXml toXMLResumido(Comprobante comprobante) {
+        return ComprobanteResumenXml.builder()
+                .encabezado(this.mapEncabezadoResumen(comprobante.getEncabezado(),comprobante.getFechaEmision(),comprobante.getTipoComprobanteTributarioEnum(),comprobante.getEncf()))
+                .build();
+    }
+
+    /* BUILDER DEL COMPROBANTE EXTENDIDO */
 
     /* Builder de Encabezado */
 
-    private EncabezadoXml mapEncabezado(Encabezado encabezado) {
+    private EncabezadoXml mapEncabezado(Encabezado encabezado, String fechaEmision, TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum, final String encf) {
         if (encabezado == null) return null;
         return EncabezadoXml.builder()
-                .version(encabezado.version())
-                .idDoc(this.mapDocEncabezado(encabezado.docEncabezado()))
-                .emisor(this.mapEmisorEncabezado(encabezado.emisorEncabezado()))
-                .comprador(this.mapCompradorEncabezado(encabezado.compradorEncabezado()))
+                .version(encabezado.getVersion())
+                .idDoc(this.mapDocEncabezado(encabezado.getDocEncabezado(),tipoComprobanteTributarioEnum,encf))
+                .emisor(this.mapEmisorEncabezado(encabezado.getEmisorEncabezado(),fechaEmision))
+                .comprador(this.mapCompradorEncabezado(encabezado.getCompradorEncabezado()))
                 .informacionAdicional(null) // Es opcional, casi nunca se usa.
-                .transporte(this.mapTransporte(encabezado.transporteEncabezado()))
-                .totales(this.mapTotales(encabezado.totalesEncabezado()))
-                .otraMoneda(this.mapOtraMoneda(encabezado.otraMonedaEncabezado()))
+                .transporte(this.mapTransporte(encabezado.getTransporteEncabezado()))
+                .totales(this.mapTotales(encabezado.getTotalesEncabezado()))
+                .otraMoneda(this.mapOtraMoneda(encabezado.getOtraMonedaEncabezado()))
                 .build();
     }
 
-    private DocXml mapDocEncabezado(DocEncabezado docEncabezado) {
+    private DocXml mapDocEncabezado(DocEncabezado docEncabezado,TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum,final String encf) {
         if (docEncabezado == null) return null;
+        if(tipoComprobanteTributarioEnum == null) return null;
         return DocXml.builder()
-                .tipoComprobante(docEncabezado.tipoComprobante().getValor())
-                .eNCF(docEncabezado.secuencia()) // FALTAAAAAAA
-                .fechaVencimientoSecuencia(docEncabezado.fechaVencimientoSecuencia())
-                .indicadorNotaCredito(docEncabezado.indicadorNotaCredito())
-                .indicadorEnvioDiferido(docEncabezado.indicadorEnvioDiferido())
-                .indicadorMontoGravado(docEncabezado.indicadorMontoGravado())
-                .tipoIngreso(docEncabezado.tipoIngreso())
-                .tipoPago(docEncabezado.tipoPago())
-                .fechaLimitePago(docEncabezado.fechaLimitePago())
-                .terminoPago(docEncabezado.terminoPago())
-                .tablaFormasPago(this.mapFormasPago(docEncabezado.tablaFormasPago()))
-                .tipoCuentaPago(docEncabezado.tipoCuentaPago())
-                .numeroCuentaPago(docEncabezado.numeroCuentaPago())
-                .bancoPago(docEncabezado.bancoPago())
-                .fechaDesde(docEncabezado.fechaDesde())
-                .fechaHasta(docEncabezado.fechaHasta())
-                .totalPaginas(docEncabezado.totalPaginas())
+                .tipoComprobante(tipoComprobanteTributarioEnum.getValor())
+                .eNCF(encf) // FALTAAAAAAA
+                .fechaVencimientoSecuencia(docEncabezado.getFechaVencimientoSecuencia())
+                .indicadorNotaCredito(docEncabezado.getIndicadorNotaCredito())
+                .indicadorEnvioDiferido(docEncabezado.getIndicadorEnvioDiferido())
+                .indicadorMontoGravado(docEncabezado.getIndicadorMontoGravado())
+                .tipoIngreso(docEncabezado.getTipoIngreso())
+                .tipoPago(docEncabezado.getTipoPago())
+                .fechaLimitePago(docEncabezado.getFechaLimitePago())
+                .terminoPago(docEncabezado.getTerminoPago())
+                .tablaFormasPago(this.mapFormasPago(docEncabezado.getTablaFormasPago()))
+                .tipoCuentaPago(docEncabezado.getTipoCuentaPago())
+                .numeroCuentaPago(docEncabezado.getNumeroCuentaPago())
+                .bancoPago(docEncabezado.getBancoPago())
+                .fechaDesde(docEncabezado.getFechaDesde())
+                .fechaHasta(docEncabezado.getFechaHasta())
+                .totalPaginas(docEncabezado.getTotalPaginas())
                 .build();
 
     }
 
-    private EmisorXml mapEmisorEncabezado(EmisorEncabezado emisorEncabezado) {
+    private EmisorXml mapEmisorEncabezado(EmisorEncabezado emisorEncabezado,String fechaEmision) {
         if (emisorEncabezado == null) return null;
         return EmisorXml.builder()
-                .rnc(emisorEncabezado.rnc())
-                .razonSocial(emisorEncabezado.razonSocial())
-                .nombreComercial(emisorEncabezado.nombreComercial())
-                .sucursal(emisorEncabezado.sucursal())
-                .direccionEmisor(emisorEncabezado.direccionEmisor())
-                .municipio(emisorEncabezado.municipio())
-                .provincia(emisorEncabezado.provincia())
-                .correoEmisor(emisorEncabezado.correoEmisor())
-                .sitioWeb(emisorEncabezado.sitioWeb())
-                .actividadEconomica(emisorEncabezado.actividadEconomica())
-                .codigoVendedor(emisorEncabezado.codigoVendedor())
-                .numeroFacturaInterna(emisorEncabezado.numeroFacturaInterna())
-                .numeroPedidoInterno(emisorEncabezado.numeroPedidoInterno())
-                .zonaVenta(emisorEncabezado.zonaVenta())
-                .rutaVenta(emisorEncabezado.rutaVenta())
-                .informacionAdicionalEmisor(emisorEncabezado.informacionAdicionalEmisor())
-                .fechaEmision(emisorEncabezado.fechaEmision())
+                .rnc(emisorEncabezado.getRnc())
+                .razonSocial(emisorEncabezado.getRazonSocial())
+                .nombreComercial(emisorEncabezado.getNombreComercial())
+                .sucursal(emisorEncabezado.getSucursal())
+                .direccionEmisor(emisorEncabezado.getDireccionEmisor())
+                .municipio(emisorEncabezado.getMunicipio())
+                .provincia(emisorEncabezado.getProvincia())
+                .correoEmisor(emisorEncabezado.getCorreoEmisor())
+                .sitioWeb(emisorEncabezado.getSitioWeb())
+                .actividadEconomica(emisorEncabezado.getActividadEconomica())
+                .codigoVendedor(emisorEncabezado.getCodigoVendedor())
+                .numeroFacturaInterna(emisorEncabezado.getNumeroFacturaInterna())
+                .numeroPedidoInterno(emisorEncabezado.getNumeroPedidoInterno())
+                .zonaVenta(emisorEncabezado.getZonaVenta())
+                .rutaVenta(emisorEncabezado.getRutaVenta())
+                .informacionAdicionalEmisor(emisorEncabezado.getInformacionAdicionalEmisor())
+                .fechaEmision(fechaEmision)
                 .build();
     }
 
     private CompradorXml mapCompradorEncabezado(CompradorEncabezado compradorEncabezado) {
         if (compradorEncabezado == null) return null;
         return CompradorXml.builder()
-                .rnc(compradorEncabezado.rnc())
-                .identificadorExtranjero(compradorEncabezado.identificadorExtranjero())
-                .razonSocial(compradorEncabezado.razonSocial())
-                .contacto(compradorEncabezado.contacto())
-                .correo(compradorEncabezado.correo())
-                .direccion(compradorEncabezado.direccion())
-                .municipio(compradorEncabezado.municipio())
-                .provincia(compradorEncabezado.provincia())
-                .fechaEntrega(compradorEncabezado.fechaEntrega())
-                .contactoEntrega(compradorEncabezado.contactoEntrega())
-                .direccionEntrega(compradorEncabezado.direccionEntrega())
-                .telefonoAdicionl(compradorEncabezado.telefonoAdicionl())
-                .fechaOrdenCompra(compradorEncabezado.fechaOrdenCompra())
-                .numeroOrdenCompra(compradorEncabezado.numeroOrdenCompra())
-                .codigoInternoComprador(compradorEncabezado.codigoInternoComprador())
-                .responsablePago(compradorEncabezado.responsablePago())
-                .informacionAdicionalComprador(compradorEncabezado.informacionAdicionalComprador())
+                .rnc(compradorEncabezado.getRnc())
+                .identificadorExtranjero(compradorEncabezado.getIdentificadorExtranjero())
+                .razonSocial(compradorEncabezado.getRazonSocial())
+                .contacto(compradorEncabezado.getContacto())
+                .correo(compradorEncabezado.getCorreo())
+                .direccion(compradorEncabezado.getDireccion())
+                .municipio(compradorEncabezado.getMunicipio())
+                .provincia(compradorEncabezado.getProvincia())
+                .fechaEntrega(compradorEncabezado.getFechaEntrega())
+                .contactoEntrega(compradorEncabezado.getContactoEntrega())
+                .direccionEntrega(compradorEncabezado.getDireccionEntrega())
+                .telefonoAdicionl(compradorEncabezado.getTelefonoAdicionl())
+                .fechaOrdenCompra(compradorEncabezado.getFechaOrdenCompra())
+                .numeroOrdenCompra(compradorEncabezado.getNumeroOrdenCompra())
+                .codigoInternoComprador(compradorEncabezado.getCodigoInternoComprador())
+                .responsablePago(compradorEncabezado.getResponsablePago())
+                .informacionAdicionalComprador(compradorEncabezado.getInformacionAdicionalComprador())
                 .build();
     }
 
     private TransporteXml mapTransporte(TransporteEncabezado transporteEncabezado) {
         if (transporteEncabezado == null) return null;
         return TransporteXml.builder()
-                .conductor(transporteEncabezado.conductor())
-                .documentoTransporte(transporteEncabezado.documentoTransporte())
-                .ficha(transporteEncabezado.ficha())
-                .placa(transporteEncabezado.placa())
-                .rutaTransporte(transporteEncabezado.rutaTransporte())
-                .zonaTransporte(transporteEncabezado.zonaTransporte())
-                .numeroAlbaran(transporteEncabezado.numeroAlbaran())
+                .conductor(transporteEncabezado.getConductor())
+                .documentoTransporte(transporteEncabezado.getDocumentoTransporte())
+                .ficha(transporteEncabezado.getFicha())
+                .placa(transporteEncabezado.getPlaca())
+                .rutaTransporte(transporteEncabezado.getRutaTransporte())
+                .zonaTransporte(transporteEncabezado.getZonaTransporte())
+                .numeroAlbaran(transporteEncabezado.getNumeroAlbaran())
                 .build();
 
     }
@@ -237,7 +249,7 @@ public class ComprobanteXmlMapper {
                 .codigosItem(this.mapCodigosItem(item.getCodigosItem()))
                 .indicadorFacturacion(item.getIndicadorFacturacion())
                 .retencion(this.mapRetencionItem(item.getRetencionItem()))
-                .nombreItem(item.getDescripcionItem())
+                .nombreItem(item.getNombreItem())
                 .indicadorBienoServicio(item.getIndicadorBienoServicio())
                 .descripcionItem(item.getDescripcionItem())
                 .cantidadItem(item.getCantidadItem())
@@ -268,8 +280,8 @@ public class ComprobanteXmlMapper {
     private CodigoItemXml mapCodificacionItem (CodigoItem codigoItem) {
         if(codigoItem == null) return null;
         return CodigoItemXml.builder()
-                .tipoCodigo(codigoItem.tipoCodigo())
-                .codigoItem(codigoItem.codigoItem())
+                .tipoCodigo(codigoItem.getTipoCodigo())
+                .codigoItem(codigoItem.getCodigoItem())
                 .build();
     }
 
@@ -350,15 +362,15 @@ public class ComprobanteXmlMapper {
     private DescuentoORecargoXml mapDescuentoORecargo(DescuentoORecargo descuentoORecargo) {
         if (descuentoORecargo == null) return null;
         return DescuentoORecargoXml.builder()
-                .numeroLinea(descuentoORecargo.numeroLinea())
-                .tipoAjuste(descuentoORecargo.tipoAjuste())
-                .indicadorNorma1007(descuentoORecargo.indicadorNorma1007())
-                .descripcionDescuentoORecargo(descuentoORecargo.descripcionDescuentoORecargo())
-                .tipoValor(descuentoORecargo.tipoValor())
-                .valorDescuentoORecargo(descuentoORecargo.valorDescuentoORecargo())
-                .montoDescuentoORecargo(descuentoORecargo.montoDescuentoORecargo())
-                .montoDescuentooRecargoOtraMoneda(descuentoORecargo.montoDescuentooRecargoOtraMoneda())
-                .indicadorFacturacionDescuentoORecargo(descuentoORecargo.indicadorFacturacionDescuentoORecargo())
+                .numeroLinea(descuentoORecargo.getNumeroLinea())
+                .tipoAjuste(descuentoORecargo.getTipoAjuste())
+                .indicadorNorma1007(descuentoORecargo.getIndicadorNorma1007())
+                .descripcionDescuentoORecargo(descuentoORecargo.getDescripcionDescuentoORecargo())
+                .tipoValor(descuentoORecargo.getTipoValor())
+                .valorDescuentoORecargo(descuentoORecargo.getValorDescuentoORecargo())
+                .montoDescuentoORecargo(descuentoORecargo.getMontoDescuentoORecargo())
+                .montoDescuentooRecargoOtraMoneda(descuentoORecargo.getMontoDescuentooRecargoOtraMoneda())
+                .indicadorFacturacionDescuentoORecargo(descuentoORecargo.getIndicadorFacturacionDescuentoORecargo())
                 .build();
     }
 
@@ -372,30 +384,30 @@ public class ComprobanteXmlMapper {
     private PaginaSubTotalXml mapPagina(PaginaSubTotal paginaSubTotalList) {
         if (paginaSubTotalList == null) return null;
         return PaginaSubTotalXml.builder()
-                .paginaNo(paginaSubTotalList.paginaNo())
-                .noLineaDesde(paginaSubTotalList.noLineaDesde())
-                .noLineaHasta(paginaSubTotalList.noLineaHasta())
-                .subtotalMontoGravadoPagina(paginaSubTotalList.subtotalMontoGravadoPagina())
-                .subtotalMontoGravado1Pagina(paginaSubTotalList.subtotalMontoGravado1Pagina())
-                .subtotalMontoGravado2Pagina(paginaSubTotalList.subtotalMontoGravado2Pagina())
-                .subtotalMontoGravado3Pagina(paginaSubTotalList.subtotalMontoGravado3Pagina())
-                .subtotalExentoPagina(paginaSubTotalList.subtotalExentoPagina())
-                .subtotalItbisPagina(paginaSubTotalList.subtotalItbisPagina())
-                .subtotalItbis1Pagina(paginaSubTotalList.subtotalItbis1Pagina())
-                .subtotalItbis2Pagina(paginaSubTotalList.subtotalItbis2Pagina())
-                .subtotalItbis3Pagina(paginaSubTotalList.subtotalItbis3Pagina())
-                .subtotalImpuestoAdicionalPagina(paginaSubTotalList.subtotalImpuestoAdicionalPagina())
-                .subtotalImpuestoAdicional(this.mapSubtotalImpuestoAdicional(paginaSubTotalList.subtotalImpuestoAdicional()))
-                .montoSubtotalPagina(paginaSubTotalList.montoSubtotalPagina())
-                .subtotalMontoNoFacturablePagina(paginaSubTotalList.subtotalMontoNoFacturablePagina())
+                .paginaNo(paginaSubTotalList.getPaginaNo())
+                .noLineaDesde(paginaSubTotalList.getNoLineaDesde())
+                .noLineaHasta(paginaSubTotalList.getNoLineaHasta())
+                .subtotalMontoGravadoPagina(paginaSubTotalList.getSubtotalMontoGravadoPagina())
+                .subtotalMontoGravado1Pagina(paginaSubTotalList.getSubtotalItbis1Pagina())
+                .subtotalMontoGravado2Pagina(paginaSubTotalList.getSubtotalItbis2Pagina())
+                .subtotalMontoGravado3Pagina(paginaSubTotalList.getSubtotalItbis3Pagina())
+                .subtotalExentoPagina(paginaSubTotalList.getSubtotalExentoPagina())
+                .subtotalItbisPagina(paginaSubTotalList.getSubtotalItbisPagina())
+                .subtotalItbis1Pagina(paginaSubTotalList.getSubtotalItbis1Pagina())
+                .subtotalItbis2Pagina(paginaSubTotalList.getSubtotalItbis2Pagina())
+                .subtotalItbis3Pagina(paginaSubTotalList.getSubtotalItbis3Pagina())
+                .subtotalImpuestoAdicionalPagina(paginaSubTotalList.getSubtotalImpuestoAdicionalPagina())
+                .subtotalImpuestoAdicional(this.mapSubtotalImpuestoAdicional(paginaSubTotalList.getSubtotalImpuestoAdicional()))
+                .montoSubtotalPagina(paginaSubTotalList.getMontoSubtotalPagina())
+                .subtotalMontoNoFacturablePagina(paginaSubTotalList.getSubtotalMontoNoFacturablePagina())
                 .build();
     }
 
     private SubtotalImpuestoAdicionalXml mapSubtotalImpuestoAdicional(PaginaSubTotal.SubtotalImpuestoAdicional subtotalImpuestoAdicional) {
         if (subtotalImpuestoAdicional == null) return null;
         return SubtotalImpuestoAdicionalXml.builder()
-                .subtotalOtrosImpuesto(subtotalImpuestoAdicional.subtotalOtrosImpuesto())
-                .subtotalImpuestoSelectivoConsumoEspecificoPagina(subtotalImpuestoAdicional.subtotalImpuestoSelectivoConsumoEspecificoPagina())
+                .subtotalOtrosImpuesto(subtotalImpuestoAdicional.getSubtotalOtrosImpuesto())
+                .subtotalImpuestoSelectivoConsumoEspecificoPagina(subtotalImpuestoAdicional.getSubtotalImpuestoSelectivoConsumoEspecificoPagina())
                 .build();
     }
 
@@ -410,6 +422,36 @@ public class ComprobanteXmlMapper {
                 .codigoModificacion(informacionReferencia.codigoModificacion())
                 .razonModificado(informacionReferencia.razonModificado())
                 .build();
+    }
+
+
+    /* BUILDER DEL COMPROBANTE RESUMIDO */
+
+    private EncabezadoResumenXml mapEncabezadoResumen(Encabezado encabezado, String fechaEmision, TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum, final String encf) {
+        if (encabezado == null) return null;
+        return EncabezadoResumenXml.builder()
+                .version(encabezado.getVersion())
+                .idDoc(this.mapDocEncabezadoResumen(encabezado.getDocEncabezado(),tipoComprobanteTributarioEnum,encf))
+                .emisor(this.mapEmisorEncabezadoResumen(encabezado.getEmisorEncabezado(),fechaEmision))
+                .comprador(this.mapCompradorEncabezadoResumen(encabezado.getCompradorEncabezado()))
+                .totales(this.mapTotalesResumen(encabezado.getTotalesEncabezado()))
+                .build();
+    }
+
+    private DocResumenXml mapDocEncabezadoResumen(DocEncabezado encabezado,TipoComprobanteTributarioEnum tipoComprobante,String enc){
+        return null;
+    }
+
+    private EmisorResumenXml mapEmisorEncabezadoResumen(EmisorEncabezado emisorEncabezado,String fechaEmision){
+        return null;
+    }
+
+    private CompradorResumenXml mapCompradorEncabezadoResumen(CompradorEncabezado compradorEncabezado){
+        return null;
+    }
+
+    private TotalesResumenXml mapTotalesResumen(TotalesEncabezado totalesEncabezado){
+        return null;
     }
 
 }

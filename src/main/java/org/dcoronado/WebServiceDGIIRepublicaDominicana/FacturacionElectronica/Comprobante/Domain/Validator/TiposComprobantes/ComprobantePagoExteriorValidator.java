@@ -3,67 +3,70 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Encabezado.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Item.Item;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Validator.ComprobanteValidatorGeneric;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Validator.ComprobanteValidatorEspecificoTemplate;
 
 import java.util.List;
 
-public class ComprobantePagoExteriorValidator extends ComprobanteValidatorGeneric {
+public class ComprobantePagoExteriorValidator extends ComprobanteValidatorEspecificoTemplate {
 
 
     @Override
-    protected void validarDocEncabezado(DocEncabezado doc, String fechaEmision) {
+    protected void validarDocEncabezadoEspecifico(DocEncabezado doc, String fechaEmision) {
 
     }
 
     @Override
-    protected void validarCompradorEncabezado(CompradorEncabezado comprador) {
+    protected void validarEmisorEncabezadoEspecifico(EmisorEncabezado emisor) {
 
     }
 
     @Override
-    protected void validarInformacionAdicionalEncabezado(InformacionAdicionalEncabezado info) {
+    protected void validarCompradorEncabezadoEspecifico(CompradorEncabezado comprador) {
 
     }
 
     @Override
-    protected void validarTransporteEncabezado(TransporteEncabezado transporte) {
+    protected void validarInformacionAdicionalEncabezadoEspecifico(InformacionAdicionalEncabezado info) {
 
     }
 
     @Override
-    protected void validarTotalesEncabezado(TotalesEncabezado totales) {
+    protected void validarTransporteEncabezadoEspecifico(TransporteEncabezado transporte) {
 
     }
 
     @Override
-    protected void validarOtraMonedaEncabezado(OtraMonedaEncabezado otraMoneda) {
+    protected void validarTotalesEncabezadoEspecifico(TotalesEncabezado totales) {
 
     }
 
     @Override
-    protected void validarItems(List<Item> itemList) {
+    protected void validarOtraMonedaEncabezadoEspecifico(OtraMonedaEncabezado otraMoneda) {
 
     }
 
     @Override
-    protected void validarSubtotales(List<SubTotal> subTotalList) {
+    protected void validarItemsEspecifico(List<Item> itemList) {
 
     }
 
     @Override
-    protected void validarDescuentosORecargos(List<DescuentoORecargo> descuentoORecargoList) {
+    protected void validarSubtotalesEspecifico(List<SubTotal> subTotalList) {
 
     }
 
     @Override
-    protected void validarPaginas(List<PaginaSubTotal> paginaSubTotalList) {
+    protected void validarDescuentosORecargosEspecifico(List<DescuentoORecargo> descuentoORecargoList) {
 
     }
 
     @Override
-    protected void validarInformacionReferencia(InformacionReferencia informacionReferencia) {
+    protected void validarPaginasEspecifico(List<PaginaSubTotal> paginaSubTotalList) {
 
     }
 
+    @Override
+    protected void validarInformacionReferenciaEspecifico(InformacionReferencia informacionReferencia) {
 
+    }
 }

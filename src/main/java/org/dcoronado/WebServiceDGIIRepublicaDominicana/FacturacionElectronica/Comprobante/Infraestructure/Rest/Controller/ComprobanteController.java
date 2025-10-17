@@ -7,6 +7,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Rest.Dto.Factory.ComprobanteFactory;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Rest.Dto.Request.ComprobanteGenericRequestDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Rest.Dto.Response.ComprobanteResponse;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Rest.Dto.Transformer.ComprobanteDtoTransformer;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Response.CustomResponse;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Api.AbstractApi;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +22,15 @@ public class ComprobanteController extends AbstractApi {
 
     private final ComprobanteFactory comprobanteFactory;
     private final EnviaComprobanteDgiiUseCase enviaComprobanteDgiiUseCase;
+    private final ComprobanteDtoTransformer comprobanteDtoTransformer;
 
 
     @PostMapping("/envia_dgii")
-    public ResponseEntity<CustomResponse> EnviaComprobanteDgii(@Valid @RequestBody ComprobanteGenericRequestDto comprobanteGenericRequestDto) {
+    public ResponseEntity<CustomResponse> EnviaComprobanteDgii(@Valid @RequestBody ComprobanteGenericRequestDto comprobanteGenericRequestDto) throws Exception {
         Comprobante comprobante = comprobanteFactory.ofDto(comprobanteGenericRequestDto); // DTO → Domain
         Comprobante result = enviaComprobanteDgiiUseCase.execute(comprobante);
-        return success("Comprobante Enviado Exitosamente");
-
+        ComprobanteResponse responseDto = comprobanteDtoTransformer.fromObject(result); // Domain → DTO
+        return success(responseDto);
     }
 
 }
