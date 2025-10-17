@@ -33,7 +33,7 @@ public class ComprobanteXmlMapper {
 
     public ComprobanteResumenXml toXMLResumido(Comprobante comprobante) {
         return ComprobanteResumenXml.builder()
-                .encabezado(this.mapEncabezadoResumen(comprobante.getEncabezado(),comprobante.getEncf()))
+                .encabezado(this.mapEncabezadoResumen(comprobante.getEncabezado(),comprobante.getEncf(),comprobante.getCodigoSeguridad()))
                 .build();
     }
 
@@ -425,7 +425,7 @@ public class ComprobanteXmlMapper {
 
     /* BUILDER DEL COMPROBANTE RESUMIDO */
 
-    private EncabezadoResumenXml mapEncabezadoResumen(Encabezado encabezado, final String encf) {
+    private EncabezadoResumenXml mapEncabezadoResumen(Encabezado encabezado, final String encf,final String codigoSeguridad) {
         if (encabezado == null) return null;
         return EncabezadoResumenXml.builder()
                 .version(encabezado.getVersion())
@@ -433,23 +433,74 @@ public class ComprobanteXmlMapper {
                 .emisor(this.mapEmisorEncabezadoResumen(encabezado.getEmisorEncabezado()))
                 .comprador(this.mapCompradorEncabezadoResumen(encabezado.getCompradorEncabezado()))
                 .totales(this.mapTotalesResumen(encabezado.getTotalesEncabezado()))
+                .codigoSeguridad(codigoSeguridad)
                 .build();
     }
 
-    private DocResumenXml mapDocEncabezadoResumen(DocEncabezado encabezado,String enc){
-        return null;
+    private DocResumenXml mapDocEncabezadoResumen(DocEncabezado docEncabezado,String encf){
+        if(docEncabezado == null) return null;
+        return DocResumenXml.builder()
+                .tipoComprobante(docEncabezado.getTipoComprobanteTributarioEnum().getValor())
+                .eNCF(encf)
+                .tipoIngreso(docEncabezado.getTipoIngreso())
+                .tipoPago(docEncabezado.getTipoPago())
+                .tablaFormasPago(this.mapFormasPago(docEncabezado.getTablaFormasPago()))
+                .build();
     }
 
     private EmisorResumenXml mapEmisorEncabezadoResumen(EmisorEncabezado emisorEncabezado){
-        return null;
+        if(emisorEncabezado == null) return null;
+        return EmisorResumenXml.builder()
+                .rnc(emisorEncabezado.getRnc())
+                .razonSocial(emisorEncabezado.getRazonSocial())
+                .fechaEmision(emisorEncabezado.getFechaEmision())
+                .build();
     }
 
     private CompradorResumenXml mapCompradorEncabezadoResumen(CompradorEncabezado compradorEncabezado){
-        return null;
+        if(compradorEncabezado == null) return null;
+        return CompradorResumenXml.builder()
+                .rnc(compradorEncabezado.getRnc())
+                .identificadorExtranjero(compradorEncabezado.getIdentificadorExtranjero())
+                .razonSocial(compradorEncabezado.getRazonSocial())
+                .build();
     }
 
     private TotalesResumenXml mapTotalesResumen(TotalesEncabezado totalesEncabezado){
-        return null;
+        if(totalesEncabezado == null) return null;
+        return TotalesResumenXml.builder()
+                .montoGravadoTotal(totalesEncabezado.getMontoGravadoTotal())
+                .montoGravadoI1(totalesEncabezado.getMontoGravadoI1())
+                .montoGravadoI2(totalesEncabezado.getMontoGravadoI2())
+                .montoGravadoI3(totalesEncabezado.getMontoGravadoI3())
+                .montoExento(totalesEncabezado.getMontoExento())
+                .totalITBIS(totalesEncabezado.getTotalITBIS())
+                .totalITBIS1(totalesEncabezado.getTotalITBIS1())
+                .totalITBIS2(totalesEncabezado.getTotalITBIS2())
+                .totalITBIS3(totalesEncabezado.getTotalITBIS3())
+                .montoImpuestoAdicional(totalesEncabezado.getMontoImpuestoAdicional())
+                .impuestosAdicionales(this.mapImpuestosAdicionalesResumen(totalesEncabezado.getImpuestosAdicionales()))
+                .montoTotal(totalesEncabezado.getMontoTotal())
+                .montoNoFacturable(totalesEncabezado.getMontoNoFacturable())
+                .montoPeriodo(totalesEncabezado.getMontoPeriodo())
+                .build();
     }
+
+    private List<ResumenImpuestoAdicionalXml> mapImpuestosAdicionalesResumen(List<TotalesEncabezado.ImpuestoAdicional> impuestoAdicionalList) {
+        if (impuestoAdicionalList == null || impuestoAdicionalList.isEmpty()) return null;
+        return impuestoAdicionalList.stream().map(this::mapItemAdicionalResumen).collect(Collectors.toList());
+    }
+    
+
+    private ResumenImpuestoAdicionalXml mapItemAdicionalResumen(TotalesEncabezado.ImpuestoAdicional impuestoAdicional) {
+        if (impuestoAdicional == null) return null;
+        return ResumenImpuestoAdicionalXml.builder()
+                .tipoImpuesto(impuestoAdicional.getTipoImpuesto())
+                .montoImpuestoSelectivoConsumoEspecifico(impuestoAdicional.getMontoImpuestoSelectivoConsumoEspecifico())
+                .montoImpuestoSelectivoConsumoAdvalorem(impuestoAdicional.getMontoImpuestoSelectivoConsumoAdvalorem())
+                .otrosImpuestosAdicionales(impuestoAdicional.getOtrosImpuestosAdicionales())
+                .build();
+    }
+
 
 }

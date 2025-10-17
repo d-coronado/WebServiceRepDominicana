@@ -43,7 +43,7 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
         String rncEmisor = comprobante.getEncabezado().getEmisorEncabezado().getRnc();
         LicenciaInfoDto licenciaInfoDto = licenciaProviderPort.getLicenciaInfoByRnc(rncEmisor);
 
-        // Validar coherencia entre comprobante y licencia (seguridad) ---> FALTA
+        // Validar coherencia entre comprobante y licencia (seguridad) ---> Despues lo hacemos
 
         // Generar XML del comprobante
         String comprobanteXml = comprobante.isEsResumen() ? comprobanteToXmlPort.toXmlResumido(comprobante) : comprobanteToXmlPort.toXmlExtendido(comprobante);
