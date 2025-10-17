@@ -17,8 +17,7 @@ public final class ComprobanteBaseValidator {
 
     public static void execute(Comprobante comprobante) {
         required(comprobante, "Comprobante requerido");
-        validarDatosGenerales(comprobante);
-        validarEncabezadoGenerico(comprobante.getEncabezado(), comprobante.getFechaEmision());
+        validarEncabezadoGenerico(comprobante.getEncabezado());
         validarItemsGenerico(comprobante.getItems());
         validarSubtotalesGenerico(comprobante.getSubtotales());
         validarDescuentosORecargosGenerico(comprobante.getDescuentosORecargos());
@@ -26,21 +25,9 @@ public final class ComprobanteBaseValidator {
         validarPaginasGenerico(comprobante.getPaginas());
     }
 
-    private static void validarDatosGenerales(Comprobante comprobante) {
-        required(comprobante.getAmbienteEnum(), "El ambiente es obligatorio");
-        required(comprobante.getTipoComprobanteTributarioEnum(), "El tipo de comprobante es obligatorio");
-        required(comprobante.getFechaEmision(), "El fecha de emision es obligatorio");
-        if (!FechaUtil.tieneFormatoFechaValido(comprobante.getFechaEmision()))
-            throw new InvalidArgumentException("fechaEmision tiene formato inválido. Debe tener formato dd-MM-AAAA");
-    }
-
-    private static void validarEncabezadoGenerico(Encabezado encabezado, String fechaEmision) {
+    private static void validarEncabezadoGenerico(Encabezado encabezado) {
         required(encabezado, "El encabezado es obligatorio");
-        required(fechaEmision, "El fecha de emision es obligatorio");
-        if (!FechaUtil.tieneFormatoFechaValido(fechaEmision))
-            throw new InvalidArgumentException("fechaEmision tiene formato inválido. Debe tener formato dd-MM-AAAA");
-
-        validarDocEncabezadoGenerico(encabezado.getDocEncabezado(), fechaEmision);
+        validarDocEncabezadoGenerico(encabezado.getDocEncabezado());
         validarEmisorEncabezadoGenerico(encabezado.getEmisorEncabezado());
         validarCompradorEncabezadoGenerico(encabezado.getCompradorEncabezado());
         validarInformacionAdicionalEncabezadoGenerico(encabezado.getInformacionAdicionalEncabezado());
@@ -49,19 +36,19 @@ public final class ComprobanteBaseValidator {
         validarOtraMonedaEncabezadoGenerico(encabezado.getOtraMonedaEncabezado());
     }
 
-    private static void validarDocEncabezadoGenerico(DocEncabezado doc, String fechaEmision) {
+    private static void validarDocEncabezadoGenerico(DocEncabezado doc) {
         required(doc, "El doc del encabezado es obligatorio");
-        required(fechaEmision, "La fecha de emisión es obligatoria");
-        required(fechaEmision, "El fecha de emision es obligatorio");
-        if (!FechaUtil.tieneFormatoFechaValido(fechaEmision))
-            throw new InvalidArgumentException("fechaEmision tiene formato inválido. Debe tener formato dd-MM-AAAA");
-
+        required(doc.getAmbienteEnum(), "El ambiente es obligatorio");
+        required(doc.getTipoComprobanteTributarioEnum(), "El tipo de comprobante es obligatorio");
     }
 
     private static void validarEmisorEncabezadoGenerico(EmisorEncabezado emisor) {
         required(emisor, "El emisor es obligatorio");
         required(emisor.getRnc(), "El RNC del emisor es obligatorio");
         required(emisor.getRazonSocial(), "La razón social del emisor es obligatoria");
+        required(emisor.getFechaEmision(), "El fecha de emision es obligatorio");
+        if (!FechaUtil.tieneFormatoFechaValido(emisor.getFechaEmision()))
+            throw new InvalidArgumentException("fechaEmision tiene formato inválido. Debe tener formato dd-MM-AAAA");
     }
 
     private static void validarCompradorEncabezadoGenerico(CompradorEncabezado comprador) {

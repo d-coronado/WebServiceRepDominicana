@@ -15,6 +15,7 @@ public final class EmisorEncabezado {
     private final String direccionEmisor;
     private final String municipio;
     private final String provincia;
+    private final String fechaEmision;
     List<TelefonoEmisor> tablaListaTelefonos;
     private final String correoEmisor;
     private final String sitioWeb;

@@ -9,6 +9,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.ComprobanteToXmlPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.XsdValidatorPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,30 +26,33 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
     @Override
     public Comprobante execute(Comprobante comprobante) throws Exception {
 
-        // validar comprobante
-        comprobante.validarGenerico();
-        comprobante.validarSegunTipoComprobante();
-        comprobante.enriquecer();
+        // OBLIGATORIO, NO OLVIDARRRRRRR, este valida estructura.
+        comprobante.validar();
+
+        // Validaciones especificas segun tipo de comprobante y enriquecer segun tipo de comprobante
+        final TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum = comprobante.getEncabezado().getDocEncabezado().getTipoComprobanteTributarioEnum();
+        final String secuenciaComprobante = comprobante.getEncabezado().getDocEncabezado().getSecuencia();
+
+        comprobante.validarSegunTipoComprobante(tipoComprobanteTributarioEnum);
+        comprobante.enriquecer(tipoComprobanteTributarioEnum, secuenciaComprobante);
 
         // Para saber luego el formato de xml que se deber crear.
-        comprobante.setEsResumen();
+        comprobante.setEsResumen(tipoComprobanteTributarioEnum);
 
         // Obtener licencia del emisor
         String rncEmisor = comprobante.getEncabezado().getEmisorEncabezado().getRnc();
         LicenciaInfoDto licenciaInfoDto = licenciaProviderPort.getLicenciaInfoByRnc(rncEmisor);
 
-        // Validar coherencia entre comprobante y licencia (seguridad)
-        // validarLicenciaVsComprobante(licenciaInfoDto, comprobante);
+        // Validar coherencia entre comprobante y licencia (seguridad) ---> FALTA
 
         // Generar XML del comprobante
         String comprobanteXml = comprobante.isEsResumen() ? comprobanteToXmlPort.toXmlResumido(comprobante) : comprobanteToXmlPort.toXmlExtendido(comprobante);
 
+        // Firmar XML con certificado de la licencia
         String comprobanteXmlFirmado = signProviderPort.execute(comprobanteXml, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
 
         // Validar XML Firmado con el XSD correspondiente
-         xsdValidatorPort.execute(comprobanteXmlFirmado, comprobante.getTipoComprobanteTributarioEnum(), comprobante.isEsResumen());
-
-        // Firmar XML con certificado de la licencia (CPU, pero necesario)
+         xsdValidatorPort.execute(comprobanteXmlFirmado, tipoComprobanteTributarioEnum, comprobante.isEsResumen());
 
 
         // Agregar firma y código de seguridad al comprobante

@@ -8,7 +8,6 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.PaginaSubTotal;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Xml.Model.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Xml.Model.resumen.*;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class ComprobanteXmlMapper {
 
     public ComprobanteXmlExtendido toXMLExtendido(Comprobante comprobante) {
         return ComprobanteXmlExtendido.builder()
-                .encabezado(this.mapEncabezado(comprobante.getEncabezado(),comprobante.getFechaEmision(),comprobante.getTipoComprobanteTributarioEnum(),comprobante.getEncf()))
+                .encabezado(this.mapEncabezado(comprobante.getEncabezado(),comprobante.getEncf()))
                 .detallesItems(this.mapDetalles(comprobante.getItems()))
                 .subTotales(null) // No se maneja por el momento, ademas que es opcional
                 .descuentosORecargos(this.mapDescuentoORecargo(comprobante.getDescuentosORecargos()))
@@ -34,7 +33,7 @@ public class ComprobanteXmlMapper {
 
     public ComprobanteResumenXml toXMLResumido(Comprobante comprobante) {
         return ComprobanteResumenXml.builder()
-                .encabezado(this.mapEncabezadoResumen(comprobante.getEncabezado(),comprobante.getFechaEmision(),comprobante.getTipoComprobanteTributarioEnum(),comprobante.getEncf()))
+                .encabezado(this.mapEncabezadoResumen(comprobante.getEncabezado(),comprobante.getEncf()))
                 .build();
     }
 
@@ -42,12 +41,12 @@ public class ComprobanteXmlMapper {
 
     /* Builder de Encabezado */
 
-    private EncabezadoXml mapEncabezado(Encabezado encabezado, String fechaEmision, TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum, final String encf) {
+    private EncabezadoXml mapEncabezado(Encabezado encabezado, final String encf) {
         if (encabezado == null) return null;
         return EncabezadoXml.builder()
                 .version(encabezado.getVersion())
-                .idDoc(this.mapDocEncabezado(encabezado.getDocEncabezado(),tipoComprobanteTributarioEnum,encf))
-                .emisor(this.mapEmisorEncabezado(encabezado.getEmisorEncabezado(),fechaEmision))
+                .idDoc(this.mapDocEncabezado(encabezado.getDocEncabezado(),encf))
+                .emisor(this.mapEmisorEncabezado(encabezado.getEmisorEncabezado()))
                 .comprador(this.mapCompradorEncabezado(encabezado.getCompradorEncabezado()))
                 .informacionAdicional(null) // Es opcional, casi nunca se usa.
                 .transporte(this.mapTransporte(encabezado.getTransporteEncabezado()))
@@ -56,12 +55,11 @@ public class ComprobanteXmlMapper {
                 .build();
     }
 
-    private DocXml mapDocEncabezado(DocEncabezado docEncabezado,TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum,final String encf) {
+    private DocXml mapDocEncabezado(DocEncabezado docEncabezado,final String encf) {
         if (docEncabezado == null) return null;
-        if(tipoComprobanteTributarioEnum == null) return null;
         return DocXml.builder()
-                .tipoComprobante(tipoComprobanteTributarioEnum.getValor())
-                .eNCF(encf) // FALTAAAAAAA
+                .tipoComprobante(docEncabezado.getTipoComprobanteTributarioEnum().getValor())
+                .eNCF(encf)
                 .fechaVencimientoSecuencia(docEncabezado.getFechaVencimientoSecuencia())
                 .indicadorNotaCredito(docEncabezado.getIndicadorNotaCredito())
                 .indicadorEnvioDiferido(docEncabezado.getIndicadorEnvioDiferido())
@@ -81,7 +79,7 @@ public class ComprobanteXmlMapper {
 
     }
 
-    private EmisorXml mapEmisorEncabezado(EmisorEncabezado emisorEncabezado,String fechaEmision) {
+    private EmisorXml mapEmisorEncabezado(EmisorEncabezado emisorEncabezado) {
         if (emisorEncabezado == null) return null;
         return EmisorXml.builder()
                 .rnc(emisorEncabezado.getRnc())
@@ -100,7 +98,7 @@ public class ComprobanteXmlMapper {
                 .zonaVenta(emisorEncabezado.getZonaVenta())
                 .rutaVenta(emisorEncabezado.getRutaVenta())
                 .informacionAdicionalEmisor(emisorEncabezado.getInformacionAdicionalEmisor())
-                .fechaEmision(fechaEmision)
+                .fechaEmision(emisorEncabezado.getFechaEmision())
                 .build();
     }
 
@@ -427,22 +425,22 @@ public class ComprobanteXmlMapper {
 
     /* BUILDER DEL COMPROBANTE RESUMIDO */
 
-    private EncabezadoResumenXml mapEncabezadoResumen(Encabezado encabezado, String fechaEmision, TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum, final String encf) {
+    private EncabezadoResumenXml mapEncabezadoResumen(Encabezado encabezado, final String encf) {
         if (encabezado == null) return null;
         return EncabezadoResumenXml.builder()
                 .version(encabezado.getVersion())
-                .idDoc(this.mapDocEncabezadoResumen(encabezado.getDocEncabezado(),tipoComprobanteTributarioEnum,encf))
-                .emisor(this.mapEmisorEncabezadoResumen(encabezado.getEmisorEncabezado(),fechaEmision))
+                .idDoc(this.mapDocEncabezadoResumen(encabezado.getDocEncabezado(),encf))
+                .emisor(this.mapEmisorEncabezadoResumen(encabezado.getEmisorEncabezado()))
                 .comprador(this.mapCompradorEncabezadoResumen(encabezado.getCompradorEncabezado()))
                 .totales(this.mapTotalesResumen(encabezado.getTotalesEncabezado()))
                 .build();
     }
 
-    private DocResumenXml mapDocEncabezadoResumen(DocEncabezado encabezado,TipoComprobanteTributarioEnum tipoComprobante,String enc){
+    private DocResumenXml mapDocEncabezadoResumen(DocEncabezado encabezado,String enc){
         return null;
     }
 
-    private EmisorResumenXml mapEmisorEncabezadoResumen(EmisorEncabezado emisorEncabezado,String fechaEmision){
+    private EmisorResumenXml mapEmisorEncabezadoResumen(EmisorEncabezado emisorEncabezado){
         return null;
     }
 

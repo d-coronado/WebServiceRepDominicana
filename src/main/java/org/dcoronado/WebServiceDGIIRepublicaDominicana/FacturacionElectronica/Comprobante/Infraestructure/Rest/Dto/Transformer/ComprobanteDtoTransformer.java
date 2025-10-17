@@ -17,11 +17,11 @@ public class ComprobanteDtoTransformer extends DtoTransformer<ComprobanteRespons
         if (isNull(comprobante)) throw new InvalidArgumentException("comprobante no puede ser null");
 
         return ComprobanteResponse.builder()
-                .ambienteEnum(comprobante.getAmbienteEnum())
+                .ambienteEnum(comprobante.getEncabezado().getDocEncabezado().getAmbienteEnum())
                 .rncEmisor(comprobante.getEncabezado().getEmisorEncabezado().getRnc())
                 .rncComprador(isNull(comprobante.getEncabezado().getCompradorEncabezado()) ? null : comprobante.getEncabezado().getCompradorEncabezado().getRnc())
                 .encF(comprobante.getEncf())
-                .fechaEmision(comprobante.getFechaEmision())
+                .fechaEmision(comprobante.getEncabezado().getEmisorEncabezado().getFechaEmision())
                 .monto(comprobante.getEncabezado().getTotalesEncabezado().getMontoTotal())
                 .fechaHoraFirma(comprobante.getFechaHoraFirma())
                 .codigoSeguridad(comprobante.getCodigoSeguridad())

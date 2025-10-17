@@ -3,22 +3,11 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Size;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ComprobanteGenericRequestDto(
-
-        @JsonProperty("entornoProduccion")
-        AmbienteEnum entornoProduccion,
-
-        @JsonProperty("tipoComprobante")
-        TipoComprobanteTributarioEnum tipoComprobante,
-
-        @JsonProperty("fechaEmision")
-        String fechaEmision,
 
         @JsonProperty("encabezado")
         EncabezadoGenericoRequestDto encabezado,

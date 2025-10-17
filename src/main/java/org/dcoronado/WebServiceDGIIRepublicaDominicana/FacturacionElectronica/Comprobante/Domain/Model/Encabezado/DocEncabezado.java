@@ -2,6 +2,8 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 
 import lombok.Builder;
 import lombok.Getter;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
 
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
 @Builder
 public final class DocEncabezado
  {
+     private final AmbienteEnum ambienteEnum;
+     private final TipoComprobanteTributarioEnum tipoComprobanteTributarioEnum;
      private final String secuencia;
      private final String fechaVencimientoSecuencia;
      private final Integer indicadorNotaCredito;

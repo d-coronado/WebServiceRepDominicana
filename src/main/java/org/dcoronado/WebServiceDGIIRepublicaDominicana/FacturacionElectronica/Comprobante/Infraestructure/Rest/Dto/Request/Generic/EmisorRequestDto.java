@@ -27,6 +27,9 @@ public record EmisorRequestDto(
         @JsonProperty("provincia")
         String provincia,
 
+        @JsonProperty("fechaEmision")
+        String fechaEmision,
+
         @JsonProperty("telefonos")
         @Size(max = 10, message = "{}") // puedes ajustar el límite según tu lógica
         List<String> telefonos,

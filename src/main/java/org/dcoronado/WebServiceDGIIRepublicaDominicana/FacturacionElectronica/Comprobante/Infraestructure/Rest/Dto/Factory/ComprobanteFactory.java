@@ -21,11 +21,9 @@ public class ComprobanteFactory {
     public Comprobante ofDto(ComprobanteGenericRequestDto request) {
         if (isNull(request)) throw new IllegalArgumentException("DTO no puede ser null");
         return Comprobante.builder()
-                .ambienteEnum(request.entornoProduccion())
-                .tipoComprobanteTributarioEnum(request.tipoComprobante())
-                .fechaEmision(request.fechaEmision())
                 .encabezado(this.mapEncabezado(request.encabezado()))
                 .items(this.mapItems(request.detalles()))
+                .subtotales(null) // Es opcional para todos los tipos de comprobantes, por eso no se usa
                 .descuentosORecargos(this.mapDescuentoORecargo(request.descuentosORecargos()))
                 .paginas(this.mapPaginas(request.paginas()))
                 .informacionReferencia(this.mapInformacionReferencia(request.informacionReferencia()))
@@ -51,6 +49,8 @@ public class ComprobanteFactory {
     private DocEncabezado mapDocEncabezado(DocRequestDto docRequestDto) {
         if (docRequestDto == null) return null;
         return DocEncabezado.builder()
+                .ambienteEnum(docRequestDto.entornoProduccion())
+                .tipoComprobanteTributarioEnum(docRequestDto.tipoComprobante())
                 .secuencia(docRequestDto.secuencia())
                 .fechaVencimientoSecuencia(docRequestDto.fechaVencimiento())
                 .indicadorNotaCredito(docRequestDto.indicadorNotaCredito())
@@ -81,6 +81,7 @@ public class ComprobanteFactory {
                 .direccionEmisor(emisorRequestDto.direccion())
                 .municipio(emisorRequestDto.municipio())
                 .provincia(emisorRequestDto.provincia())
+                .fechaEmision(emisorRequestDto.fechaEmision())
                 .correoEmisor(emisorRequestDto.correo())
                 .sitioWeb(emisorRequestDto.website())
                 .actividadEconomica(emisorRequestDto.actividadEconomica())

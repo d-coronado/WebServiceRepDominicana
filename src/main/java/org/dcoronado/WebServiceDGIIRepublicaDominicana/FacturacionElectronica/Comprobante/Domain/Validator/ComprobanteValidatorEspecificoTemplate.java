@@ -13,7 +13,7 @@ public abstract class ComprobanteValidatorEspecificoTemplate implements Comproba
     @Override
     public final void execute(Comprobante comprobante) {
         // Validaciones especificas por cada parte del esqueleto que cada tipo de comprobante debe implementar
-        validarEncabezadoEspecifico(comprobante.getEncabezado(), comprobante.getFechaEmision());
+        validarEncabezadoEspecifico(comprobante.getEncabezado(),comprobante.getEncabezado().getEmisorEncabezado().getFechaEmision());
         validarItemsEspecifico(comprobante.getItems());
         validarSubtotalesEspecifico(comprobante.getSubtotales());
         validarDescuentosORecargosEspecifico(comprobante.getDescuentosORecargos());
