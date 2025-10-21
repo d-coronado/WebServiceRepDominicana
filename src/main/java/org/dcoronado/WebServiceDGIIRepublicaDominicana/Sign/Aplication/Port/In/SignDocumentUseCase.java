@@ -7,5 +7,9 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 
 public interface SignDocumentUseCase {
+    // Firmar
     String execute(String documentContent, String certificateIdentifier, String password) throws UnrecoverableEntryException, CertificateException, KeyStoreException, IOException, NoSuchAlgorithmException;
+
+    // Extrae el hash de firma del XML firmado
+    String extractHash(String signedXml);
 }

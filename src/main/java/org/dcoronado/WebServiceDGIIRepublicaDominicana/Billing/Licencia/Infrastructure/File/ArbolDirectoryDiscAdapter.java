@@ -2,7 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.SetupDirectoriesPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.TreeNode;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -15,7 +15,7 @@ public class ArbolDirectoryDiscAdapter implements SetupDirectoriesPort {
     private final FileSystemProperties fileSystemProperties;
 
     @Override
-    public void createDirectory(DirectorioNode estructura) {
+    public void createDirectory(TreeNode estructura) {
         Path basePath = Paths.get(fileSystemProperties.getBasePathByCurrentOS());
         ArbolDirectorioCreatorDisc creador = new ArbolDirectorioCreatorDisc(basePath);
         creador.crearEstructuraDisc(estructura);

@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.SetupDirectoriesLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.SetupDirectoriesPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.TreeNode;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioTreeBuilder.buildLicenciaTree;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioLicenciaTreeBuilder.buildLicenciaTree;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 
 @Service
@@ -37,7 +37,7 @@ public class SetupDirectoriesLicenciaService implements SetupDirectoriesLicencia
 
 
         /* Crear estructura de directorios */
-        DirectorioNode directoryTreeLicencia = buildLicenciaTree(licencia.getRnc());
+        TreeNode directoryTreeLicencia = buildLicenciaTree(licencia.getRnc());
         setupDirectoriesPort.createDirectory(directoryTreeLicencia);
 
         licencia.marcarSetupDirectoriosCompletado();

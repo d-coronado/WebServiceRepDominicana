@@ -37,7 +37,7 @@ public class Comprobante {
     // Datos que se generan despues de validar la entrada.
     private String fechaHoraFirma;
     private String encf;
-    private String hashFirma;
+    private String hashFirmaComprobanteExtendido;
     private String codigoSeguridad;
     private boolean esResumen;
 
@@ -80,6 +80,19 @@ public class Comprobante {
             BigDecimal total = this.encabezado.getTotalesEncabezado().getMontoTotal();
             this.esResumen = total.compareTo(UMBRAL_FACTURA_CONSUMO_RESUMIDA) <= 0;
         }
+    }
+
+    /**
+     * Asigna la firma y genera el código de seguridad automáticamente.
+     * Siempre debe llamarse antes de generar el XML resumido o validar contra XSD.
+     */
+    public void asignarFirmaExtendida(String hashFirma) {
+        if (hashFirma == null || hashFirma.length() < 6) {
+            throw new IllegalArgumentException("El hash de la firma es inválido o demasiado corto");
+        }
+
+        this.hashFirmaComprobanteExtendido = hashFirma;
+        this.codigoSeguridad = hashFirma.substring(0, 6);
     }
 
 

@@ -6,6 +6,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertifi
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.SignerDgiiUtil;
 import org.springframework.stereotype.Component;
 
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
+
 @Component
 public class DGIIXMLDSigCryptographicSignerAdapter implements CryptographicSignerPort {
 
@@ -21,6 +23,12 @@ public class DGIIXMLDSigCryptographicSignerAdapter implements CryptographicSigne
         } catch (Exception e) {
             throw new InfrastructureException("Failed to sign XML document", e);
         }
+    }
+
+    @Override
+    public String extractHash(String signedXml) {
+        required(signedXml, "Signed XML cannot be null");
+        return SignerDgiiUtil.extractSignatureValue(signedXml);
     }
 
 }

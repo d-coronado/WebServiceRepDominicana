@@ -3,16 +3,15 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UploadCertificadoUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.UploadCertificatePort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SaveFilePort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.SetupStatusEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.PathsDirectory.getRelativaCertificadoLicencia;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.RutasDirectoriosLicencia.getRutaCertificadoDigital;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validateArchivo;
 
@@ -29,7 +28,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGene
 public class UploadCertificadoLicenciaService implements UploadCertificadoUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final UploadCertificatePort uploadCertificatePort;
+    private final SaveFilePort saveArchivoLicenciaPort;
 
 
     /**
@@ -62,9 +61,8 @@ public class UploadCertificadoLicenciaService implements UploadCertificadoUseCas
             );
         }
 
-
-        String rutaRelativaCertificado = getRelativaCertificadoLicencia(rnc, nombreArchivo);
-        String rutaAbsolute = uploadCertificatePort.save(rutaRelativaCertificado, archivo);
+        final String rutaRelativaCertificado = String.join("/", getRutaCertificadoDigital(rnc),nombreArchivo);
+        String rutaAbsolute = saveArchivoLicenciaPort.save(rutaRelativaCertificado, archivo);
 
         // Actualizar los datos de la licencia con la información del certificado
         licencia.actualizarDatosCertificado(rutaAbsolute, nombreArchivo, password);

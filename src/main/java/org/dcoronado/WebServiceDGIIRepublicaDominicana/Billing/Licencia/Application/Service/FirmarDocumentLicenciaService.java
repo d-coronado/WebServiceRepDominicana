@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.FirmarDocumentUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Validator.FileExtensionValidator;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProviderPort;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validateExtensionXml;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validateArchivo;
 
 
@@ -44,7 +44,7 @@ public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
         // Validar parámetros de entrada
         notBlank(rnc, "RNC required");
         validateArchivo(nombreDocumento, archivo);
-        FileExtensionValidator.validateExtensionXml(nombreDocumento);
+        validateExtensionXml(nombreDocumento);
 
         // Buscar licencia y validar existencia
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)

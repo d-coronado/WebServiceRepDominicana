@@ -5,6 +5,8 @@ import oracle.xml.parser.v2.XMLDocument;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
@@ -13,6 +15,7 @@ import javax.xml.crypto.dsig.keyinfo.KeyInfoFactory;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 import javax.xml.crypto.dsig.spec.TransformParameterSpec;
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
@@ -146,6 +149,40 @@ public class SignerDgiiUtil {
 
     public static InputStream stringToInputStream(String xml) {
         return new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Extrae el valor de <SignatureValue> del XML firmado (XMLDSig).
+     * Devuelve el contenido (normalmente Base64).
+     * Lanza InfrastructureException si no se encuentra o hay error de parsing.
+     */
+    public static String extractSignatureValue(String signedXml) throws InfrastructureException {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+
+            ByteArrayInputStream is = new ByteArrayInputStream(signedXml.getBytes(StandardCharsets.UTF_8));
+            Document doc = builder.parse(is);
+
+            // Namespace XMLDSig
+            final String XMLDSIG_NS = "http://www.w3.org/2000/09/xmldsig#";
+
+            // Buscamos el elemento SignatureValue
+            NodeList nl = doc.getElementsByTagNameNS(XMLDSIG_NS, "SignatureValue");
+            if (nl == null || nl.getLength() == 0) {
+                throw new InfrastructureException("No se encontró <SignatureValue> en el XML firmado.");
+            }
+
+            String signatureValue = nl.item(0).getTextContent();
+            if (signatureValue == null || signatureValue.trim().isEmpty()) {
+                throw new InfrastructureException("El elemento <SignatureValue> está vacío.");
+            }
+
+            return signatureValue.trim();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new InfrastructureException("Error parseando XML firmado para extraer SignatureValue: " + e.getMessage(), e);
+        }
     }
 
 

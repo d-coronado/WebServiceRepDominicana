@@ -35,4 +35,9 @@ public class SignDocumentService implements SignDocumentUseCase {
 
     }
 
+    @Override
+    public String extractHash(String signedXml) {
+        return cryptographicSignerPort.extractHash(signedXml);
+    }
+
 }

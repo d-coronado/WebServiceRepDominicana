@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 
@@ -74,6 +75,27 @@ public class FuncionesGenericas {
         if (monto.compareTo(BigDecimal.ZERO) < 0)
             throw new InvalidArgumentException("El monto debe ser positivo o cero");
 
+    }
+
+    /* Solo se aceptaran archivos con extension .xml */
+    public static void validateExtensionXml(String nombreDocumento) {
+        List<String> extensionesPermitidas = List.of("xml");
+        String extension = nombreDocumento.contains(".")
+                ? nombreDocumento.substring(nombreDocumento.lastIndexOf('.') + 1).toLowerCase()
+                : "";
+        if (!extensionesPermitidas.contains(extension))
+            throw new InvalidArgumentException("Extensión no permitida, se requiere .xml");
+    }
+
+    /* Solo se aceptarán archivos con extensión .xls o .xlsx */
+    public static void validateExtensionExcel(String nombreDocumento) {
+        List<String> extensionesPermitidas = List.of("xls", "xlsx");
+        String extension = nombreDocumento.contains(".")
+                ? nombreDocumento.substring(nombreDocumento.lastIndexOf('.') + 1).toLowerCase()
+                : "";
+        if (!extensionesPermitidas.contains(extension)) {
+            throw new InvalidArgumentException("Extensión no permitida, se requiere .xls o .xlsx");
+        }
     }
 
 

@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum AmbienteEnum {
-    PRUEBAS("PRUEBAS"),
-    CERTIFICACION("CERTIFICACION"),
-    PRODUCCION("PRODUCCION");
+public enum ContextoArchivoEnum {
+    CERTIFICADO_DIGITAL("CERTIFICADO_DIGITAL"),
+    COMPROBANTE("COMPROBANTES"),
+    APROBACION_COMERCIAL("APROBACIONES_COMERCIALES"),
+    OTRO("OTROS");
 
     private final String pathSegment;
-
 }

@@ -5,4 +5,5 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Domain.KeyAndCertifi
 
 public interface CryptographicSignerPort {
     String signDocument(String documentContent, KeyAndCertificate keyAndCertificate);
+    String extractHash(String signedXml);
 }

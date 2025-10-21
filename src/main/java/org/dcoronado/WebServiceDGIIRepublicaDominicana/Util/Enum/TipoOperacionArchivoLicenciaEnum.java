@@ -5,11 +5,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum AmbienteEnum {
-    PRUEBAS("PRUEBAS"),
-    CERTIFICACION("CERTIFICACION"),
-    PRODUCCION("PRODUCCION");
+public enum TipoOperacionArchivoLicenciaEnum {
+    EMISION("EMISION"),
+    RECEPCION("RECEPCION");
 
     private final String pathSegment;
-
 }

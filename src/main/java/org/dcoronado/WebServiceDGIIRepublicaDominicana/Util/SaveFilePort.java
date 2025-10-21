@@ -1,6 +1,6 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util;
 
-public interface UploadCertificatePort {
+public interface SaveFilePort {
 
     /**
      * Guarda un archivo en la ruta especificada.

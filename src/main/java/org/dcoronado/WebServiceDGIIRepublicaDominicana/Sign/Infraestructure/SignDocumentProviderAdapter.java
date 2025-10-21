@@ -15,4 +15,9 @@ public class SignDocumentProviderAdapter implements SignProviderPort {
     public String execute(String document, String pathCertificado, String claveCertificado) throws Exception {
         return signDocumentUseCase.execute(document, pathCertificado, claveCertificado);
     }
+
+    @Override
+    public String executeHash(String signedXml) throws Exception {
+        return signDocumentUseCase.extractHash(signedXml);
+    }
 }
