@@ -73,8 +73,7 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
             required(comprobante.getCodigoSeguridad(), "Codigo de seguridad es requerido para comprobante en formato resumido");
             final String comprobanteXmlResumido = comprobanteToXmlPort.toXmlResumido(comprobante);
             final String comprobanteXmlResumidoFirmado = signProviderPort.execute(comprobanteXmlResumido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
-            /* Se Comenta debio a que el xsd de resument tiene errores y no pasa , asi este bien formado el xml */
-//            xsdValidatorPort.execute(comprobanteXmlResumidoFirmado, tipoComprobanteTributarioEnum, comprobante.isEsResumen());
+            xsdValidatorPort.execute(comprobanteXmlResumidoFirmado, tipoComprobanteTributarioEnum, comprobante.isEsResumen());
             comprobanteXmlFirmadoEnvioDgii = comprobanteXmlResumidoFirmado;
         }
 
