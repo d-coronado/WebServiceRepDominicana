@@ -1,5 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Infraestructure.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import java.time.ZoneOffset;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/v2/sesion")
+@Tag(name = "Sesion")
 public class SesionController extends AbstractApi {
 
     private final CrearSesionUseCase sesionUseCase;
@@ -32,6 +35,7 @@ public class SesionController extends AbstractApi {
     private final SesionFactory sesionFactory;
     private final SesionTransformer sesionTransformer;
 
+    @Operation(summary = "Crear sesion", description = "Crea una nueva sesión con datos de la licencia para poder obtener un token y consumir los servicios de DGII")
     @PostMapping("/crear")
     public ResponseEntity<CustomResponse> crearSesion(@Valid @RequestBody SesionRequestDto sesionRequestDto) throws Exception {
         Sesion sesion = sesionFactory.ofDto(sesionRequestDto);
@@ -40,6 +44,7 @@ public class SesionController extends AbstractApi {
         return success(responseDto);
     }
 
+    @Operation(summary = "Obtener Sesion", description = "Obtiene una sesion activa de la licencia para poder obtener un token y consumir los servicios de DGII")
     @PostMapping("/obtener_activa")
     public ResponseEntity<CustomResponse> getSesionActiva(@Valid @RequestBody SesionRequestDto sesionRequestDto) {
         Sesion sesion = sesionFactory.ofDto(sesionRequestDto);

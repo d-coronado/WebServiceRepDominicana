@@ -4,14 +4,31 @@ spring:
   profiles:
     active: dev  # Profile por defecto
 
-  licencia:
-    filesystem:
-      basepath:
-        windows: "C:/fe_repdominicana"
-        linux: "/opt/tomcat/configapp/data/"
-        mac: "/Users/dcoronado/"
+springdoc:
+  api-docs:
+    path: /web-service-fe/v3/api-docs
+  swagger-ui:
+    path: /docs
 
-# Configuración común (logs, etc.)
+swagger:
+  info:
+    title: Integracion Facturacion Electronica DGII Republica Dominicana
+    version: "2.0"
+    description: API que permite integrar servicios de DGII Republica Dominicana para Facturacion Electronica
+  contact:
+    name: Davis Coronado
+    email: daviscoronadoalbines@gmail.com
+  gateway:
+    url: http://localhost:8080
+
+
+licencia:
+  filesystem:
+    basepath:
+      windows: "C:/fe_repdominicana"
+      linux: "/opt/tomcat/configapp/data/"
+      mac: "/Users/dcoronado/"
+
 logging:
   level:
     org.dcoronado.WebServiceDGIIRepublicaDominicana: DEBUG

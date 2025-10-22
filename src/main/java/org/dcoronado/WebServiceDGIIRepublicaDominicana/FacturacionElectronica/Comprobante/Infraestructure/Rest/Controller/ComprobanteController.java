@@ -1,5 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Infraestructure.Rest.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/v2/comprobante")
+@Tag(name = "Comprobante")
 @RequiredArgsConstructor
 public class ComprobanteController extends AbstractApi {
 
@@ -25,6 +28,7 @@ public class ComprobanteController extends AbstractApi {
     private final ComprobanteDtoTransformer comprobanteDtoTransformer;
 
 
+    @Operation(summary = "Envia Comprobante", description = "Envia un comprobante electrónico a la DGII")
     @PostMapping("/envia_dgii")
     public ResponseEntity<CustomResponse> EnviaComprobanteDgii(@Valid @RequestBody ComprobanteGenericRequestDto comprobanteGenericRequestDto) throws Exception {
         Comprobante comprobante = comprobanteFactory.ofDto(comprobanteGenericRequestDto); // DTO → Domain

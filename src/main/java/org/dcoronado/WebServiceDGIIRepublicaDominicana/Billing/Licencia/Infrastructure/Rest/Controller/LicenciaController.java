@@ -1,5 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import java.util.Base64;
 @Slf4j
 @RestController
 @RequestMapping(path = "/api/v2/licencia")
+@Tag(name = "Licencia")
 @RequiredArgsConstructor
 public class LicenciaController extends AbstractApi {
 
@@ -35,6 +38,7 @@ public class LicenciaController extends AbstractApi {
     private final LicenciaFactory licenciaFactory;
     private final LicenciaDtoTransformer licenciaDtoTransformer;
 
+    @Operation(summary = "Crear licencia", description = "Registra una nueva licencia en el sistema")
     @PostMapping
     public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request) {
         Licencia licencia = licenciaFactory.ofDto(request); // DTO → Domain
@@ -43,6 +47,7 @@ public class LicenciaController extends AbstractApi {
         return success(responseDto, "Licencia Creada Exitosamente");
     }
 
+    @Operation(summary = "Actualizar licencia", description = "Actualiza los datos de una licencia existente por ID")
     @PutMapping("/{id}")
     public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @Valid @RequestBody LicenciaRequestDto request) {
         Licencia licencia = licenciaFactory.fromDtoForUpdate(id, request);
@@ -51,6 +56,7 @@ public class LicenciaController extends AbstractApi {
         return success(responseDto, "Licencia Actualizada Exitosamente");
     }
 
+    @Operation(summary = "Obtener licencia por ID", description = "Devuelve los detalles de una licencia")
     @GetMapping("/{id}")
     public ResponseEntity<CustomResponse> getLicenciaById(@PathVariable("id") final Long id) {
         return getLicenciaUseCase.findById(id)
@@ -61,6 +67,7 @@ public class LicenciaController extends AbstractApi {
                 .orElseGet(() -> success("Licencia con id: " + id + " no encontrada"));
     }
 
+    @Operation(summary = "Obtener licencia por RNC", description = "Busca una licencia mediante su RNC")
     @GetMapping("/rnc/{rnc}")
     public ResponseEntity<CustomResponse> getLicenciaByRnc(@PathVariable("rnc") final String rnc) {
         return getLicenciaUseCase.finByRnc(rnc)
@@ -74,6 +81,7 @@ public class LicenciaController extends AbstractApi {
     /**
      * Setup de base de datos (solo una vez)
      */
+    @Operation(summary = "Configurar base de datos", description = "Crea la base de datos para una nueva licencia, debe ejecutarse solo una vez por licencia")
     @PostMapping("/{rnc}/setup-database")
     public ResponseEntity<CustomResponse> setupDatabase(@PathVariable String rnc) {
         setupDatabaseLicenciaUseCase.execute(rnc);
@@ -81,12 +89,14 @@ public class LicenciaController extends AbstractApi {
     }
 
 
+    @Operation(summary = "Configurar directorios", description = "Crea las carpetas necesarias para guardar archivos(xml,.p12,etc) para una licencia")
     @PostMapping("/{rnc}/setup-directories")
     public ResponseEntity<CustomResponse> setupDirectories(@PathVariable String rnc) {
         setupDirectoriesLicenciaUseCase.execute(rnc);
         return success("Setup directories creado correctamente");
     }
 
+    @Operation(summary = "Subir certificado digital", description = "Permite guardar certificado digital (.p12) para poder firmar documentos")
     @PostMapping("/subir_certificado/{rnc}")
     public ResponseEntity<CustomResponse> uploadCertificadoDigital(
             @PathVariable("rnc") final String rnc, @RequestParam("archivo") final MultipartFile archivo,
@@ -98,6 +108,7 @@ public class LicenciaController extends AbstractApi {
         return success("Certificado cargado correctamente para la licencia con RNC: " + rnc);
     }
 
+    @Operation(summary = "Firmar documento XML", description = "Firma digitalmente un documento usando el certificado de la licencia")
     @PostMapping("firmar_documento/{rnc}")
     public ResponseEntity<CustomResponse> signDocument(@PathVariable("rnc") final String rnc,
                                                        @RequestParam("archivo") final MultipartFile archivo) throws Exception {

@@ -78,7 +78,7 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
         }
 
 
-        // Verificar existencia del comprobante en BD (tipo,secuencia,ambiente)
+        // Verificar existencia del comprobante en BD (tipo,secuencia,ambiente) -> despues lo hacemos.
         boolean verificarExistenciaComprobanteEnBd = false;
 
         if (verificarExistenciaComprobanteEnBd) {
@@ -97,7 +97,7 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
                     comprobanteXmlExtendidoFirmado.getBytes(StandardCharsets.UTF_8));
 
 
-            // Si no existe obtener una sesion (token)
+            // Si no existe obtener una sesion (token dgii)
             SesionInfoDto sesionInfoDto = sesionProviderPort
                     .obtenerSesionActiva(licenciaInfoDto.rnc(), ambienteEnum)
                     .orElseGet(() -> {

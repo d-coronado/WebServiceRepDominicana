@@ -18,6 +18,8 @@ public class DgiiEnviroments {
     // Endpoints comunes
     private final String GENERAR_SEMILLA = "/autenticacion/api/autenticacion/semilla";
     private final String VALIDAR_SEMILLA = "/autenticacion/api/autenticacion/validarsemilla";
+    private final String ENVIA_COMPROBANTE = "/recepcion/api/facturaselectronicas";
+    private final String ENVIA_COMPROBANTE_RESUMEN = "/recepcionfc/api/recepcion/ecf";
 
     public String getGenerarSemillaUrl(AmbienteEnum ambiente) {
         return getBaseUrl(ambiente) + GENERAR_SEMILLA;
@@ -25,6 +27,14 @@ public class DgiiEnviroments {
 
     public String getValidarSemillaUrl(AmbienteEnum ambiente) {
         return getBaseUrl(ambiente) + VALIDAR_SEMILLA;
+    }
+
+    public String getEnviaComprobanteUrl(AmbienteEnum ambiente) {
+        return getBaseUrl(ambiente) + ENVIA_COMPROBANTE;
+    }
+
+    public String getEnviaComprobanteResumenUrl(AmbienteEnum ambiente) {
+        return getBaseUrl(ambiente) + ENVIA_COMPROBANTE_RESUMEN;
     }
 
     private String getBaseUrl(AmbienteEnum ambiente) {
