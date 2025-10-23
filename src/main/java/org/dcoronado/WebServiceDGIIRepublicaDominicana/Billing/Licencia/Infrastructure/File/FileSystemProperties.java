@@ -11,7 +11,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGene
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "spring.licencia.filesystem.basepath")
+@ConfigurationProperties(prefix = "licencia.filesystem.basepath")
 public class FileSystemProperties {
 
     private String windows;

@@ -6,10 +6,10 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.LicenciaInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.GetSemillaProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.LicenciaProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.ValidarSemillaProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.GetSemillaDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.LicenciaProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
 import org.springframework.stereotype.Service;
 
 
@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateSesionService implements CrearSesionUseCase {
 
-    private final SignProviderPort signProviderPort;
-    private final LicenciaProviderPort licenciaProviderPort;
-    private final GetSemillaProviderPort getSemillaProviderPort;
-    private final ValidarSemillaProviderPort validarSemillaProviderPort;
+    private final SignProvider signProvider;
+    private final LicenciaProvider licenciaProvider;
+    private final GetSemillaDgiiProvider getSemillaDgiiProvider;
+    private final ValidarSemillaDgiiProvider validarSemillaDgiiProvider;
     private final SesionRepositoryPort sesionRepositoryPort;
 
 
@@ -44,18 +44,18 @@ public class CreateSesionService implements CrearSesionUseCase {
         sesion.validarParametrosGenericos();
 
         // Obtener información de la licencia según RNC
-        LicenciaInfoDto licenciaInfoDto = licenciaProviderPort.getLicenciaInfoByRnc(sesion.getRnc());
+        LicenciaInfoDto licenciaInfoDto = licenciaProvider.getLicenciaInfoByRnc(sesion.getRnc());
 
         // Validaciones específicas de acceso según la licencia
         sesion.validarAccesLimitAmbienteLicencia(licenciaInfoDto.limitAccessAmbiente());
         sesion.validarLicenciaRequireForSesion(licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
 
         // Obtener semilla del proveedor y firmarla
-        String semilla = getSemillaProviderPort.execute(sesion.getAmbiente());
-        String semillaFirmada = signProviderPort.execute(semilla, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
+        String semilla = getSemillaDgiiProvider.execute(sesion.getAmbiente());
+        String semillaFirmada = signProvider.execute(semilla, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
 
         // Validar semilla firmada con DGII
-        InfoTokenDgiiDto result = validarSemillaProviderPort.execute(sesion.getAmbiente(), semillaFirmada);
+        InfoTokenDgiiDto result = validarSemillaDgiiProvider.execute(sesion.getAmbiente(), semillaFirmada);
 
         // Asignar datos de la sesión y persistir
         sesion.setDatosSesion(result.token(), result.fechaExpedido(), result.fechaExpira());

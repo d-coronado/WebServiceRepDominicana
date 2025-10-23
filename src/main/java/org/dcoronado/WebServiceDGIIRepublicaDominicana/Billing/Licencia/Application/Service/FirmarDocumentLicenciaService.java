@@ -5,7 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProvider;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -26,7 +26,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGene
 public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final SignProviderPort signProviderPort;
+    private final SignProvider signProviderPort;
 
     /**
      * Firma un documento electrónico asociado a una licencia.

@@ -5,7 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.GetSesionActivaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.SesionInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SesionProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SesionProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class SesionProviderAdapter implements SesionProviderPort {
+public class SesionProviderAdapter implements SesionProvider {
 
     private final CrearSesionUseCase crearSesionUseCase;
     private final GetSesionActivaUseCase getSesionActivaUseCase;

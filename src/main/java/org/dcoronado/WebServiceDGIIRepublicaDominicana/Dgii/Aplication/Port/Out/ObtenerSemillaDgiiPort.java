@@ -1,7 +1,7 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
-public interface GetSemillaProviderPort {
+public interface ObtenerSemillaDgiiPort {
     String execute(AmbienteEnum ambiente);
 }

@@ -2,7 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.ManagerFileLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SaveFileLicenciaProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SaveFileLicenciaProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.ContextoArchivoEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-public class ManagerFileLicenciaProviderAdapter implements SaveFileLicenciaProviderPort {
+public class ManagerFileLicenciaProviderAdapter implements SaveFileLicenciaProvider {
 
     private final ManagerFileLicenciaUseCase saveFileLicenciaUseCase;
 

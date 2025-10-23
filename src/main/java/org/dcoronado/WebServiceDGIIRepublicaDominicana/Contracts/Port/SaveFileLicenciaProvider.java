@@ -7,7 +7,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoOperacionAr
 
 import java.io.IOException;
 
-public interface SaveFileLicenciaProviderPort {
+public interface SaveFileLicenciaProvider {
     String guardarArchivoSimple(
             String rnc,
             ContextoArchivoEnum contexto,

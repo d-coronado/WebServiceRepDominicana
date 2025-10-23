@@ -3,11 +3,9 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.LicenciaInfoDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.SesionInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.LicenciaProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SaveFileLicenciaProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SesionProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProviderPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.In.EnviaComprobanteDgiiUseCase;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.*;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.EnviaComprobanteDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.In.EnviaComprobanteUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.ComprobanteToXmlPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.XsdValidatorPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
@@ -23,14 +21,15 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Asse
 
 @Service
 @RequiredArgsConstructor
-public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase {
+public class EnviaComprobanteService implements EnviaComprobanteUseCase {
 
-    private final LicenciaProviderPort licenciaProviderPort;
-    private final SesionProviderPort sesionProviderPort;
-    private final SignProviderPort signProviderPort;
+    private final LicenciaProvider licenciaProvider;
+    private final SesionProvider sesionProvider;
+    private final SignProvider signProvider;
+    private final SaveFileLicenciaProvider saveFileLicenciaProvider;
+    private final EnviaComprobanteDgiiProvider enviaComprobanteDgiiProvider;
     private final ComprobanteToXmlPort comprobanteToXmlPort;
     private final XsdValidatorPort xsdValidatorPort;
-    private final SaveFileLicenciaProviderPort saveFileLicenciaProviderPort;
 
 
     @Override
@@ -47,34 +46,34 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
 
         // Obtener licencia del emisor
         String rncEmisor = comprobante.getEncabezado().getEmisorEncabezado().getRnc();
-        LicenciaInfoDto licenciaInfoDto = licenciaProviderPort.getLicenciaInfoByRnc(rncEmisor);
+        LicenciaInfoDto licenciaInfoDto = licenciaProvider.getLicenciaInfoByRnc(rncEmisor);
 
         // Validar coherencia entre comprobante y licencia (seguridad) ---> Despues lo hacemos
 
         // Variables para el XML firmado a enviar a DGII
-        String comprobanteXmlFirmadoEnvioDgii;
+        String xmlFirmadoParaEnvioDgii;
 
         // Generar XML extendido y firmarlo
         final String comprobanteXmlExtendido = comprobanteToXmlPort.toXmlExtendido(comprobante);
-        final String comprobanteXmlExtendidoFirmado = signProviderPort.execute(comprobanteXmlExtendido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
+        final String comprobanteXmlExtendidoFirmado = signProvider.execute(comprobanteXmlExtendido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
 
         // Validar XML extendido firmado con el XSD correspondiente
         xsdValidatorPort.execute(comprobanteXmlExtendidoFirmado, tipoComprobanteTributarioEnum, comprobante.isEsResumen());
 
         // Extraer hash de la firma del XML extendido
-        final String hashFirma = signProviderPort.executeHash(comprobanteXmlExtendidoFirmado);
+        final String hashFirma = signProvider.executeHash(comprobanteXmlExtendidoFirmado);
         comprobante.asignarFirmaExtendida(hashFirma);
 
-        comprobanteXmlFirmadoEnvioDgii = comprobanteXmlExtendidoFirmado;
+        xmlFirmadoParaEnvioDgii = comprobanteXmlExtendidoFirmado;
 
         // Si es comprobante en formato resumido, generar XML resumido y firmarlo
         comprobante.setEsResumen(tipoComprobanteTributarioEnum);
         if (comprobante.isEsResumen()) {
             required(comprobante.getCodigoSeguridad(), "Codigo de seguridad es requerido para comprobante en formato resumido");
             final String comprobanteXmlResumido = comprobanteToXmlPort.toXmlResumido(comprobante);
-            final String comprobanteXmlResumidoFirmado = signProviderPort.execute(comprobanteXmlResumido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
+            final String comprobanteXmlResumidoFirmado = signProvider.execute(comprobanteXmlResumido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
             xsdValidatorPort.execute(comprobanteXmlResumidoFirmado, tipoComprobanteTributarioEnum, comprobante.isEsResumen());
-            comprobanteXmlFirmadoEnvioDgii = comprobanteXmlResumidoFirmado;
+            xmlFirmadoParaEnvioDgii = comprobanteXmlResumidoFirmado;
         }
 
 
@@ -88,7 +87,7 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
             final AmbienteEnum ambienteEnum = comprobante.getEncabezado().getDocEncabezado().getAmbienteEnum();
 
             final String nombreArchivo = licenciaInfoDto.rnc().concat(comprobante.getEncf()).concat(".xml");
-            saveFileLicenciaProviderPort.guardarArchivoContexto(licenciaInfoDto.rnc(),
+            saveFileLicenciaProvider.guardarArchivoContexto(licenciaInfoDto.rnc(),
                     ContextoArchivoEnum.COMPROBANTE,
                     TipoOperacionArchivoLicenciaEnum.EMISION,
                     ambienteEnum,
@@ -98,19 +97,22 @@ public class EnviaComprobanteDgiiService implements EnviaComprobanteDgiiUseCase 
 
 
             // Si no existe obtener una sesion (token dgii)
-            SesionInfoDto sesionInfoDto = sesionProviderPort
+            SesionInfoDto sesionInfoDto = sesionProvider
                     .obtenerSesionActiva(licenciaInfoDto.rnc(), ambienteEnum)
                     .orElseGet(() -> {
                         try {
-                            return sesionProviderPort.crear(licenciaInfoDto.rnc(), ambienteEnum);
+                            return sesionProvider.crear(licenciaInfoDto.rnc(), ambienteEnum);
                         } catch (Exception e) {
                             throw new RuntimeException("No se pudo crear la sesión", e);
                         }
                     });
 
             // enviar a la dgii
-
-            // guardar respuesta en BD
+            if(comprobante.isEsResumen()){
+                enviaComprobanteDgiiProvider.enviaComprobanteResumenProvider(ambienteEnum, sesionInfoDto.token(), xmlFirmadoParaEnvioDgii.getBytes(StandardCharsets.UTF_8));
+            } else {
+                enviaComprobanteDgiiProvider.enviaComprobanteProvider(ambienteEnum, sesionInfoDto.token(), xmlFirmadoParaEnvioDgii.getBytes(StandardCharsets.UTF_8));
+            }
 
             // retornar el comprobante con la info de la respuesta de DGII
             return comprobante;

@@ -5,7 +5,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
 
 import java.util.Optional;
 
-public interface SesionProviderPort {
+public interface SesionProvider {
     SesionInfoDto crear(String rnc, AmbienteEnum ambiente) throws Exception;
 
     Optional<SesionInfoDto> obtenerSesionActiva(String rnc, AmbienteEnum ambiente);

@@ -2,12 +2,12 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Infraestructure;
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Aplication.Port.In.SignDocumentUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProviderPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProvider;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SignDocumentProviderAdapter implements SignProviderPort {
+public class SignDocumentProviderAdapter implements SignProvider {
 
     private final SignDocumentUseCase signDocumentUseCase;
 

@@ -6,10 +6,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum AmbienteEnum {
-    PRUEBAS("PRUEBAS"),
-    CERTIFICACION("CERTIFICACION"),
-    PRODUCCION("PRODUCCION");
+    PRUEBAS("PRUEBAS","testecf"),
+    CERTIFICACION("CERTIFICACION","testecf"), // despues cambiar por "certecf"
+    PRODUCCION("PRODUCCION","testecf"); // despues cambiar por "ecf"
 
     private final String pathSegment;
+    private final String urlPathDgii;
 
 }
