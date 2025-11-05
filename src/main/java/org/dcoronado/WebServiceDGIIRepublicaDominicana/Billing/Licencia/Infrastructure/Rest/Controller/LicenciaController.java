@@ -9,6 +9,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Factory.LicenciaFactory;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaRequestDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaSetupBDRequestDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Response.LicenciaResponseDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Transformer.LicenciaDtoTransformer;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Api.AbstractApi;
@@ -82,9 +83,10 @@ public class LicenciaController extends AbstractApi {
      * Setup de base de datos (solo una vez)
      */
     @Operation(summary = "Configurar base de datos", description = "Crea la base de datos para una nueva licencia, debe ejecutarse solo una vez por licencia")
-    @PostMapping("/{rnc}/setup-database")
-    public ResponseEntity<CustomResponse> setupDatabase(@PathVariable String rnc) {
-        setupDatabaseLicenciaUseCase.execute(rnc);
+    @PostMapping("/setup-database")
+    public ResponseEntity<CustomResponse> setupDatabase(@Valid @RequestBody LicenciaSetupBDRequestDto request) {
+        Licencia licencia = licenciaFactory.ofDto(request);
+        setupDatabaseLicenciaUseCase.execute(licencia);
         return success("Setup database creado correctamente");
     }
 

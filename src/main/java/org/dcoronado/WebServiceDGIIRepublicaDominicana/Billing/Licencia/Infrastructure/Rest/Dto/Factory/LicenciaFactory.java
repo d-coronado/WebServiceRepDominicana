@@ -2,6 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaRequestDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaSetupBDRequestDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,16 @@ public class LicenciaFactory {
                 .nombreContacto(request.nombreContacto())
                 .telefonoContacto(request.telefonoContacto())
                 .ambiente(request.ambiente())
+                .build();
+    }
+
+    public Licencia ofDto(LicenciaSetupBDRequestDto request) {
+        if (isNull(request)) throw new InvalidArgumentException("DTO no puede ser null");
+
+        return Licencia.builder()
+                .rnc(request.rnc())
+                .hostBd(request.host())
+                .puertoBd(request.port())
                 .build();
     }
 

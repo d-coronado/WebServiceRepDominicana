@@ -8,6 +8,8 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
+
 @Component
 @RequiredArgsConstructor
 public class ArbolDirectoryDiscAdapter implements SetupDirectoriesPort {
@@ -16,7 +18,11 @@ public class ArbolDirectoryDiscAdapter implements SetupDirectoriesPort {
 
     @Override
     public void createDirectory(TreeNode estructura) {
-        Path basePath = Paths.get(fileSystemProperties.getBasePathByCurrentOS());
+
+        String basePathString = fileSystemProperties.getBasepath();
+        required(basePathString, "Base path no puede ser null");
+
+        Path basePath = Paths.get(basePathString);
         ArbolDirectorioCreatorDisc creador = new ArbolDirectorioCreatorDisc(basePath);
         creador.crearEstructuraDisc(estructura);
     }

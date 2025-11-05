@@ -1,7 +1,16 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseSetupData;
-
 public interface DatabaseManagerPort {
-    String execute(DatabaseSetupData databaseSetupData);
+
+    /** Crea una base de datos si no existe */
+    void createDatabase(String dbName);
+
+    /** Crea un usuario si no existe */
+    void createUser(String username, String password, String host);
+
+    /** Otorga privilegios sobre una base de datos */
+    void grantPrivileges(String dbName, String username, String host);
+
+    /** Elimina un usuario si existe */
+    void dropUserIfExists(String username, String host);
 }

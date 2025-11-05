@@ -1,77 +1,85 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.SetupDatabaseLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.DatabaseHostPortProviderPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.DatabaseManagerPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseHostInfo;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DatabaseSetupData;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.Dto.DbConnectionInfo;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.ScriptDataBaseExecutorPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Service;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SetupDataBaseLicenciaService implements SetupDatabaseLicenciaUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final DatabaseHostPortProviderPort databaseHostPortProviderPort;
     private final DatabaseManagerPort databaseManagerPort;
     private final ScriptDataBaseExecutorPort scriptExecutorPort;
 
 
     @Override
-    public void execute(String rnc) {
+    public void execute(Licencia licenciaRequest) {
 
-        notBlank(rnc, "rnc required");
+        log.info("[1] Iniciando proceso de setup para licencia con RNC {}", licenciaRequest.getRnc());
 
+        log.info("[2] Validando datos de entrada");
+        licenciaRequest.validarDatosEntradaSetupBd();
+
+        log.info("[3] Buscando licencia por RNC {}", licenciaRequest.getRnc());
         // Busca la licencia
-        Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
+        Licencia licenciaSaved = licenciaRepositoryPort.findByRnc(licenciaRequest.getRnc())
                 .orElseThrow(() -> new RuntimeException("Licencia not found"));
 
+        log.info("[4] Verificando estado de setup de base de datos");
         // Validar que el setup NO esté completado
-        if (licencia.tieneSetupBDCompletado()) {
+        if (licenciaSaved.tieneSetupBDCompletado()) {
             throw new InvalidArgumentException(
                     "El setup de base de datos ya fue completado para RNC %s en %s"
-                            .formatted(rnc, licencia.getDatabaseSetupAt()));
+                            .formatted(licenciaSaved.getRnc(), licenciaSaved.getDatabaseSetupAt()));
         }
 
-        /* Configuración dinámica de host y puerto */
-        DatabaseHostInfo hostInfo = databaseHostPortProviderPort.provide();
-        licencia.configurarHostBD(hostInfo.host(), hostInfo.port());
+        log.info("[5] Generando datos para la creación del setup de BD");
+        licenciaSaved.generarDatosBD(licenciaRequest);
 
-        licencia.generarDatosBD();
-        /* Preparar datos para la creación de la BD */
-        DatabaseSetupData dbData = DatabaseSetupData.builder()
-                .rnc(licencia.getRnc())
-                .nombreBd(licencia.getNombreBd())
-                .usuarioBd(licencia.getUsuarioBd())
-                .passwordBd(licencia.getPasswordBd())
-                .host(licencia.getHostBd())
-                .puerto(licencia.getPuertoBd())
-                .build();
+        try {
 
-        String urlConexion = databaseManagerPort.execute(dbData);
-        licencia.setUrlConexionBd(urlConexion);
-        licencia.validarUrlConexionBD();
+            // Crear base de datos
+            log.info("[6] Creando base de datos '{}'", licenciaSaved.getNombreBd());
+            databaseManagerPort.createDatabase(licenciaSaved.getNombreBd());
 
-        /* Ejecutar script que crea la BD de la licencia */
-        DbConnectionInfo dbConnectionInfo = DbConnectionInfo.builder()
-                .urlConexionBd(licencia.getUrlConexionBd())
-                .usuarioBd(licencia.getUsuarioBd())
-                .passwordBd(licencia.getPasswordBd())
-                .build();
+            // Crear usuario
+            log.info("[7] Creando usuario '{}'@'{}'", licenciaSaved.getUsuarioBd(), licenciaSaved.getHostBd());
+            databaseManagerPort.createUser(licenciaSaved.getUsuarioBd(), licenciaSaved.getPasswordBd(), licenciaSaved.getHostBd());
 
-        scriptExecutorPort.executeScript(dbConnectionInfo);
+            // Otorgar privilegios
+            log.info("[8] Otorgando privilegios");
+            databaseManagerPort.grantPrivileges(licenciaSaved.getNombreBd(), licenciaSaved.getUsuarioBd(), licenciaSaved.getHostBd());
 
-        licencia.marcarSetupBDCompletado();
+            // Ejecutar script de estructura
+            log.info("[9] Ejecutando script de estructura de BD");
+            DbConnectionInfo dbConnectionInfo = DbConnectionInfo.builder()
+                    .urlConexionBd(licenciaSaved.getUrlConexionBd())
+                    .usuarioBd(licenciaSaved.getUsuarioBd())
+                    .passwordBd(licenciaSaved.getPasswordBd())
+                    .build();
+            scriptExecutorPort.executeScript(dbConnectionInfo);
 
-        licenciaRepositoryPort.save(licencia);
+            log.info("[10] Marcando setup como completado y guardando cambios");
+            licenciaSaved.marcarSetupBDCompletado();
+            licenciaRepositoryPort.save(licenciaSaved);
 
+            log.info("[11] Setup finalizado correctamente para RNC {}", licenciaSaved.getRnc());
+
+        } catch (Exception e) {
+            log.error("[E] Error durante setup de BD para RNC {}: {}", licenciaSaved.getRnc(), e.getMessage(), e);
+            databaseManagerPort.dropUserIfExists(licenciaSaved.getUsuarioBd(), licenciaSaved.getHostBd());
+            log.info("Rollback realizado: usuario eliminado '{}@{}'", licenciaSaved.getUsuarioBd(), licenciaSaved.getHostBd());
+            throw new InfrastructureException("Error durante el proceso de setup de base de datos ", e);
+        }
     }
 }

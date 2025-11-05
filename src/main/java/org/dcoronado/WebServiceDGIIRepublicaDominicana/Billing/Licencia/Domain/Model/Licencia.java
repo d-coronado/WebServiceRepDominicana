@@ -51,24 +51,23 @@ public class Licencia {
     private LocalDateTime directoriesSetupAt;
 
 
+    public void validarDatosEntradaSetupBd(){
+        notBlank(this.rnc, "RNC required");
+        notBlank(this.hostBd, "hostBd required");
+        notBlank(this.puertoBd, "puertoBd required");
+    }
+
     /**
      * Genera automáticamente el nombres de la BD, usuario y password
      * basados en el RNC de la licencia.
      */
-    public void generarDatosBD() {
-        this.nombreBd = "fe_rd_V2_" + this.rnc;
-        this.usuarioBd = "fe_rd_user_V2_" + this.rnc;
+    public void generarDatosBD(Licencia licencia) {
+        this.hostBd = licencia.getHostBd();
+        this.puertoBd = licencia.getPuertoBd();
+        this.nombreBd = "fe_rd_V2_" + licencia.getRnc();
+        this.usuarioBd = "fe_rd_user_V2_" + licencia.getRnc();
         this.passwordBd = UUID.randomUUID().toString().replace("-", "").substring(0, 12);
-    }
-
-    /**
-     * Configura el host y puerto de la base de datos.
-     */
-    public void configurarHostBD(String hostBd, String puertoBd) {
-        notBlank(hostBd, "hostBd required");
-        notBlank(puertoBd, "puertoBd required");
-        this.hostBd = hostBd;
-        this.puertoBd = puertoBd;
+        this.urlConexionBd = String.format("jdbc:mysql://%s:%s/%s", this.hostBd,this.puertoBd, this.nombreBd);
     }
 
     /**
@@ -164,12 +163,6 @@ public class Licencia {
         required(this.ambiente, "Ambiente required");
     }
 
-    /**
-     * Valida que la URL de conexión esté presente.
-     */
-    public void validarUrlConexionBD() {
-        notBlank(this.urlConexionBd, "urlConexionBd required");
-    }
 
     public void validarDatosParaFirma() {
         notBlank(this.rutaCertificado, "rutaCertificado required");
