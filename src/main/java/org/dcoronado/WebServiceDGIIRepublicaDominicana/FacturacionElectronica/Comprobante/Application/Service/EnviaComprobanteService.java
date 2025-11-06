@@ -78,6 +78,7 @@ public class EnviaComprobanteService implements EnviaComprobanteUseCase {
         // Generar XML extendido y firmarlo
         log.info("[5] Generando XML extendido.");
         final String comprobanteXmlExtendido = comprobanteToXmlPort.toXmlExtendido(comprobante);
+        log.info("[5.1] Firmando XML extendido.");
         final String comprobanteXmlExtendidoFirmado = signProvider.execute(comprobanteXmlExtendido, licenciaInfoDto.pathCertificado(), licenciaInfoDto.claveCertificado());
 
         // Validar XML extendido firmado con el XSD correspondiente
@@ -132,7 +133,6 @@ public class EnviaComprobanteService implements EnviaComprobanteUseCase {
                     .obtenerSesionActiva(licenciaInfoDto.rnc(), ambienteEnum)
                     .orElseGet(() -> {
                         try {
-                            log.info("[10.1] No existe sesión activa. Creando nueva sesión DGII...");
                             return sesionProvider.crear(licenciaInfoDto.rnc(), ambienteEnum);
                         } catch (Exception e) {
                             log.error("[10.1] Error creando sesión DGII", e);
@@ -148,7 +148,7 @@ public class EnviaComprobanteService implements EnviaComprobanteUseCase {
                 enviaComprobanteDgiiProvider.enviaComprobanteProvider(ambienteEnum, sesionInfoDto.token(), xmlFirmadoParaEnvioDgii.getBytes(StandardCharsets.UTF_8));
             }
 
-            log.info("[12] Proceso finalizado correctamente para secuencia: {}", secuenciaComprobante);
+            log.info("FIN Proceso finalizado correctamente para secuencia: {}", secuenciaComprobante);
             // retornar el comprobante con la info de la respuesta de DGII
             return comprobante;
         }
