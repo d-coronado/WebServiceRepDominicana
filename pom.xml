@@ -86,6 +86,15 @@
             <artifactId>jaxb-runtime</artifactId>
             <version>4.0.2</version>
         </dependency>
+
+        <!-- Xerces agregado para que Logback pueda deshabilitar entidades externas
+        al parsear logback.xml, evitando el error con xmlparserv2 -->
+        <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.12.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

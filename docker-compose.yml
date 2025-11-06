@@ -10,10 +10,12 @@ services:
       - DATABASE_USERNAME=root
       - DATABASE_PASSWORD=sasa
       - FILESYSTEM_PATH=/app/file/
+      - LOG_PATH=/app/logs
     depends_on:
       - db
     volumes:
       - app-file-volume:/app/file/
+      - app-logs-volume:/app/logs
 
   db:
     container_name: mariadb-bd
@@ -30,3 +32,4 @@ services:
 volumes:
   db-data:
   app-file-volume:
+  app-logs-volume:

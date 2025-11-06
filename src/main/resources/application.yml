@@ -35,6 +35,9 @@ logging:
     org.dcoronado.WebServiceDGIIRepublicaDominicana: DEBUG
     org.springframework: INFO
 
+  file:
+    path: ${LOG_PATH}
+
 licencia:
   filesystem:
     basepath: ${FILESYSTEM_PATH}
