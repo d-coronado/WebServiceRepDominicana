@@ -1,6 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.FirmarDocumentUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
@@ -21,6 +22,7 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGene
  * comprobar que la licencia tenga los datos necesarios para la firma,
  * y delegar la firma al proveedor externo.
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
@@ -39,24 +41,32 @@ public class FirmarDocumentLicenciaService implements FirmarDocumentUseCase {
      * @throws NotFoundException si no se encuentra la licencia con el RNC indicado
      */
     @Override
-    public String firmarDocumentByLicencia(String rnc, String nombreDocumento, byte[] archivo) throws Exception {
+    public String firmarDocumentByLicencia(final String rnc,final String nombreDocumento, byte[] archivo) throws Exception {
+
+
+        log.info("INICIO - Proceso de firma de documento para licencia con RNC {}",rnc);
 
         // Validar parámetros de entrada
+        log.info("[1] Validando datos de entrada");
         notBlank(rnc, "RNC required");
         validateArchivo(nombreDocumento, archivo);
         validateExtensionXml(nombreDocumento);
 
         // Buscar licencia y validar existencia
+        log.info("[2] Buscando licencia por RNC {}", rnc);
         Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
                 .orElseThrow(() -> new NotFoundException("Licencia con rnc: " + rnc + " not found"));
 
         // Validar que la licencia tiene datos suficientes para firmar
+        log.info("[3] Buscando que la licencia tiene datos necesarios para firma");
         licencia.validarDatosParaFirma();
 
         // Convertir el archivo a String
+        log.info("[4] Convirtiendo archivo a String");
         String documentoString = new String(archivo, StandardCharsets.UTF_8);
 
         // Delegar la firma al proveedor externo
+        log.info("[5] Firmando documento");
         return signProviderPort.execute(documentoString, licencia.getRutaCertificado(), licencia.getClaveCertificado());
     }
 }
