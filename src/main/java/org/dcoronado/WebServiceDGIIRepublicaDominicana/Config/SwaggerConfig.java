@@ -35,10 +35,6 @@ public class SwaggerConfig {
                 .version(swaggerProperties.getInfo().getVersion())
                 .contact(contact);
 
-        return new OpenAPI()
-                .servers(Collections.singletonList(
-                        new Server().url(swaggerProperties.getGateway().getUrl())
-                ))
-                .info(info);
+        return new OpenAPI().info(info);
     }
 }
