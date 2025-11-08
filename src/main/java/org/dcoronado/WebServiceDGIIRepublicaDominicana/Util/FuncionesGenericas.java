@@ -98,5 +98,9 @@ public class FuncionesGenericas {
         }
     }
 
+    public static boolean isLinux() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("nux") || os.contains("nix") || os.contains("aix");
+    }
 
 }

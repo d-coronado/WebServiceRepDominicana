@@ -6,6 +6,8 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.isLinux;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -28,22 +30,26 @@ public class MySQLDatabaseManagerAdapter implements DatabaseManagerPort {
 
     @Override
     public void createUser(String username, String password, String host) {
-        String sql = String.format(SQL_CREATE_USER, username, host, password);
+        String effectiveHost = isLinux() ? "%" : host;
+        String sql = String.format(SQL_CREATE_USER, username, effectiveHost, password);
         jdbcTemplate.execute(sql);
-        log.debug("Usuario creado: {} para host: {}", username, host);
+        log.debug("Usuario creado: {} para host: {}", username, effectiveHost);
     }
 
     @Override
     public void grantPrivileges(String dbName, String username, String host) {
-        String grantSql = String.format(SQL_GRANT_PRIVILEGES, dbName, username, host);
+        String effectiveHost = isLinux() ? "%" : host;
+        String grantSql = String.format(SQL_GRANT_PRIVILEGES, dbName, username, effectiveHost);
         jdbcTemplate.execute(grantSql);
         jdbcTemplate.execute(SQL_FLUSH_PRIVILEGES);
-        log.debug("Privilegios otorgados a usuario {} sobre {} para host: {}", username, dbName, host);
+        log.debug("Privilegios otorgados a usuario {} sobre {} para host: {}", username, dbName, effectiveHost);
     }
 
     @Override
     public void dropUserIfExists(String username, String host) {
-        String sql = String.format(SQL_DROP_USER_IF_EXISTS, username, host);
+        String effectiveHost = isLinux() ? "%" : host;
+        String sql = String.format(SQL_DROP_USER_IF_EXISTS, username, effectiveHost);
+        log.debug("Usuario eliminado {} para host: {}", username, effectiveHost);
         jdbcTemplate.execute(sql);
     }
 

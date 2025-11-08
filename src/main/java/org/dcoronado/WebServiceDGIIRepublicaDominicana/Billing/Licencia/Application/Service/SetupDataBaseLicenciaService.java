@@ -68,7 +68,7 @@ public class SetupDataBaseLicenciaService implements SetupDatabaseLicenciaUseCas
             databaseManagerPort.createDatabase(licenciaSaved.getNombreBd());
 
             // Crear usuario
-            log.info("[6] Creando usuario '{}'@'{}'", licenciaSaved.getUsuarioBd(), licenciaSaved.getHostBd());
+            log.info("[6] Creando usuario '{}'", licenciaSaved.getUsuarioBd());
             databaseManagerPort.createUser(licenciaSaved.getUsuarioBd(), licenciaSaved.getPasswordBd(), licenciaSaved.getHostBd());
 
             // Otorgar privilegios
