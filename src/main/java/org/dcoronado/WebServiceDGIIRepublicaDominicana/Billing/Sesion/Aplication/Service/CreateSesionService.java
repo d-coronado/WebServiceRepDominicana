@@ -2,15 +2,15 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplicatio
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.InfoTokenDgiiDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.InfoTokenDgiiDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.In.CrearSesionUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Aplication.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Sesion.Domain.Sesion;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.LicenciaInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.GetSemillaDgiiProvider;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.LicenciaProvider;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.SignProvider;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.LicenciaInfoDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.GetSemillaDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.LicenciaProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.SignProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
 import org.springframework.stereotype.Service;
 
 

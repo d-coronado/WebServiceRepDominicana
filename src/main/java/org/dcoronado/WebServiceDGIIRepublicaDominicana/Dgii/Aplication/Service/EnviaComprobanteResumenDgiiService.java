@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Dto.Response.ResponseComprobanteResumenDgii;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.EnviaComprobanteResumenDgiiUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.Out.EnviaComprobanteResumenDgiiPort;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
 import org.springframework.stereotype.Service;
 
 @Service

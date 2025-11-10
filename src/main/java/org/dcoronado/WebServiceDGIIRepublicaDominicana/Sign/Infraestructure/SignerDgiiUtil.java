@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Sign.Infraestructure;
 
 import oracle.xml.parser.v2.DOMParser;
 import oracle.xml.parser.v2.XMLDocument;

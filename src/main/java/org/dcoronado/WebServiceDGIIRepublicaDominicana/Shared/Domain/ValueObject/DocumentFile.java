@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject;
 
 import lombok.Getter;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;

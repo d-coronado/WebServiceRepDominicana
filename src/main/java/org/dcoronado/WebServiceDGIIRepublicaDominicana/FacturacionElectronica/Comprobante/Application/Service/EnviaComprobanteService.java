@@ -2,18 +2,21 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.C
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.LicenciaInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.SesionInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.*;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.EnviaComprobanteDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.LicenciaInfoDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.SesionInfoDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.EnviaComprobanteDgiiProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.In.EnviaComprobanteUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.ComprobanteToXmlPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Application.Out.XsdValidatorPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Comprobante;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.ContextoArchivoEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoComprobanteTributarioEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.TipoOperacionArchivoLicenciaEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.LicenciaProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.SaveFileLicenciaProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.SesionProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.SignProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.ContextoArchivoEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.TipoComprobanteTributarioEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.TipoOperacionArchivoLicenciaEnum;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;

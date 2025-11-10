@@ -1,6 +1,6 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Http;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;

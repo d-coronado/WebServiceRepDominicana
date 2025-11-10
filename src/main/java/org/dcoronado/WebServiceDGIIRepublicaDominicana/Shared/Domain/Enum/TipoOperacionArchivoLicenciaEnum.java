@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

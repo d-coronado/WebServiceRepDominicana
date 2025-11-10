@@ -4,7 +4,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.M
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.CertificadoDigital;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.ConfiguracionBD;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.DocumentFile;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.DocumentFile;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;

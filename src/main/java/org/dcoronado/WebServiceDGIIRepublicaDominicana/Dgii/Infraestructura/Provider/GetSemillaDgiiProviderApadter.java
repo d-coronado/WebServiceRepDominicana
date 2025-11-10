@@ -1,9 +1,9 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Provider;
 
 import lombok.RequiredArgsConstructor;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.GetSemillaDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.GetSemillaDgiiProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ObtenerSemillaDgiiUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 @Component

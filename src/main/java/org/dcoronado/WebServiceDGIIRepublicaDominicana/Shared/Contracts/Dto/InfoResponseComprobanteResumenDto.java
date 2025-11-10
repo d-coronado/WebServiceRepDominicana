@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto;
 
 import java.util.List;
 

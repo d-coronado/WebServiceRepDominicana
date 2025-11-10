@@ -1,11 +1,11 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Infraestructura.Provider;
 
 import lombok.RequiredArgsConstructor;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.InfoTokenDgiiDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.InfoTokenDgiiDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Port.In.ValidarSemillaDgiiUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Dgii.Aplication.Dto.Response.ResponseTokenDgii;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
 import org.springframework.stereotype.Component;
 
 @Component

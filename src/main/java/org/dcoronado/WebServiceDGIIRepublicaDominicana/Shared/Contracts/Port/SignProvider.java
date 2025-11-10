@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port;
 
 public interface SignProvider {
     String execute(String document, String pathCertificado, String claveCertificado) throws Exception;

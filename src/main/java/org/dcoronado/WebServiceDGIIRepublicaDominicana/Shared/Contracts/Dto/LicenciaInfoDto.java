@@ -1,6 +1,6 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.AmbienteEnum;
 
 public record LicenciaInfoDto(
         String rnc,

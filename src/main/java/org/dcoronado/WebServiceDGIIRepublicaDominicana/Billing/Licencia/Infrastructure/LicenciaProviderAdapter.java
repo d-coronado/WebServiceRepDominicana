@@ -2,8 +2,8 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.GetLicenciaUseCase;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Dto.LicenciaInfoDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Contracts.Port.LicenciaProvider;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Dto.LicenciaInfoDto;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.LicenciaProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Component;
 

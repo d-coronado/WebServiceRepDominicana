@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Util;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain;
 
 public interface SaveFilePort {
 
