@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SaveFilePort;
 import org.springframework.stereotype.Component;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FileSiytemDiscUtil.*;
 
 
@@ -15,13 +14,15 @@ public class SaveFileDiscAdapter implements SaveFilePort {
     private final FileSystemProperties fileSystemProperties;
 
     @Override
-    public String save(String path, byte[] content) {
-        String basePathString = fileSystemProperties.getBasepath();
-        required(basePathString, "Base path no puede ser null");
-
-        String pathAbsolute = basePathString + path;
-        /* Guarda el archivo en disc */
-        store(pathAbsolute, content);
-        return pathAbsolute;
+    public String getBasePath() {
+        return fileSystemProperties.getBasepath();
     }
+
+    @Override
+    public void save(String path, byte[] content) {
+        /* Guarda el archivo en disc */
+        store(path, content);
+    }
+
 }
+

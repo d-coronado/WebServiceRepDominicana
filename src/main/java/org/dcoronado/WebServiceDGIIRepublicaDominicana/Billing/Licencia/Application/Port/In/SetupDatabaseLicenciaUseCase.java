@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Command.SetupBDCommand;
 
 public interface SetupDatabaseLicenciaUseCase {
-    void execute(Licencia licencia);
+    void execute(SetupBDCommand command);
 }

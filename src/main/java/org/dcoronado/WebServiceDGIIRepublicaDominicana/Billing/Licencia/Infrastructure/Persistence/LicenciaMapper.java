@@ -1,7 +1,10 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Persistence;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.AmbienteEnum;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.CertificadoDigital;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.ConfiguracionBD;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.DocumentFile;
 import org.springframework.stereotype.Component;
 
 import static java.util.Objects.isNull;
@@ -12,23 +15,28 @@ public class LicenciaMapper {
     public LicenciaEntity toEntity(Licencia model) {
         if (model == null) return null;
 
+        var certificado = model.getCertificadoDigital();
+        var configuracionBD = model.getConfiguracionBD();
+
         return LicenciaEntity.builder()
-                .id(model.getId()) // puede ser null en creación
-                .rnc(model.getRnc())
+                .id(model.getId())
+                .rnc(model.getRnc().getValor())
                 .razonSocial(model.getRazonSocial())
                 .direccionFiscal(model.getDireccionFiscal())
                 .alias(model.getAlias())
                 .nombreContacto(model.getNombreContacto())
                 .telefonoContacto(model.getTelefonoContacto())
-                .rutaCertificado(model.getRutaCertificado())
-                .nombreCertificado(model.getNombreCertificado())
-                .claveCertificado(model.getClaveCertificado())
-                .hostBd(model.getHostBd())
-                .puertoBd(model.getPuertoBd())
-                .urlConexionBd(model.getUrlConexionBd())
-                .nombreBd(model.getNombreBd())
-                .usuarioBd(model.getUsuarioBd())
-                .passwordBd(model.getPasswordBd())
+                // Certificado digital
+                .rutaCertificado(certificado != null ? certificado.getRutaCertificado() : null)
+                .nombreCertificado(certificado != null ? certificado.getCertificado().getNombre() : null)
+                .claveCertificado(certificado != null ? certificado.getClave() : null)
+                // Configuración BD
+                .hostBd(configuracionBD != null ? configuracionBD.getHostBD() : null)
+                .puertoBd(configuracionBD != null ? configuracionBD.getPuertoBD() : null)
+                .urlConexionBd(configuracionBD != null ? configuracionBD.getUrlConexion() : null)
+                .nombreBd(configuracionBD != null ? configuracionBD.getNombreBD() : null)
+                .usuarioBd(configuracionBD != null ? configuracionBD.getUsuario() : null)
+                .passwordBd(configuracionBD != null ? configuracionBD.getPassword() : null)
                 .ambiente(model.getAmbiente())
                 .databaseSetupStatus(model.getDatabaseSetupStatus())
                 .databaseSetupAt(model.getDatabaseSetupAt())
@@ -41,29 +49,40 @@ public class LicenciaMapper {
     public Licencia toDomain(LicenciaEntity entity) {
         if (isNull(entity)) return null;
 
-        return Licencia.builder()
-                .id(entity.getId())
-                .rnc(entity.getRnc())
-                .razonSocial(entity.getRazonSocial())
-                .direccionFiscal(entity.getDireccionFiscal())
-                .alias(entity.getAlias())
-                .nombreContacto(entity.getNombreContacto())
-                .telefonoContacto(entity.getTelefonoContacto())
-                .rutaCertificado(entity.getRutaCertificado())
-                .nombreCertificado(entity.getNombreCertificado())
-                .claveCertificado(entity.getClaveCertificado())
-                .hostBd(entity.getHostBd())
-                .puertoBd(entity.getPuertoBd())
-                .urlConexionBd(entity.getUrlConexionBd())
-                .nombreBd(entity.getNombreBd())
-                .usuarioBd(entity.getUsuarioBd())
-                .passwordBd(entity.getPasswordBd())
-                .ambiente(entity.getAmbiente())
-                .databaseSetupAt(entity.getDatabaseSetupAt())
-                .databaseSetupStatus(entity.getDatabaseSetupStatus())
-                .directoriesSetupAt(entity.getDirectoriesSetupAt())
-                .directoriesSetupStatus(entity.getDirectoriesSetupStatus())
-                .isActive(entity.getIsActive())
-                .build();
+        // Reconstruir certificado digital
+        CertificadoDigital certificado = CertificadoDigital.reconstruirDesdeBD(
+                DocumentFile.reconstruir(entity.getNombreCertificado()),
+                entity.getClaveCertificado(),
+                entity.getRutaCertificado()
+        );
+
+        // Reconstruir configuración BD
+        ConfiguracionBD configuracionBD = ConfiguracionBD.reconstruirDesdeBD(
+                entity.getNombreBd(),
+                entity.getHostBd(),
+                entity.getPuertoBd(),
+                entity.getUsuarioBd(),
+                entity.getPasswordBd(),
+                entity.getUrlConexionBd()
+        );
+
+        // Reconstruir dominio
+        return Licencia.reconstruir(
+                entity.getId(),
+                RNC.reconstruirDesdeBD(entity.getRnc()),
+                entity.getRazonSocial(),
+                entity.getDireccionFiscal(),
+                entity.getAmbiente(),
+                entity.getIsActive(),
+                entity.getAlias(),
+                entity.getNombreContacto(),
+                entity.getTelefonoContacto(),
+                certificado,
+                configuracionBD,
+                entity.getDatabaseSetupStatus(),
+                entity.getDirectoriesSetupStatus(),
+                entity.getDatabaseSetupAt(),
+                entity.getDirectoriesSetupAt()
+        );
     }
 }

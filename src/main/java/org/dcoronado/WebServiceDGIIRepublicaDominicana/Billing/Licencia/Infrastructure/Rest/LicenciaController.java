@@ -1,17 +1,16 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Controller;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Command.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Factory.LicenciaFactory;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaRequestDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Request.LicenciaSetupBDRequestDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Response.LicenciaResponseDto;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Transformer.LicenciaDtoTransformer;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Api.AbstractApi;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Response.CustomResponse;
 import org.springframework.http.ResponseEntity;
@@ -36,23 +35,23 @@ public class LicenciaController extends AbstractApi {
     private final FirmarDocumentUseCase firmarDocumentByLicenciaUseCase;
     private final SetupDatabaseLicenciaUseCase setupDatabaseLicenciaUseCase;
     private final SetupDirectoriesLicenciaUseCase setupDirectoriesLicenciaUseCase;
-    private final LicenciaFactory licenciaFactory;
+    private final LicenciaMapperCommand licenciaMapperCommand;
     private final LicenciaDtoTransformer licenciaDtoTransformer;
 
     @Operation(summary = "Crear licencia", description = "Registra una nueva licencia en el sistema")
     @PostMapping
     public ResponseEntity<CustomResponse> save(@Valid @RequestBody LicenciaRequestDto request) {
-        Licencia licencia = licenciaFactory.ofDto(request); // DTO → Domain
-        Licencia result = createLicenciaUseCase.createLicencia(licencia); // Ejecutar caso de uso
-        LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result); // Domain → DTO
+        CreateLicenciaCommand command = licenciaMapperCommand.toCommand(request);
+        Licencia result = createLicenciaUseCase.createLicencia(command);
+        LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result);
         return success(responseDto, "Licencia Creada Exitosamente");
     }
 
     @Operation(summary = "Actualizar licencia", description = "Actualiza los datos de una licencia existente por ID")
     @PutMapping("/{id}")
     public ResponseEntity<CustomResponse> update(@PathVariable("id") final Long id, @Valid @RequestBody LicenciaRequestDto request) {
-        Licencia licencia = licenciaFactory.fromDtoForUpdate(id, request);
-        Licencia result = updateLicenciaUseCase.updateLicencia(licencia);
+        UpdateLicenciaCommand command = licenciaMapperCommand.toCommand(id, request);
+        Licencia result = updateLicenciaUseCase.updateLicencia(command);
         LicenciaResponseDto responseDto = licenciaDtoTransformer.fromObject(result);
         return success(responseDto, "Licencia Actualizada Exitosamente");
     }
@@ -85,8 +84,8 @@ public class LicenciaController extends AbstractApi {
     @Operation(summary = "Configurar base de datos", description = "Crea la base de datos para una nueva licencia, debe ejecutarse solo una vez por licencia")
     @PostMapping("/setup-database")
     public ResponseEntity<CustomResponse> setupDatabase(@Valid @RequestBody LicenciaSetupBDRequestDto request) {
-        Licencia licencia = licenciaFactory.ofDto(request);
-        setupDatabaseLicenciaUseCase.execute(licencia);
+        SetupBDCommand command = licenciaMapperCommand.toCommand(request);
+        setupDatabaseLicenciaUseCase.execute(command);
         return success("Setup database creado correctamente");
     }
 
@@ -104,9 +103,10 @@ public class LicenciaController extends AbstractApi {
             @PathVariable("rnc") final String rnc, @RequestParam("archivo") final MultipartFile archivo,
             @RequestParam("contrasenia") final String contrasenia
     ) throws IOException {
-        String nombreArchvio = archivo.getOriginalFilename();
+        final String nombreArchvio = archivo.getOriginalFilename();
         byte[] contenido = archivo.getBytes();
-        uploadCertificadoUseCase.execute(rnc, nombreArchvio, contenido, contrasenia);
+        UploadCertificadoDigitalCommand command = licenciaMapperCommand.toCommand(rnc, nombreArchvio, contenido, contrasenia);
+        uploadCertificadoUseCase.execute(command);
         return success("Certificado cargado correctamente para la licencia con RNC: " + rnc);
     }
 
@@ -114,11 +114,12 @@ public class LicenciaController extends AbstractApi {
     @PostMapping("firmar_documento/{rnc}")
     public ResponseEntity<CustomResponse> signDocument(@PathVariable("rnc") final String rnc,
                                                        @RequestParam("archivo") final MultipartFile archivo) throws Exception {
-        String nombreArchvio = archivo.getOriginalFilename();
+        final String nombreArchvio = archivo.getOriginalFilename();
         byte[] contenido = archivo.getBytes();
-        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(rnc, nombreArchvio, contenido);
+        FirmarDocumentoCommand command = licenciaMapperCommand.toCommand(rnc, nombreArchvio, contenido);
+        String documentFirmado = firmarDocumentByLicenciaUseCase.firmarDocumentByLicencia(command);
         String documentoBase64 = Base64.getEncoder().encodeToString(documentFirmado.getBytes(StandardCharsets.UTF_8));
-        return success(documentoBase64);
+        return success(documentoBase64,"Documento Firmado Exitosamente");
     }
 
 }

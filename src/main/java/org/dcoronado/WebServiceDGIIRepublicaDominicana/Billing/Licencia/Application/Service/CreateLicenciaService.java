@@ -2,18 +2,20 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Command.CreateLicenciaCommand;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.CreateLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.AlreadyExistsException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.springframework.stereotype.Service;
-
-import static java.util.Objects.isNull;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CreateLicenciaService implements CreateLicenciaUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
@@ -21,29 +23,40 @@ public class CreateLicenciaService implements CreateLicenciaUseCase {
     /**
      * Crea una nueva licencia
      *
-     * @param licencia objeto de dominio a crear
+     * @param command objeto con los datos requeridos para crear la licencia
      * @return la licencia creada y persistida
      * @throws InvalidArgumentException si la licencia es null
      * @throws AlreadyExistsException   si ya existe una licencia con el mismo RNC c
      */
     @Override
-    public Licencia createLicencia(Licencia licencia) {
+    public Licencia createLicencia(CreateLicenciaCommand command) {
 
-        log.info("INICIO - Proceso de creación de nueva licencia");
+        log.info("INICIO - Creando licencia con RNC: {}", command.rnc());
 
-        log.info("[1] Validando datos de entrada");
-        if (isNull(licencia)) throw new InvalidArgumentException("La licencia no puede ser null");
-        licencia.validarDatosBasicos();
+        log.info("[1] Validando rnc de la licencia");
+        final RNC rncValue = RNC.of(command.rnc());
 
-        log.info("[2] Verificando registro duplicado para licencia con RNC {}", licencia.getRnc());
+        log.info("[2] Verificando registro duplicado para licencia con RNC {}", rncValue.getValor());
         /* Verificar duplicados */
-        licenciaRepositoryPort.findByRnc(licencia.getRnc())
+        licenciaRepositoryPort.findByRnc(rncValue.getValor())
                 .ifPresent(l -> {
                     throw new AlreadyExistsException(
-                            "Licencia con RNC %s ya existe".formatted(licencia.getRnc()));
+                            "Licencia con RNC %s ya existe".formatted(rncValue.getValor()));
                 });
 
-        log.info("[4] Guardando cambios en el repositorio de licencias");
+        log.info("[1] Construyendo nueva instancia de Licencia");
+        Licencia licencia = Licencia.crear(
+                rncValue,
+                command.razonSocial(),
+                command.direccionFiscal(),
+                command.ambiente(),
+                command.alias(),
+                command.nombreContacto(),
+                command.telefono()
+        );
+
+
+        log.info("[3] Guardando cambios en el repositorio de licencias");
         /* Persistir licencia */
         return licenciaRepositoryPort.save(licencia);
     }

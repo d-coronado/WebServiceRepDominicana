@@ -19,6 +19,10 @@ public final class Assert {
         }
     }
 
+    public static String safeTrim(String value) {
+        return value == null ? null : value.trim();
+    }
+
     public static void matches(String value, String regex, String message) {
         if (value == null || !value.matches(regex)) {
             throw new InvalidArgumentException(message);

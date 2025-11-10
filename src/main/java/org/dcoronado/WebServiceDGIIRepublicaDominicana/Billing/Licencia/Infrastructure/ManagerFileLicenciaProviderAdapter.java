@@ -18,12 +18,12 @@ public class ManagerFileLicenciaProviderAdapter implements SaveFileLicenciaProvi
     private final ManagerFileLicenciaUseCase saveFileLicenciaUseCase;
 
     @Override
-    public String guardarArchivoSimple(String rnc, ContextoArchivoEnum contexto, String nombreArchivo, byte[] archivo) throws IOException {
-        return saveFileLicenciaUseCase.guardarArchivoSimple(rnc, contexto, nombreArchivo, archivo);
+    public void guardarArchivoSimple(String rnc, ContextoArchivoEnum contexto, String nombreArchivo, byte[] archivo) throws IOException {
+        saveFileLicenciaUseCase.guardarArchivoSimple(rnc, contexto, nombreArchivo, archivo);
     }
 
     @Override
-    public String guardarArchivoContexto(String rnc, ContextoArchivoEnum contexto, TipoOperacionArchivoLicenciaEnum tipoOperacion, AmbienteEnum ambiente, TipoComprobanteTributarioEnum tipoComprobante, String nombreArchivo, byte[] archivo) throws IOException {
-        return saveFileLicenciaUseCase.guardarArchivoContexto(rnc, contexto, tipoOperacion, ambiente, tipoComprobante, nombreArchivo, archivo);
+    public void guardarArchivoContexto(String rnc, ContextoArchivoEnum contexto, TipoOperacionArchivoLicenciaEnum tipoOperacion, AmbienteEnum ambiente, TipoComprobanteTributarioEnum tipoComprobante, String nombreArchivo, byte[] archivo) throws IOException {
+        saveFileLicenciaUseCase.guardarArchivoContexto(rnc, contexto, tipoOperacion, ambiente, tipoComprobante, nombreArchivo, archivo);
     }
 }

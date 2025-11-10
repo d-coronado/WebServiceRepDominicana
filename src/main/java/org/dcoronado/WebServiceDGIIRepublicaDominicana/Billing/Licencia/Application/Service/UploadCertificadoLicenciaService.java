@@ -2,19 +2,19 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Command.UploadCertificadoDigitalCommand;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UploadCertificadoUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.DocumentFile;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SaveFilePort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.RutasDirectoriosLicencia.getRutaCertificadoDigital;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validateArchivo;
 
 
 /**
@@ -30,53 +30,41 @@ import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGene
 public class UploadCertificadoLicenciaService implements UploadCertificadoUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
-    private final SaveFilePort saveArchivoLicenciaPort;
+    private final SaveFilePort saveFilePort;
 
 
     /**
      * Carga un certificado digital y lo asocia a la licencia correspondiente.
-     *
-     * @param rnc           identificador único de la licencia
-     * @param nombreArchivo nombre del archivo del certificado
-     * @param archivo       contenido binario del certificado
-     * @param password      contraseña del certificado
+     * @param command Objeto que contiene los datos necesarios para cargar el certificado digital.
      * @throws IOException       si ocurre un error al guardar el archivo
      * @throws NotFoundException si no se encuentra la licencia con el RNC indicado
      */
     @Override
-    public void execute(final String rnc, final String nombreArchivo, byte[] archivo, final String password) throws IOException {
-        log.info("INICIO - Proceso de carga de certificado digital para RNC: {}", rnc);
+    public void execute(UploadCertificadoDigitalCommand command) throws IOException {
+        log.info("INICIO - Proceso de carga de certificado digital para RNC: {}", command.rnc());
 
-        // Validar parámetros de entrada
-        log.info("[1] Validando parámetros de entrada...");
-        notBlank(rnc, "RNC required");
-        notBlank(password, "Password required");
-        validateArchivo(nombreArchivo, archivo);
+        log.info("[1] Validando datos de entrada");
+        RNC rncValue = RNC.of(command.rnc());
+        DocumentFile certificadoFile = DocumentFile.of(command.nombreCertificado(), command.certificadoDigitalContenido());
 
         // Buscar licencia y validar existencia
-        log.info("[2] Buscando licencia existente con RNC {}", rnc);
-        Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
-                .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
+        log.info("[2] Buscando licencia existente con RNC {}", rncValue);
+        Licencia licenciaSaved = licenciaRepositoryPort.findByRnc(rncValue.getValor())
+                .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rncValue.getValor() + " no encontrada"));
 
+        log.info("[3] Preparando certificado digital");
+        licenciaSaved.prepararCertificadoDigital(certificadoFile, command.claveCertificado());
 
-        // Si no tiene el directorio creado no se va a poder guardar el certificado
-        log.info("[3] Verificando estado de setup de directorios...");
-        if (!licencia.tieneSetupDirectoriosCompletado()) {
-            throw new InvalidArgumentException(
-                    "No se puede subir la licencia porque la creación de directorios aún está pendiente. " +
-                            "Estado actual: %s".formatted(licencia.getDirectoriesSetupStatus())
-            );
-        }
+        log.info("[4] Armando ruta completa para guardar el certificado digital");
+        final String rutaRelativaCertificado = String.join("/", getRutaCertificadoDigital(licenciaSaved.getRnc().getValor()),licenciaSaved.getCertificadoDigital().getCertificado().getNombre());
+        final String rutaBase = saveFilePort.getBasePath();
+        final String rutaCompletaCertificado = rutaBase.concat(rutaRelativaCertificado);
+        licenciaSaved.confirmarCertificadoDigital(rutaCompletaCertificado);
 
-        log.info("[4] Guardando archivo de certificado digital...");
-        final String rutaRelativaCertificado = String.join("/", getRutaCertificadoDigital(rnc),nombreArchivo);
-        String rutaAbsolute = saveArchivoLicenciaPort.save(rutaRelativaCertificado, archivo);
-
-        // Actualizar los datos de la licencia con la información del certificado
-        log.info("[5] Actualizando información de la licencia con los datos del certificado.");
-        licencia.actualizarDatosCertificado(rutaAbsolute, nombreArchivo, password);
+        log.info("[5] Guardando archivo del certificado en disco");
+        saveFilePort.save(licenciaSaved.getCertificadoDigital().getRutaCertificado(), command.certificadoDigitalContenido());
 
         log.info("[6] Guardando cambios en el repositorio de licencia.");
-        licenciaRepositoryPort.save(licencia);
+        licenciaRepositoryPort.save(licenciaSaved);
     }
 }

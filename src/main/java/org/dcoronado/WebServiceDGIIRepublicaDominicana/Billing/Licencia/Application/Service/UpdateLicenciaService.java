@@ -2,22 +2,19 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Command.UpdateLicenciaCommand;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.UpdateLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.*;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
-
-import static java.util.Objects.isNull;
-
 
 /**
  * Use Case responsable ÚNICAMENTE de actualizar datos editables de una licencia.
  * Responsabilidades:
  * - Actualizar campos de negocio (razón social, dirección, contacto, etc.)
  * - Validar que la licencia existe
- * - Validar que no se intente cambiar el RNC si ya tiene setup completado
  */
 @Slf4j
 @Service
@@ -28,59 +25,39 @@ public class UpdateLicenciaService implements UpdateLicenciaUseCase {
 
     /**
      * Actualiza los datos editables de una licencia existente.
-     * Si la licencia NO tiene setup completado:
-     * - Permite cambiar todos los campos incluido el RNC
-     * Si la licencia YA tiene setup completado:
-     * - Solo permite cambiar campos editables (no RNC)
      *
-     * @param licencia licencia con los datos a actualizar
+     * @param command objeto que contiene los datos para actualizar la licencia
      * @return la licencia actualizada y persistida
-     * @throws InvalidArgumentException si la licencia es null o no tiene ID
-     * @throws NotFoundException        si no existe una licencia con el ID indicado
-     * @throws InvalidArgumentException si intenta cambiar el RNC después del setup
+     * @throws NotFoundException si no existe una licencia con el ID indicado
      */
     @Override
-    public Licencia updateLicencia(Licencia licencia) {
+    public Licencia updateLicencia(UpdateLicenciaCommand command) {
 
         log.info("INICIO - Proceso de actualización de licencia");
-        if (isNull(licencia)) throw new InvalidArgumentException("La licencia no puede ser null");
 
-        if (licencia.getId() == null)
-            throw new IllegalArgumentException("La licencia debe tener un ID para actualizarse");
+        log.info("[1] Validando datos de entrada");
+        RNC rncValue = RNC.of(command.rnc());
 
-        log.info("[1] Buscando licencia existente con ID {}", licencia.getId());
-        Licencia licenciaPersistida = licenciaRepositoryPort.findById(licencia.getId())
-                .orElseThrow(() -> new NotFoundException("Licencia con ID " + licencia.getId() + " no encontrada"));
+        log.info("[2] Buscando licencia existente en el repositorio");
+        Licencia licenciaSaved = licenciaRepositoryPort.findById(command.licenciaId())
+                .orElseThrow(() -> new NotFoundException("Licencia con ID " + command.licenciaId() + " no encontrada"));
 
-
-        log.info("[2] Validando datos básicos de la licencia");
-        licencia.validarDatosBasicos();
-
-        boolean intentaCambiarRnc = !licenciaPersistida.getRnc().equals(licencia.getRnc());
-        log.info("[3] Verificando si se intenta cambiar el RNC: {}", intentaCambiarRnc ? "Sí" : "No");
-
-        if (intentaCambiarRnc) {
-            log.info("[4] Validando si es posible cambiar el RNC (setup no completado)");
-            // Solo permitir cambio de RNC si NO hay setup completado
-            licenciaPersistida.validarPuedeActualizar();
-            licenciaPersistida.setRnc(licencia.getRnc());
-        }
-
-        log.info("[5] Actualizando datos editables de la licencia");
-        licenciaPersistida.actualizarDatos(
-                licencia.getRazonSocial(),
-                licencia.getDireccionFiscal(),
-                licencia.getAlias(),
-                licencia.getNombreContacto(),
-                licencia.getTelefonoContacto(),
-                licencia.getAmbiente()
+        log.info("[3] Actualizando datos de la licencia");
+        licenciaSaved.actualizarDatos(
+                rncValue,
+                command.razonSocial(),
+                command.direccionFiscal(),
+                command.alias(),
+                command.nombreContacto(),
+                command.telefono(),
+                command.ambiente()
         );
 
-        log.info("[6] Guardando licencia actualizada en el repositorio");
-        licenciaRepositoryPort.save(licenciaPersistida);
+        log.info("[4] Guardando licencia actualizada en el repositorio");
+        licenciaRepositoryPort.save(licenciaSaved);
 
-        log.info("[7] Proceso de actualización completado exitosamente para RNC {}", licenciaPersistida.getRnc());
-        return licencia;
+        log.info("[5] Proceso de actualización completado exitosamente para RNC {}", licenciaSaved.getRnc().getValor());
+        return licenciaSaved;
     }
 
 }

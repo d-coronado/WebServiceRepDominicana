@@ -21,9 +21,9 @@ public class LicenciaProviderAdapter implements LicenciaProvider {
 
         return getLicenciaUseCase.finByRnc(rnc)
                 .map(licencia -> new LicenciaInfoDto(
-                        licencia.getRnc(),
-                        licencia.getRutaCertificado(),
-                        licencia.getClaveCertificado(),
+                        licencia.getRnc().getValor(),
+                        licencia.getCertificadoDigital().getRutaCertificado(),
+                        licencia.getCertificadoDigital().getClave(),
                         licencia.getAmbiente(),
                         licencia.getRazonSocial(),
                         licencia.getDireccionFiscal()

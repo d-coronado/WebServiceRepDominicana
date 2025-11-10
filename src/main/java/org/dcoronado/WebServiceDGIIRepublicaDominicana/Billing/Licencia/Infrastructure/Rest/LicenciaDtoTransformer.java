@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Transformer;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrastructure.Rest.Dto.Response.LicenciaResponseDto;
@@ -17,7 +17,7 @@ public class LicenciaDtoTransformer extends DtoTransformer<LicenciaResponseDto, 
 
         return LicenciaResponseDto.builder()
                 .id(licencia.getId())
-                .rncEmpresa(licencia.getRnc())
+                .rncEmpresa(licencia.getRnc().getValor())
                 .razonSocial(licencia.getRazonSocial())
                 .direccionFiscal(licencia.getDireccionFiscal())
                 .alias(licencia.getAlias())

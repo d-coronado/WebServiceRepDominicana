@@ -3,6 +3,8 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applica
 import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.In.ManagerFileLicenciaUseCase;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.LicenciaRepositoryPort;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.Enum.Model.DocumentFile;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.SaveFilePort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
@@ -16,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.RutasDirectoriosLicencia.*;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validateArchivo;
 
 /**
  * Servicio de aplicación encargado de coordinar el guardado de archivos
@@ -39,21 +39,19 @@ public class ManagerFileLicenciaService implements ManagerFileLicenciaUseCase {
      * @param contexto      contexto del archivo (CERTIFICADO_DIGITAL, OTRO)
      * @param nombreArchivo nombre del archivo a guardar
      * @param archivo       contenido binario del archivo
-     * @return ruta absoluta donde se guardó el archivo
-     * @throws IOException              si ocurre un error al guardar el archivo
      * @throws NotFoundException        si no se encuentra la licencia
      * @throws InvalidArgumentException si el contexto no es válido o los directorios no están configurados
      */
     @Override
-    public String guardarArchivoSimple(String rnc, ContextoArchivoEnum contexto, String nombreArchivo, byte[] archivo) throws IOException {
-
-        validarParametrosBasicos(rnc, nombreArchivo, archivo);
-        validarLicencia(rnc);
+    public void guardarArchivoSimple(String rnc, ContextoArchivoEnum contexto, String nombreArchivo, byte[] archivo) {
+        validar(rnc, nombreArchivo, archivo);
         validarContextoSimple(contexto);
-
-        String rutaRelativa = construirRutaSimple(rnc, contexto, nombreArchivo);
-        return saveFilePort.save(rutaRelativa, archivo);
+        final String rutaRelativa = construirRutaSimple(rnc, contexto, nombreArchivo);
+        final String rutaBase = saveFilePort.getBasePath();
+        final String rutaCompleta = rutaBase.concat(rutaRelativa);
+        saveFilePort.save(rutaCompleta, archivo);
     }
+
 
     /**
      * Guarda un archivo de comprobante o aprobación comercial con toda su clasificación
@@ -66,40 +64,34 @@ public class ManagerFileLicenciaService implements ManagerFileLicenciaUseCase {
      * @param tipoComprobante tipo de comprobante tributario
      * @param nombreArchivo   nombre del archivo a guardar
      * @param archivo         contenido binario del archivo
-     * @return ruta absoluta donde se guardó el archivo
      * @throws IOException              si ocurre un error al guardar el archivo
      * @throws NotFoundException        si no se encuentra la licencia
      * @throws InvalidArgumentException si el contexto no es válido o los directorios no están configurados
      */
     @Override
-    public String guardarArchivoContexto(String rnc, ContextoArchivoEnum contexto, TipoOperacionArchivoLicenciaEnum tipoOperacion,
-                                         AmbienteEnum ambiente, TipoComprobanteTributarioEnum tipoComprobante, String nombreArchivo, byte[] archivo) throws IOException {
+    public void guardarArchivoContexto(String rnc, ContextoArchivoEnum contexto, TipoOperacionArchivoLicenciaEnum tipoOperacion,
+                                       AmbienteEnum ambiente, TipoComprobanteTributarioEnum tipoComprobante, String nombreArchivo, byte[] archivo) throws IOException {
 
-        validarParametrosBasicos(rnc, nombreArchivo, archivo);
-        validarLicencia(rnc);
+        validar(rnc, nombreArchivo, archivo);
         validarContextoComprobante(contexto);
-
-        String rutaRelativa = String.join("/",
-                getRutaArchivoLicencia(rnc, contexto, tipoOperacion, ambiente, tipoComprobante),
-                nombreArchivo
-        );
-
-        return saveFilePort.save(rutaRelativa, archivo);
+        String rutaRelativa = String.join("/", getRutaArchivoLicencia(rnc, contexto, tipoOperacion, ambiente, tipoComprobante), nombreArchivo);
+        final String rutaBase = saveFilePort.getBasePath();
+        final String rutaCompleta = rutaBase.concat(rutaRelativa);
+        saveFilePort.save(rutaCompleta, archivo);
     }
 
-    private void validarParametrosBasicos(String rnc, String nombreArchivo, byte[] archivo) {
-        notBlank(rnc, "RNC required");
-        validateArchivo(nombreArchivo, archivo);
-    }
+    private void validar(String rnc, String nombreArchivo, byte[] archivo) {
 
-    private void validarLicencia(String rnc) {
-        Licencia licencia = licenciaRepositoryPort.findByRnc(rnc)
-                .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rnc + " no encontrada"));
+        RNC rncValueObject = RNC.of(rnc);
+        DocumentFile.of(nombreArchivo, archivo);
 
-        if (!licencia.tieneSetupDirectoriosCompletado()) {
+        Licencia licenciaSaved = licenciaRepositoryPort.findByRnc(rncValueObject.getValor())
+                .orElseThrow(() -> new NotFoundException("Licencia con RNC " + rncValueObject.getValor() + " no encontrada"));
+
+        if (!licenciaSaved.tieneSetupDirectoriosCompletado()) {
             throw new InvalidArgumentException(
                     "No se puede guardar el archivo porque la creación de directorios aún está pendiente. " +
-                            "Estado actual: %s".formatted(licencia.getDirectoriesSetupStatus())
+                            "Estado actual: %s".formatted(licenciaSaved.getDirectoriesSetupStatus())
             );
         }
     }
