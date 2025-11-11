@@ -2,7 +2,6 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.U
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.Monto;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +42,7 @@ public final class FileSiytemDiscUtil {
     }
 
     public static String readFileFromResources(String fileName) {
-        try (InputStream inputStream = Monto.class.getClassLoader().getResourceAsStream(fileName)) {
+        try (InputStream inputStream = FileSiytemDiscUtil.class.getClassLoader().getResourceAsStream(fileName)) {
             if (inputStream == null) {
                 throw new NotFoundException("No se encontró el archivo: " + fileName);
             }
