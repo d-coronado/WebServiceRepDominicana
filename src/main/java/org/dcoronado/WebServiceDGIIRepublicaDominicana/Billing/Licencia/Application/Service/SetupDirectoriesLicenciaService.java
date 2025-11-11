@@ -7,7 +7,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out.SetupDirectoriesPort;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.RNC;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.TreeNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.TreeNodeDto;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +49,7 @@ public class SetupDirectoriesLicenciaService implements SetupDirectoriesLicencia
 
         // Armar estructura de directorios
         log.info("[3] Armando arbol de directorios para licencia con RNC {}", rncValueObject);
-        TreeNode directoryTreeLicencia = buildLicenciaTree(licencia.getRnc().getValor());
+        TreeNodeDto directoryTreeLicencia = buildLicenciaTree(licencia.getRnc().getValor());
 
         // Crear estructura de directorios
         log.info("[4] Persistiendo arbol de directorios para licencia con RNC {}", rncValueObject);

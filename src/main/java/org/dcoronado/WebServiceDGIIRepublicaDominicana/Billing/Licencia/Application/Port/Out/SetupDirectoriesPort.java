@@ -1,7 +1,7 @@
 package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Application.Port.Out;
 
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.TreeNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.TreeNodeDto;
 
 public interface SetupDirectoriesPort {
-    void createDirectory(TreeNode estructura);
+    void createDirectory(TreeNodeDto estructura);
 }

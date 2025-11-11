@@ -4,7 +4,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.Ambien
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.ContextoArchivoEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.TipoComprobanteTributarioEnum;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Enum.TipoOperacionArchivoLicenciaEnum;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.TreeNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.TreeNodeDto;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.RutasDirectoriosLicencia.*;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
@@ -38,26 +38,26 @@ public final class DirectorioLicenciaTreeBuilder {
      * │   └── otros/
      * │
      */
-    public static TreeNode buildLicenciaTree(String rnc) {
+    public static TreeNodeDto buildLicenciaTree(String rnc) {
         required(rnc, "rnc required");
 
-        TreeNode root = new TreeNode(ROOT);
+        TreeNodeDto root = new TreeNodeDto(ROOT);
         root.agregarHijo(construirNodoLicencia(rnc));
         return root;
     }
 
 
-    private static TreeNode construirNodoLicencia(String rnc) {
-        TreeNode licencia = new TreeNode(rnc);
-        licencia.agregarHijo(new TreeNode(ContextoArchivoEnum.CERTIFICADO_DIGITAL.getPathSegment()));
+    private static TreeNodeDto construirNodoLicencia(String rnc) {
+        TreeNodeDto licencia = new TreeNodeDto(rnc);
+        licencia.agregarHijo(new TreeNodeDto(ContextoArchivoEnum.CERTIFICADO_DIGITAL.getPathSegment()));
         licencia.agregarHijo(construirNodoComprobantes());
         licencia.agregarHijo(construirNodoAprobacionesComerciales());
-        licencia.agregarHijo(new TreeNode(ContextoArchivoEnum.OTRO.getPathSegment()));
+        licencia.agregarHijo(new TreeNodeDto(ContextoArchivoEnum.OTRO.getPathSegment()));
         return licencia;
     }
 
-    private static TreeNode construirNodoComprobantes() {
-        TreeNode comprobantes = new TreeNode(ContextoArchivoEnum.COMPROBANTE.getPathSegment());
+    private static TreeNodeDto construirNodoComprobantes() {
+        TreeNodeDto comprobantes = new TreeNodeDto(ContextoArchivoEnum.COMPROBANTE.getPathSegment());
 
         // emision, recepcion
         for (TipoOperacionArchivoLicenciaEnum tipo : TipoOperacionArchivoLicenciaEnum.values()) {
@@ -67,8 +67,8 @@ public final class DirectorioLicenciaTreeBuilder {
         return comprobantes;
     }
 
-    private static TreeNode construirNodoAprobacionesComerciales() {
-        TreeNode aprobacionesComerciales = new TreeNode(ContextoArchivoEnum.APROBACION_COMERCIAL.getPathSegment());
+    private static TreeNodeDto construirNodoAprobacionesComerciales() {
+        TreeNodeDto aprobacionesComerciales = new TreeNodeDto(ContextoArchivoEnum.APROBACION_COMERCIAL.getPathSegment());
         // emision, recepcion
         for (TipoOperacionArchivoLicenciaEnum tipo : TipoOperacionArchivoLicenciaEnum.values()) {
             aprobacionesComerciales.agregarHijo(construirNodoTipoArchivo(tipo));
@@ -78,8 +78,8 @@ public final class DirectorioLicenciaTreeBuilder {
     }
 
 
-    private static TreeNode construirNodoTipoArchivo(TipoOperacionArchivoLicenciaEnum tipoArchivo) {
-        TreeNode nodoTipo = new TreeNode(tipoArchivo.getPathSegment());
+    private static TreeNodeDto construirNodoTipoArchivo(TipoOperacionArchivoLicenciaEnum tipoArchivo) {
+        TreeNodeDto nodoTipo = new TreeNodeDto(tipoArchivo.getPathSegment());
 
         for (AmbienteEnum ambiente : AmbienteEnum.values()) {
             nodoTipo.agregarHijo(construirNodoAmbiente(ambiente));
@@ -88,8 +88,8 @@ public final class DirectorioLicenciaTreeBuilder {
         return nodoTipo;
     }
 
-    private static TreeNode construirNodoAmbiente(AmbienteEnum ambiente) {
-        TreeNode nodoAmbiente = new TreeNode(ambiente.getPathSegment());
+    private static TreeNodeDto construirNodoAmbiente(AmbienteEnum ambiente) {
+        TreeNodeDto nodoAmbiente = new TreeNodeDto(ambiente.getPathSegment());
 
         for (TipoComprobanteTributarioEnum tipoComprobante : TipoComprobanteTributarioEnum.values()) {
             nodoAmbiente.agregarHijo(construirNodoComprobante(tipoComprobante));
@@ -97,8 +97,8 @@ public final class DirectorioLicenciaTreeBuilder {
         return nodoAmbiente;
     }
 
-    private static TreeNode construirNodoComprobante(TipoComprobanteTributarioEnum tipoComprobante) {
-        return new TreeNode(tipoComprobante.getPathSegment());
+    private static TreeNodeDto construirNodoComprobante(TipoComprobanteTributarioEnum tipoComprobante) {
+        return new TreeNodeDto(tipoComprobante.getPathSegment());
     }
 
 }

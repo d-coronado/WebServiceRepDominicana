@@ -2,7 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 
 import lombok.extern.slf4j.Slf4j;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.TreeNode;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.TreeNodeDto;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,11 +19,11 @@ public class ArbolDirectorioCreatorDisc {
         this.basePath = Objects.requireNonNull(basePath, "BasePath required");
     }
 
-    public void crearEstructuraDisc(TreeNode raiz) {
+    public void crearEstructuraDisc(TreeNodeDto raiz) {
         crearRecursivamente(basePath, raiz);
     }
 
-    private void crearRecursivamente(Path padre, TreeNode nodo) {
+    private void crearRecursivamente(Path padre, TreeNodeDto nodo) {
         Path actual = padre.resolve(nodo.getNombre());
         crearDirectorio(actual);
         // Recursión para los hijos
