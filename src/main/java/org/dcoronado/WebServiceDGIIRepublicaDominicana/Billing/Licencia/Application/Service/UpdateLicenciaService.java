@@ -9,6 +9,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.M
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Use Case responsable ÚNICAMENTE de actualizar datos editables de una licencia.
@@ -30,6 +31,7 @@ public class UpdateLicenciaService implements UpdateLicenciaUseCase {
      * @return la licencia actualizada y persistida
      * @throws NotFoundException si no existe una licencia con el ID indicado
      */
+    @Transactional
     @Override
     public Licencia updateLicencia(UpdateLicenciaCommand command) {
 

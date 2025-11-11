@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CreateLicenciaService implements CreateLicenciaUseCase {
 
     private final LicenciaRepositoryPort licenciaRepositoryPort;
@@ -28,6 +27,7 @@ public class CreateLicenciaService implements CreateLicenciaUseCase {
      * @throws InvalidArgumentException si la licencia es null
      * @throws AlreadyExistsException   si ya existe una licencia con el mismo RNC c
      */
+    @Transactional
     @Override
     public Licencia createLicencia(CreateLicenciaCommand command) {
 

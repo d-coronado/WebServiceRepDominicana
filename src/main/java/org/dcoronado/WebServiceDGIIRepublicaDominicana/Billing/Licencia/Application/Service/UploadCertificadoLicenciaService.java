@@ -11,6 +11,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.SaveFilePor
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -39,6 +40,7 @@ public class UploadCertificadoLicenciaService implements UploadCertificadoUseCas
      * @throws IOException       si ocurre un error al guardar el archivo
      * @throws NotFoundException si no se encuentra la licencia con el RNC indicado
      */
+    @Transactional
     @Override
     public void execute(UploadCertificadoDigitalCommand command) throws IOException {
         log.info("INICIO - Proceso de carga de certificado digital para RNC: {}", command.rnc());

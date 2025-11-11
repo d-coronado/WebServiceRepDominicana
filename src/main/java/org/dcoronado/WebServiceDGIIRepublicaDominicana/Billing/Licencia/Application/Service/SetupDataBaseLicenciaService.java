@@ -14,6 +14,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.I
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -40,6 +41,7 @@ public class SetupDataBaseLicenciaService implements SetupDatabaseLicenciaUseCas
      * @throws InfrastructureException  si ocurre un error durante la creación o configuración de la base de datos.
      * @throws NotFoundException        si no se encuentra la licencia asociada al RNC indicado.
      */
+    @Transactional
     @Override
     public void execute(SetupBDCommand command) {
 

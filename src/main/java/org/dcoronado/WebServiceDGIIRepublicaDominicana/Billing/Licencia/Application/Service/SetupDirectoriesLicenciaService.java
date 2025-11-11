@@ -10,6 +10,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.N
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.TreeNode;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.DirectorioLicenciaTreeBuilder.buildLicenciaTree;
 
@@ -32,6 +33,7 @@ public class SetupDirectoriesLicenciaService implements SetupDirectoriesLicencia
      * @param rnc RNC de la licencia para la cual se realizará el setup de directorios. No debe ser nulo ni vacío.
      * @throws NotFoundException si no se encuentra una licencia asociada al RNC indicado.
      */
+    @Transactional
     @Override
     public void execute(final String rnc) {
         log.info("INICIO - Proceso de setup de directorios para licencia con RNC {}", rnc);

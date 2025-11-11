@@ -12,6 +12,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Lic
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.SignProvider;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Contracts.Port.Dgii.ValidarSemillaDgiiProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -39,6 +40,7 @@ public class CreateSesionService implements CrearSesionUseCase {
      * @return la sesión creada y persistida en el repositorio
      * @throws Exception si ocurre algún error al firmar o validar la semilla
      */
+    @Transactional
     @Override
     public Sesion crearSesion(Sesion sesion) throws Exception {
 
