@@ -6,7 +6,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Applicat
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.isLinux;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Util.FuncionesGenericasUtil.isLinux;
 
 @Component
 @RequiredArgsConstructor

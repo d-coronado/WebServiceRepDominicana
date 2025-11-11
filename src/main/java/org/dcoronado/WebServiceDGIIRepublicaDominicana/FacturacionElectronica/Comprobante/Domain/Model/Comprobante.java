@@ -18,7 +18,7 @@ import java.util.List;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.ComprobanteConstantes.UMBRAL_FACTURA_CONSUMO_RESUMIDA;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.ComprobanteConstantes.VERSION_FORMATO;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.rellenarConCeros;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Util.StringToValUtil.rellenarConCeros;
 
 
 @Getter

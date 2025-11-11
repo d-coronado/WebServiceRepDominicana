@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Util;
 
 import java.text.SimpleDateFormat;
 import java.time.*;

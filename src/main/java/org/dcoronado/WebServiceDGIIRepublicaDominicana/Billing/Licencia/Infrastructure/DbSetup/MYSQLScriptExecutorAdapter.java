@@ -7,7 +7,7 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Jd
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.readFileFromResources;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Util.FileSiytemDiscUtil.readFileFromResources;
 
 
 @Component

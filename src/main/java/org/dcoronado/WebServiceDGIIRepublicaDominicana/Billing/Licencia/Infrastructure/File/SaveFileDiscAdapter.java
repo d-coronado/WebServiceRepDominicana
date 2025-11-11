@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.SaveFilePort;
 import org.springframework.stereotype.Component;
 
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FileSiytemDiscUtil.*;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Util.FileSiytemDiscUtil.*;
 
 
 @Component

@@ -5,14 +5,13 @@ import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Co
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Model.Item.Item;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.Validator.ComprobanteValidatorEspecificoTemplate;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InvalidArgumentException;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FechaUtil;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Util.FechaUtil;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.FacturacionElectronica.Comprobante.Domain.ComprobanteConstantes.*;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.*;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Util.FuncionesGenericas.validarMontoPositivo;
 
 public class FacturaCreditoFiscalValidator extends ComprobanteValidatorEspecificoTemplate {
 
@@ -158,7 +157,6 @@ public class FacturaCreditoFiscalValidator extends ComprobanteValidatorEspecific
         }
 
         required(fp.getMonto(), "monto required");
-        validarMontoPositivo(fp.getMonto());
     }
 
 

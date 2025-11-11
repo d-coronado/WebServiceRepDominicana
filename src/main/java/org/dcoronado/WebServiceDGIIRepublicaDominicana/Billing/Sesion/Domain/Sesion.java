@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.notBlank;
 import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Assert.required;
-import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils.FechaUtil.parseUtcStringToOffsetDateTime;
+import static org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Util.FechaUtil.parseUtcStringToOffsetDateTime;
 
 @Getter
 @Setter

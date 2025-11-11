@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Util;
 
 import java.math.BigDecimal;
 
@@ -29,4 +29,7 @@ public class StringToValUtil {
         return Boolean.valueOf(input.trim());
     }
 
+    public static String rellenarConCeros(final String texto, final int largo) {
+        return String.format("%0".concat(String.valueOf(largo)).concat("d"), Integer.parseInt(texto));
+    }
 }

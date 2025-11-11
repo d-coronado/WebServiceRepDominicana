@@ -1,8 +1,12 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Utils;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Infraestructure.Util;
 
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.InfrastructureException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.Execption.NotFoundException;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.Monto;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,6 +39,17 @@ public final class FileSiytemDiscUtil {
             Files.deleteIfExists(Paths.get(path));
         } catch (IOException e) {
             throw new InfrastructureException("Error eliminando archivo", e);
+        }
+    }
+
+    public static String readFileFromResources(String fileName) {
+        try (InputStream inputStream = Monto.class.getClassLoader().getResourceAsStream(fileName)) {
+            if (inputStream == null) {
+                throw new NotFoundException("No se encontró el archivo: " + fileName);
+            }
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new InfrastructureException("Ocurrio un error al leer el file", e);
         }
     }
 }
