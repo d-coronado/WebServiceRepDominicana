@@ -3,7 +3,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Infrast
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.Model.Licencia;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.CertificadoDigital;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.ConfiguracionBD;
-import org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject.RNC;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.RNC;
 import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.DocumentFile;
 import org.springframework.stereotype.Component;
 

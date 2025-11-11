@@ -1,4 +1,4 @@
-package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.ValueObject;
+package org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package org.dcoronado.WebServiceDGIIRepublicaDominicana.Billing.Licencia.Domain.
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.dcoronado.WebServiceDGIIRepublicaDominicana.Shared.Domain.ValueObject.RNC;
 
 import java.util.UUID;
 
